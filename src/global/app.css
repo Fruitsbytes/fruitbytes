@@ -7,9 +7,44 @@
 
   Any global CSS variables should also be applied here.
 */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100;8..144,200;8..144,300;8..144,400;8..144,500;8..144,600;8..144,700;8..144,800;8..144,900;8..144,1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+
+:root {
+  --darkBlue: #050A30;
+  --navyBlue: #000C66;
+  --blue: #0000FF;
+  --babyBlue: #7EC8E3;
+
+}
+
+[data-color-scheme="dark"] {
+  color-scheme: dark;
+}
 
 body {
-  margin: 0px;
-  padding: 0px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  margin: 0;
+  padding: 0;
+  font-family: RobotoFlex, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-size: cover;
+  background-image: url("../assets/images/bck.png");
+}
+
+
+
+.material-symbols-rounded {
+  font-variation-settings: 'FILL' 0,
+  'wght' 200,
+  'GRAD' -25,
+  'opsz' 40
+}
+
+.material-symbols-rounded-filled.filled {
+  font-variation-settings: 'FILL' 1,
+  'wght' 200,
+  'GRAD' -25,
+  'opsz' 40
 }

@@ -6,6 +6,8 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { MatchResults } from "@stencil/router";
+import { Log } from "./interfaces/log";
+import { BackDropOptions } from "./interfaces/options";
 export namespace Components {
     interface AppHome {
     }
@@ -13,6 +15,20 @@ export namespace Components {
         "match": MatchResults;
     }
     interface AppRoot {
+    }
+    interface LogoText {
+    }
+    interface ModalBackdrop {
+    }
+    interface PageNotFound {
+    }
+    interface RightPanel {
+        "isOpened": boolean;
+    }
+    interface SimpleLink {
+        "link": string;
+        "state": Object;
+        "title": string;
     }
 }
 declare global {
@@ -34,10 +50,45 @@ declare global {
         prototype: HTMLAppRootElement;
         new (): HTMLAppRootElement;
     };
+    interface HTMLLogoTextElement extends Components.LogoText, HTMLStencilElement {
+    }
+    var HTMLLogoTextElement: {
+        prototype: HTMLLogoTextElement;
+        new (): HTMLLogoTextElement;
+    };
+    interface HTMLModalBackdropElement extends Components.ModalBackdrop, HTMLStencilElement {
+    }
+    var HTMLModalBackdropElement: {
+        prototype: HTMLModalBackdropElement;
+        new (): HTMLModalBackdropElement;
+    };
+    interface HTMLPageNotFoundElement extends Components.PageNotFound, HTMLStencilElement {
+    }
+    var HTMLPageNotFoundElement: {
+        prototype: HTMLPageNotFoundElement;
+        new (): HTMLPageNotFoundElement;
+    };
+    interface HTMLRightPanelElement extends Components.RightPanel, HTMLStencilElement {
+    }
+    var HTMLRightPanelElement: {
+        prototype: HTMLRightPanelElement;
+        new (): HTMLRightPanelElement;
+    };
+    interface HTMLSimpleLinkElement extends Components.SimpleLink, HTMLStencilElement {
+    }
+    var HTMLSimpleLinkElement: {
+        prototype: HTMLSimpleLinkElement;
+        new (): HTMLSimpleLinkElement;
+    };
     interface HTMLElementTagNameMap {
         "app-home": HTMLAppHomeElement;
         "app-profile": HTMLAppProfileElement;
         "app-root": HTMLAppRootElement;
+        "logo-text": HTMLLogoTextElement;
+        "modal-backdrop": HTMLModalBackdropElement;
+        "page-not-found": HTMLPageNotFoundElement;
+        "right-panel": HTMLRightPanelElement;
+        "simple-link": HTMLSimpleLinkElement;
     }
 }
 declare namespace LocalJSX {
@@ -47,11 +98,37 @@ declare namespace LocalJSX {
         "match"?: MatchResults;
     }
     interface AppRoot {
+        "onState.pushed"?: (event: CustomEvent<{ state: any; title: string; url?: string | URL | null; }>) => void;
+    }
+    interface LogoText {
+    }
+    interface ModalBackdrop {
+        "onConsole.logged"?: (event: CustomEvent<Log>) => void;
+    }
+    interface PageNotFound {
+    }
+    interface RightPanel {
+        "isOpened"?: boolean;
+        "onMenu.closed"?: (event: CustomEvent<Partial<BackDropOptions> | undefined>) => void;
+        "onMenu.opened"?: (event: CustomEvent<Partial<BackDropOptions> | undefined>) => void;
+        "onMenu.resized"?: (event: CustomEvent<string>) => void;
+        "onMenu.resizing"?: (event: CustomEvent<string>) => void;
+    }
+    interface SimpleLink {
+        "link"?: string;
+        "onState.pushed"?: (event: CustomEvent<{ state: any; title: string; url?: string | URL | null; }>) => void;
+        "state"?: Object;
+        "title"?: string;
     }
     interface IntrinsicElements {
         "app-home": AppHome;
         "app-profile": AppProfile;
         "app-root": AppRoot;
+        "logo-text": LogoText;
+        "modal-backdrop": ModalBackdrop;
+        "page-not-found": PageNotFound;
+        "right-panel": RightPanel;
+        "simple-link": SimpleLink;
     }
 }
 export { LocalJSX as JSX };
@@ -61,6 +138,11 @@ declare module "@stencil/core" {
             "app-home": LocalJSX.AppHome & JSXBase.HTMLAttributes<HTMLAppHomeElement>;
             "app-profile": LocalJSX.AppProfile & JSXBase.HTMLAttributes<HTMLAppProfileElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
+            "logo-text": LocalJSX.LogoText & JSXBase.HTMLAttributes<HTMLLogoTextElement>;
+            "modal-backdrop": LocalJSX.ModalBackdrop & JSXBase.HTMLAttributes<HTMLModalBackdropElement>;
+            "page-not-found": LocalJSX.PageNotFound & JSXBase.HTMLAttributes<HTMLPageNotFoundElement>;
+            "right-panel": LocalJSX.RightPanel & JSXBase.HTMLAttributes<HTMLRightPanelElement>;
+            "simple-link": LocalJSX.SimpleLink & JSXBase.HTMLAttributes<HTMLSimpleLinkElement>;
         }
     }
 }
