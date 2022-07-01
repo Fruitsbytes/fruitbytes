@@ -4,7 +4,7 @@ import  * as txt from  './logo.txt';
 
 @Component({
   tag: 'logo-text',
-  styleUrl: 'logo-text.css',
+  styleUrl: 'logo-text.scss',
   shadow: true,
 })
 export class LogoText {

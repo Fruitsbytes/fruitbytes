@@ -16,6 +16,15 @@ export namespace Components {
     }
     interface AppRoot {
     }
+    interface CharacterSelection {
+    }
+    interface ConsoleWelcome {
+    }
+    interface Gui404 {
+    }
+    interface GuiWelcome {
+        "menuWidth": number;
+    }
     interface LogoText {
     }
     interface ModalBackdrop {
@@ -26,9 +35,9 @@ export namespace Components {
         "isOpened": boolean;
     }
     interface SimpleLink {
+        "label": string;
         "link": string;
         "state": Object;
-        "title": string;
     }
 }
 declare global {
@@ -49,6 +58,30 @@ declare global {
     var HTMLAppRootElement: {
         prototype: HTMLAppRootElement;
         new (): HTMLAppRootElement;
+    };
+    interface HTMLCharacterSelectionElement extends Components.CharacterSelection, HTMLStencilElement {
+    }
+    var HTMLCharacterSelectionElement: {
+        prototype: HTMLCharacterSelectionElement;
+        new (): HTMLCharacterSelectionElement;
+    };
+    interface HTMLConsoleWelcomeElement extends Components.ConsoleWelcome, HTMLStencilElement {
+    }
+    var HTMLConsoleWelcomeElement: {
+        prototype: HTMLConsoleWelcomeElement;
+        new (): HTMLConsoleWelcomeElement;
+    };
+    interface HTMLGui404Element extends Components.Gui404, HTMLStencilElement {
+    }
+    var HTMLGui404Element: {
+        prototype: HTMLGui404Element;
+        new (): HTMLGui404Element;
+    };
+    interface HTMLGuiWelcomeElement extends Components.GuiWelcome, HTMLStencilElement {
+    }
+    var HTMLGuiWelcomeElement: {
+        prototype: HTMLGuiWelcomeElement;
+        new (): HTMLGuiWelcomeElement;
     };
     interface HTMLLogoTextElement extends Components.LogoText, HTMLStencilElement {
     }
@@ -84,6 +117,10 @@ declare global {
         "app-home": HTMLAppHomeElement;
         "app-profile": HTMLAppProfileElement;
         "app-root": HTMLAppRootElement;
+        "character-selection": HTMLCharacterSelectionElement;
+        "console-welcome": HTMLConsoleWelcomeElement;
+        "gui-404": HTMLGui404Element;
+        "gui-welcome": HTMLGuiWelcomeElement;
         "logo-text": HTMLLogoTextElement;
         "modal-backdrop": HTMLModalBackdropElement;
         "page-not-found": HTMLPageNotFoundElement;
@@ -98,7 +135,17 @@ declare namespace LocalJSX {
         "match"?: MatchResults;
     }
     interface AppRoot {
+        "onConsole.logged"?: (event: CustomEvent<Log>) => void;
         "onState.pushed"?: (event: CustomEvent<{ state: any; title: string; url?: string | URL | null; }>) => void;
+    }
+    interface CharacterSelection {
+    }
+    interface ConsoleWelcome {
+    }
+    interface Gui404 {
+    }
+    interface GuiWelcome {
+        "menuWidth": number;
     }
     interface LogoText {
     }
@@ -112,18 +159,23 @@ declare namespace LocalJSX {
         "onMenu.closed"?: (event: CustomEvent<Partial<BackDropOptions> | undefined>) => void;
         "onMenu.opened"?: (event: CustomEvent<Partial<BackDropOptions> | undefined>) => void;
         "onMenu.resized"?: (event: CustomEvent<string>) => void;
-        "onMenu.resizing"?: (event: CustomEvent<string>) => void;
+        "onMenu.resizing"?: (event: CustomEvent<[string, number]>) => void;
+        "onMenu.resizing.start"?: (event: CustomEvent<string>) => void;
     }
     interface SimpleLink {
+        "label"?: string;
         "link"?: string;
         "onState.pushed"?: (event: CustomEvent<{ state: any; title: string; url?: string | URL | null; }>) => void;
         "state"?: Object;
-        "title"?: string;
     }
     interface IntrinsicElements {
         "app-home": AppHome;
         "app-profile": AppProfile;
         "app-root": AppRoot;
+        "character-selection": CharacterSelection;
+        "console-welcome": ConsoleWelcome;
+        "gui-404": Gui404;
+        "gui-welcome": GuiWelcome;
         "logo-text": LogoText;
         "modal-backdrop": ModalBackdrop;
         "page-not-found": PageNotFound;
@@ -138,6 +190,10 @@ declare module "@stencil/core" {
             "app-home": LocalJSX.AppHome & JSXBase.HTMLAttributes<HTMLAppHomeElement>;
             "app-profile": LocalJSX.AppProfile & JSXBase.HTMLAttributes<HTMLAppProfileElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
+            "character-selection": LocalJSX.CharacterSelection & JSXBase.HTMLAttributes<HTMLCharacterSelectionElement>;
+            "console-welcome": LocalJSX.ConsoleWelcome & JSXBase.HTMLAttributes<HTMLConsoleWelcomeElement>;
+            "gui-404": LocalJSX.Gui404 & JSXBase.HTMLAttributes<HTMLGui404Element>;
+            "gui-welcome": LocalJSX.GuiWelcome & JSXBase.HTMLAttributes<HTMLGuiWelcomeElement>;
             "logo-text": LocalJSX.LogoText & JSXBase.HTMLAttributes<HTMLLogoTextElement>;
             "modal-backdrop": LocalJSX.ModalBackdrop & JSXBase.HTMLAttributes<HTMLModalBackdropElement>;
             "page-not-found": LocalJSX.PageNotFound & JSXBase.HTMLAttributes<HTMLPageNotFoundElement>;

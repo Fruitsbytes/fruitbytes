@@ -1,7 +1,7 @@
 export const deleteProperty = (key, { [key]: _, ...newObj }) => newObj;
 
 export enum Z_INDEX {
-  BACKDROP= 15,
+  BACKDROP = 15,
   MENU = 25,
   MENU_BACKDROP = 20,
   MENU_BACKDROP_ELEVATED = 29,
@@ -9,17 +9,16 @@ export enum Z_INDEX {
   MODAL_BAKDROP = 30
 }
 
-
 export enum MenuEvents {
-  opened ='menu.opened',
-  closed= 'menu.closed',
+  opened = 'menu.opened',
+  closed = 'menu.closed',
   resizingStarted = 'menu.resizing',
   resizingEnded = 'menu.resized'
 }
 
-export enum ModalEvents{
-  opened ='modal.opened',
-  closed= 'modal.closed',
+export enum ModalEvents {
+  opened = 'modal.opened',
+  closed = 'modal.closed',
 }
 
 /**
@@ -55,6 +54,38 @@ export function getRandomInt(min: number, max: number) {
  * @param scrollWidth
  * @param scrollHeight
  */
-export const isOverflown = ({ clientWidth, clientHeight, scrollWidth, scrollHeight } : HTMLElement) => {
+export const isOverflown = ({ clientWidth, clientHeight, scrollWidth, scrollHeight }: HTMLElement) => {
   return scrollHeight > clientHeight || scrollWidth > clientWidth;
+};
+
+
+
+/**
+ *
+ * @param el
+ */
+export function getPosition(el: HTMLElement) {
+  const rect = el.getBoundingClientRect();
+
+  return {
+    top: rect.top + window.scrollY,
+    left: rect.left + window.scrollX,
+    width: rect.width,
+  };
 }
+
+export const animateCSS = (node: HTMLElement, animations: string[], prefix = 'animate__') =>
+  // We create a Promise and return it
+  new Promise((resolve, _reject) => {
+   ;
+    node.classList.add(`${prefix}animated`, ...animations.map( animation => `${prefix}${animation}`));
+
+    // When the animation ends, we clean the classes and resolve the Promise
+    function handleAnimationEnd(event) {
+      event.stopPropagation();
+      node.classList.remove(`${prefix}animated`, ...animations.map( animation => `${prefix}${animation}`));
+      resolve('Animation ended');
+    }
+
+    node.addEventListener('animationend', handleAnimationEnd, {once: true});
+  });

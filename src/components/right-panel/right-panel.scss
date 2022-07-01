@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 @import "./src/global/global";
+@import '~material-symbols/index';
 
 :host {
   display: block;
@@ -15,7 +15,7 @@
   height: 100vh;
   max-width: 800px;
   min-width: 234px;
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   z-index: 4;
@@ -150,8 +150,8 @@
       }
 
       &.more {
-        width: 21px;
-        min-width: 21px;
+        width: 25px;
+        min-width: 25px;
         float: left;
         padding: 0 2px 0 2px;
       }
@@ -272,4 +272,48 @@
   margin: 0;
   padding: 0;
   flex: 1;
+}
+
+.menu-item-dropdown{
+  position: absolute;
+  min-width: 250px;
+  color: #e8eaed;
+  background-color: #292a2d;
+  border: 1px solid #494c50;
+  min-height: 24px;
+  top:26px;
+  right:0;
+  font-size: 12px;
+  li:not(.divider){
+    padding: 7px 12px 7px 32px;
+    cursor: pointer;
+    position: relative;
+    &:hover{
+      background-color: #3f4042;
+      color: #fefefe;
+    }
+    &.active{
+      &::after{
+        position: absolute;
+        content: 'check';
+        overflow-wrap: normal;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizelegibility;
+        font-feature-settings: "liga";
+        direction: ltr;
+        display: inline-block;
+        font-family: "Material Symbols Rounded", serif;
+        font-size: 20px;
+        font-style: normal;
+        left:6px;
+        top:6px;
+        font-variation-settings: "FILL" 0, "wght" 200, "GRAD" -25, "opsz" 40;
+        font-weight: 400;
+        letter-spacing: normal;
+        line-height: 1;
+        text-transform: none;
+        white-space: nowrap;
+      }
+    }
+  }
 }

@@ -16,10 +16,12 @@ export class RightPanel {
   @State() width = 449;
   @State() logs: Array<Log> = [];
   @State() menuItems: Array<MenuItem> = [];
+  @State() chevOpened: boolean = false;
   @Prop() isOpened: boolean;
   @Event({ eventName: 'menu.opened' }) Opened: EventEmitter<Partial<BackDropOptions> | undefined>;
   @Event({ eventName: 'menu.closed' }) Closed: EventEmitter<Partial<BackDropOptions> | undefined>;
-  @Event({ eventName: 'menu.resizing' }) Resizing: EventEmitter<string>;
+  @Event({ eventName: 'menu.resizing.start' }) ResizingStart: EventEmitter<string>;
+  @Event({ eventName: 'menu.resizing' }) Resizing: EventEmitter<[string, number]>;
   @Event({ eventName: 'menu.resized' }) Resized: EventEmitter<string>;
 
   isResizing: boolean = false;
@@ -36,7 +38,7 @@ export class RightPanel {
       file: 'logo.txt',
       message: '<b class="green">Welcome!</b>',
     });
-    this.width = 450;
+    this.width = parseInt(localStorage.getItem('menu-width')) || 450;
     this.menuItems = MENU_ITEMS.map((i, index) => {
       let isActive;
       if (!location.pathname && index === 0) {
@@ -53,7 +55,6 @@ export class RightPanel {
 
     this.handle = this.el.shadowRoot.querySelector('#drag');
     this.crunchingMenu = this.el.shadowRoot.querySelector('#crunching-menu');
-
     if (!!this.handle) {
       this.handle.onmouseup = () => {
         this.isResizing = false;
@@ -62,17 +63,13 @@ export class RightPanel {
       console.warn('Drag not supportes');
     }
 
-    window.addEventListener('popstate', (event) => {
-      console.log('----fdf', event);
-    });
-
     setTimeout(() => {
       this.splitMenus();
     });
   }
 
   private handleOnMouseDown = () => {
-    this.Resizing.emit('fruits-bytes-menu');
+    this.ResizingStart.emit('fruits-bytes-menu');
     this.isResizing = true;
   };
 
@@ -96,7 +93,19 @@ export class RightPanel {
     if (!this.isResizing) {
       return;
     }
-    this.width = window.innerWidth - e.clientX;
+    const width = window.innerWidth - e.clientX;
+
+    if (width <= 234) {
+      this.width = 234;
+      return;
+    }
+    if (width >= 800) {
+      this.width = 800;
+      return;
+    }
+
+    this.width = width;
+    this.Resizing.emit(['fruits-bytes-menu', this.width]);
     this.splitMenus();
   }
 
@@ -118,6 +127,16 @@ export class RightPanel {
     this.menuItems = items;
     this.splitMenus();
   }
+
+  @Listen('click', {capture: true, target:'body'})
+  closeDropdown() {
+    this.chevOpened = false;
+  }
+
+  openDropdown = () => {
+    this.chevOpened = true;
+  };
+
 
   private _closeMenu = () => {
     this.Closed.emit(
@@ -148,8 +167,7 @@ export class RightPanel {
       return;
     }
 
-    console.log(selected);
-    let newLength = 30;
+    let newLength = 32;
 
     const max = this.crunchingMenu.clientWidth;
 
@@ -205,14 +223,11 @@ export class RightPanel {
 
       this.menuItems = [...menuItems];
     } else {
-      let updated = false;
-
       for (const [j, _menuItem] of this.menuItems.entries()) {
         if (j === 0) {
           newLength += menuItems[selected].width;
 
           if (newLength <= max) {
-            updated = true;
             menuItems[selected].hidden = false;
             if (j === selected) {
               continue;
@@ -235,18 +250,16 @@ export class RightPanel {
             break;
           }
           menuItems[j].hidden = false;
-          updated = true;
         }
       }
 
-      if (updated) {
-        // TODO better update logic
-        // this.logs.push({
-        //   message: 'Expanded <b>top-menu</b>.',
-        //   line: 260,
-        //   time: new Date(),
-        //   file: 'console.ts',
-        // });
+      if (menuItems.filter(i => i.hidden).length !== this.menuItems.filter(i => i.hidden).length) {
+        this.logs.push({
+          message: 'Expanded <b>top-menu</b>.',
+          line: 260,
+          time: new Date(),
+          file: 'console.ts',
+        });
         this.menuItems = [...menuItems];
       }
     }
@@ -256,7 +269,9 @@ export class RightPanel {
     if (this.consoleNeedsScoll) {
       this.consoleNeedsScoll = false;
       const objDiv = this.el.shadowRoot.querySelector('#console');
-      objDiv.scrollTop = objDiv.scrollHeight;
+      if (objDiv) {
+        objDiv.scrollTop = objDiv.scrollHeight;
+      }
     }
   }
 
@@ -272,7 +287,7 @@ export class RightPanel {
              class='resize-line resize-left-line'></div>
 
         <div class='top-menu'>
-          <simple-link link='/welcome' title={'Home'}>
+          <simple-link link='/welcome' label={'Home'}>
             <div class='menu-item icon-menu-item' style={{ marginLeft: '6px' }}>
               <span class='material-symbols-rounded'>home</span>
             </div>
@@ -281,10 +296,9 @@ export class RightPanel {
             <span class='icon material-symbols-rounded'>devices</span>
           </div>
           <div class='v-divider'></div>
-
           <div id='crunching-menu'>
             {
-              this.menuItems.map(l => <span data-key={l.key} key={l.key}><simple-link link={l.path} title={l.title}>
+              this.menuItems.map(l => <span data-key={l.key} key={l.key}><simple-link link={l.path} label={l.title}>
                 <div class={{ 'menu-item button': true, 'selected': l.active, hidden: l.hidden }}>
                   <span>{l.title}</span>
                 </div>
@@ -294,7 +308,8 @@ export class RightPanel {
 
             {
               !!this.menuItems.find(l => l.hidden) ? (
-                <div data-isChev={true} class='menu-item button more'>
+                <div data-isChev={true} key='chev' id='chev' class='menu-item button more relative'
+                     onClick={this.openDropdown}>
                   <i>
                     <i class='material-symbols-rounded'>chevron_right</i>
                     <i class='material-symbols-rounded'>chevron_right</i>
@@ -302,10 +317,7 @@ export class RightPanel {
                 </div>
               ) : null
             }
-
-
           </div>
-
 
           <div class='right-top-nav'>
             <div class='menu-item icon-menu-item'>
@@ -320,39 +332,71 @@ export class RightPanel {
           </div>
 
         </div>
-        <div class='sub-menu'>
-          <div class='menu-item icon-menu-item' style={{ marginLeft: '6px' }} title='Clear console.'
-               onClick={this.clearConsole}>
-            <i class='material-symbols-rounded thick clear'>block</i>
-          </div>
-        </div>
+
+        {
+          location.pathname !== '/welcome' ?
+            null : (
+              <console-welcome></console-welcome>
+            )
+        }
 
         {
           location.pathname !== '/console-log' ?
             null : (
-              <div class='console' id='console'>
-                {
-                  this.logs.map(l => {
-                    return <div class={{ p: true, withPayload: !!l.payload }}>
-                      <div>
-                        <span class={`message message-${l.level || 'default'}`} innerHTML={l.message}></span>
-                        <span class='file'>{l.file}:{l.line}</span>
-                      </div>
-                      <div class='payload' style={{ maxWidth: `${this.width - 10}px` }} innerHTML={l.payload}></div>
-                    </div>;
-                  },
-                  )
+              <div>
+                <div class='sub-menu'>
+                  <div class='menu-item icon-menu-item' style={{ marginLeft: '6px' }} title='Clear console.'
+                       onClick={this.clearConsole}>
+                    <i class='material-symbols-rounded thick clear'>block</i>
+                  </div>
+                </div>
+                <div class='console' id='console'>
+                  {
+                    this.logs.map(l => {
+                        return <div class={{ p: true, withPayload: !!l.payload }}>
+                          <div>
+                            <span class={`message message-${l.level || 'default'}`} innerHTML={l.message}></span>
+                            <span class='file'>{l.file}:{l.line}</span>
+                          </div>
+                          <div class='payload' style={{ maxWidth: `${this.width - 10}px` }}
+                               innerHTML={l.payload}></div>
+                        </div>;
+                      },
+                    )
                   }
                   <div class='p new'>
-                  <span class='caret'> {'>'} </span>
-                  <input type='text' />
+                    <span class='caret'> {'>'} </span>
+                    <input type='text' />
                   </div>
-                  </div>
-                  )
-                }
+                </div>
+              </div>
 
-              </Host>
-            );
+            )
         }
 
+
+        {
+          this.chevOpened ?  <div class='menu-item-dropdown' id='menuDropdown'>
+            <ul>
+              {
+                this.menuItems.filter(i => i.hidden).map(l => {
+
+                  return (
+                    <simple-link key={l.key} link={l.path} label={l.title}>
+                      <li class={{active: l.active}} >{l.title}</li>
+                    </simple-link>
+                  );
+                })
+              }
+              <li class='divider'></li>
+              <li class='active'>Activate Konami code</li>
+            </ul>
+          </div> : null
         }
+
+
+      </Host>
+    );
+  }
+
+}

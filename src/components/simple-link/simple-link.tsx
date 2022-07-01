@@ -8,15 +8,15 @@ import { Component, Host, h, Prop, EventEmitter, Event } from '@stencil/core';
 export class SimpleLink {
 
   @Prop() link: string = '#';
-  @Prop() title: string = 'FruitsBytes';
+  @Prop() label: string = 'FruitsBytes';
   @Prop() state: Object = {};
   @Event({ eventName: 'state.pushed' }) StatePushed: EventEmitter<{ state: any; title: string; url?: string | URL | null; }>;
 
   go = (e) => {
     e.preventDefault();
     //TODO analyze link
-    history.pushState(this.state, this.title, this.link);
-    this.StatePushed.emit({state: this.state, title: this.title, url: this.link})
+    history.pushState(this.state, this.label, this.link);
+    this.StatePushed.emit({state: this.state, title: this.label, url: this.link})
   };
 
   render() {

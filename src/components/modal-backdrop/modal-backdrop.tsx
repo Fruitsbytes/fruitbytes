@@ -6,7 +6,7 @@ import { Log } from '../../interfaces/log';
 
 @Component({
   tag: 'modal-backdrop',
-  styleUrl: 'modal-backdrop.css',
+  styleUrl: 'modal-backdrop.scss',
   shadow: true,
 })
 export class ModalBackdrop {
@@ -16,7 +16,7 @@ export class ModalBackdrop {
 
   //TODO whitelist id for reserved names
 
-  @Listen('menu.resizing', { target: 'document', capture: true })
+  @Listen('menu.resizing.start', { target: 'document', capture: true })
   async handleMenuResizing(e: CustomEvent) {
     const {id} = e.detail;
     this.log.emit({
@@ -31,7 +31,7 @@ export class ModalBackdrop {
       shield: true,
       cursor: ' w-resize',
       zIndex: Z_INDEX.MENU_BACKDROP_ELEVATED,
-      override: { background: '#e70303', opacity: 0 },
+      override: { background: '#e70303', opacity: .05 },
     };
 
     await this.add(options);

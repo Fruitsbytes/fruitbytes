@@ -1,0 +1,9 @@
+@import "~highlight.js/styles/github-dark.css";
+
+:host {
+  display: block;
+  font-size: 11px;
+  padding-left: 12px;
+  overflow: auto;
+  height: calc(100vh - 60px);
+}
