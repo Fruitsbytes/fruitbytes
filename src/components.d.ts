@@ -5,40 +5,130 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { MatchResults } from "@stencil/router";
 import { Log } from "./interfaces/log";
-import { BackDropOptions } from "./interfaces/options";
+import { BackDropOptions, OptionConfig } from "./interfaces/options";
+import { FoliageRatio } from "./components/fruit-tree/fruit";
+import { Nullable } from "./interfaces/geneneral-types";
+import { Player } from "./facade/character";
 export namespace Components {
     interface AppHome {
     }
-    interface AppProfile {
-        "match": MatchResults;
-    }
     interface AppRoot {
+    }
+    interface BackgroundActivity {
+        "digiCode": string;
+        "menuWidth": number;
     }
     interface CharacterSelection {
     }
+    interface ConsoleAbout {
+    }
     interface ConsoleWelcome {
+    }
+    interface DropdownButton {
+        "options": OptionConfig;
+    }
+    interface FruitItem {
+        "crystal": boolean;
+        "flavor": number;
+        "type": number;
+    }
+    interface FruitTree {
+        "debug": boolean;
+        "filter": string;
+        "fruit": number;
+        "fruitSize": number;
+        "image": string;
+        "numberOfFruits": number;
+        "ratios": FoliageRatio;
+        "scale": number;
+        "transform": string;
     }
     interface Gui404 {
     }
+    interface GuiAbout {
+    }
     interface GuiWelcome {
+        "menuOpened": boolean;
         "menuWidth": number;
+        "player": Nullable<Player>;
+    }
+    interface LoadingModal {
+        "player"?: Nullable<Player>;
+        "progress": number;
+        "progressText": string;
+        "volumeMuted": boolean;
     }
     interface LogoText {
+    }
+    interface MainFooter {
+        "menuOpened": boolean;
+        "menuWidth": number;
+    }
+    interface MainHeader {
+        "menuOpened": boolean;
+        "menuWidth": number;
+        "message"?: {
+    text?: string;
+    content?: string
+  };
+        "player"?: Nullable<Player>;
+        "volumeMuted": boolean;
+    }
+    interface MessageBubble {
+        "character": Nullable<HTMLElement>;
+        "message"?: string;
     }
     interface ModalBackdrop {
     }
     interface PageNotFound {
     }
     interface RightPanel {
-        "isOpened": boolean;
+        "isOpened"?: boolean;
     }
     interface SimpleLink {
         "label": string;
         "link": string;
         "state": Object;
     }
+    interface SocialLinks {
+    }
+}
+export interface AppRootCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLAppRootElement;
+}
+export interface CharacterSelectionCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCharacterSelectionElement;
+}
+export interface Gui404CustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLGui404Element;
+}
+export interface GuiWelcomeCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLGuiWelcomeElement;
+}
+export interface LoadingModalCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLLoadingModalElement;
+}
+export interface MainHeaderCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMainHeaderElement;
+}
+export interface ModalBackdropCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLModalBackdropElement;
+}
+export interface RightPanelCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLRightPanelElement;
+}
+export interface SimpleLinkCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSimpleLinkElement;
 }
 declare global {
     interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {
@@ -47,17 +137,17 @@ declare global {
         prototype: HTMLAppHomeElement;
         new (): HTMLAppHomeElement;
     };
-    interface HTMLAppProfileElement extends Components.AppProfile, HTMLStencilElement {
-    }
-    var HTMLAppProfileElement: {
-        prototype: HTMLAppProfileElement;
-        new (): HTMLAppProfileElement;
-    };
     interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {
     }
     var HTMLAppRootElement: {
         prototype: HTMLAppRootElement;
         new (): HTMLAppRootElement;
+    };
+    interface HTMLBackgroundActivityElement extends Components.BackgroundActivity, HTMLStencilElement {
+    }
+    var HTMLBackgroundActivityElement: {
+        prototype: HTMLBackgroundActivityElement;
+        new (): HTMLBackgroundActivityElement;
     };
     interface HTMLCharacterSelectionElement extends Components.CharacterSelection, HTMLStencilElement {
     }
@@ -65,11 +155,35 @@ declare global {
         prototype: HTMLCharacterSelectionElement;
         new (): HTMLCharacterSelectionElement;
     };
+    interface HTMLConsoleAboutElement extends Components.ConsoleAbout, HTMLStencilElement {
+    }
+    var HTMLConsoleAboutElement: {
+        prototype: HTMLConsoleAboutElement;
+        new (): HTMLConsoleAboutElement;
+    };
     interface HTMLConsoleWelcomeElement extends Components.ConsoleWelcome, HTMLStencilElement {
     }
     var HTMLConsoleWelcomeElement: {
         prototype: HTMLConsoleWelcomeElement;
         new (): HTMLConsoleWelcomeElement;
+    };
+    interface HTMLDropdownButtonElement extends Components.DropdownButton, HTMLStencilElement {
+    }
+    var HTMLDropdownButtonElement: {
+        prototype: HTMLDropdownButtonElement;
+        new (): HTMLDropdownButtonElement;
+    };
+    interface HTMLFruitItemElement extends Components.FruitItem, HTMLStencilElement {
+    }
+    var HTMLFruitItemElement: {
+        prototype: HTMLFruitItemElement;
+        new (): HTMLFruitItemElement;
+    };
+    interface HTMLFruitTreeElement extends Components.FruitTree, HTMLStencilElement {
+    }
+    var HTMLFruitTreeElement: {
+        prototype: HTMLFruitTreeElement;
+        new (): HTMLFruitTreeElement;
     };
     interface HTMLGui404Element extends Components.Gui404, HTMLStencilElement {
     }
@@ -77,17 +191,47 @@ declare global {
         prototype: HTMLGui404Element;
         new (): HTMLGui404Element;
     };
+    interface HTMLGuiAboutElement extends Components.GuiAbout, HTMLStencilElement {
+    }
+    var HTMLGuiAboutElement: {
+        prototype: HTMLGuiAboutElement;
+        new (): HTMLGuiAboutElement;
+    };
     interface HTMLGuiWelcomeElement extends Components.GuiWelcome, HTMLStencilElement {
     }
     var HTMLGuiWelcomeElement: {
         prototype: HTMLGuiWelcomeElement;
         new (): HTMLGuiWelcomeElement;
     };
+    interface HTMLLoadingModalElement extends Components.LoadingModal, HTMLStencilElement {
+    }
+    var HTMLLoadingModalElement: {
+        prototype: HTMLLoadingModalElement;
+        new (): HTMLLoadingModalElement;
+    };
     interface HTMLLogoTextElement extends Components.LogoText, HTMLStencilElement {
     }
     var HTMLLogoTextElement: {
         prototype: HTMLLogoTextElement;
         new (): HTMLLogoTextElement;
+    };
+    interface HTMLMainFooterElement extends Components.MainFooter, HTMLStencilElement {
+    }
+    var HTMLMainFooterElement: {
+        prototype: HTMLMainFooterElement;
+        new (): HTMLMainFooterElement;
+    };
+    interface HTMLMainHeaderElement extends Components.MainHeader, HTMLStencilElement {
+    }
+    var HTMLMainHeaderElement: {
+        prototype: HTMLMainHeaderElement;
+        new (): HTMLMainHeaderElement;
+    };
+    interface HTMLMessageBubbleElement extends Components.MessageBubble, HTMLStencilElement {
+    }
+    var HTMLMessageBubbleElement: {
+        prototype: HTMLMessageBubbleElement;
+        new (): HTMLMessageBubbleElement;
     };
     interface HTMLModalBackdropElement extends Components.ModalBackdrop, HTMLStencilElement {
     }
@@ -113,74 +257,162 @@ declare global {
         prototype: HTMLSimpleLinkElement;
         new (): HTMLSimpleLinkElement;
     };
+    interface HTMLSocialLinksElement extends Components.SocialLinks, HTMLStencilElement {
+    }
+    var HTMLSocialLinksElement: {
+        prototype: HTMLSocialLinksElement;
+        new (): HTMLSocialLinksElement;
+    };
     interface HTMLElementTagNameMap {
         "app-home": HTMLAppHomeElement;
-        "app-profile": HTMLAppProfileElement;
         "app-root": HTMLAppRootElement;
+        "background-activity": HTMLBackgroundActivityElement;
         "character-selection": HTMLCharacterSelectionElement;
+        "console-about": HTMLConsoleAboutElement;
         "console-welcome": HTMLConsoleWelcomeElement;
+        "dropdown-button": HTMLDropdownButtonElement;
+        "fruit-item": HTMLFruitItemElement;
+        "fruit-tree": HTMLFruitTreeElement;
         "gui-404": HTMLGui404Element;
+        "gui-about": HTMLGuiAboutElement;
         "gui-welcome": HTMLGuiWelcomeElement;
+        "loading-modal": HTMLLoadingModalElement;
         "logo-text": HTMLLogoTextElement;
+        "main-footer": HTMLMainFooterElement;
+        "main-header": HTMLMainHeaderElement;
+        "message-bubble": HTMLMessageBubbleElement;
         "modal-backdrop": HTMLModalBackdropElement;
         "page-not-found": HTMLPageNotFoundElement;
         "right-panel": HTMLRightPanelElement;
         "simple-link": HTMLSimpleLinkElement;
+        "social-links": HTMLSocialLinksElement;
     }
 }
 declare namespace LocalJSX {
     interface AppHome {
     }
-    interface AppProfile {
-        "match"?: MatchResults;
-    }
     interface AppRoot {
-        "onConsole.logged"?: (event: CustomEvent<Log>) => void;
-        "onState.pushed"?: (event: CustomEvent<{ state: any; title: string; url?: string | URL | null; }>) => void;
+        "onConsole.logged"?: (event: AppRootCustomEvent<Log>) => void;
+        "onRedraw.screen"?: (event: AppRootCustomEvent<boolean>) => void;
+        "onState.pushed"?: (event: AppRootCustomEvent<{ state: any; title: string; url?: string | URL | null; }>) => void;
+    }
+    interface BackgroundActivity {
+        "digiCode"?: string;
+        "menuWidth": number;
     }
     interface CharacterSelection {
+        "onClose.loading"?: (event: CharacterSelectionCustomEvent<boolean>) => void;
+    }
+    interface ConsoleAbout {
     }
     interface ConsoleWelcome {
     }
+    interface DropdownButton {
+        "options"?: OptionConfig;
+    }
+    interface FruitItem {
+        "crystal"?: boolean;
+        "flavor"?: number;
+        "type"?: number;
+    }
+    interface FruitTree {
+        "debug"?: boolean;
+        "filter"?: string;
+        "fruit"?: number;
+        "fruitSize"?: number;
+        "image"?: string;
+        "numberOfFruits"?: number;
+        "ratios"?: FoliageRatio;
+        "scale"?: number;
+        "transform"?: string;
+    }
     interface Gui404 {
+        "onConsole.logged"?: (event: Gui404CustomEvent<Log>) => void;
+    }
+    interface GuiAbout {
     }
     interface GuiWelcome {
+        "menuOpened": boolean;
         "menuWidth": number;
+        "onConsole.logged"?: (event: GuiWelcomeCustomEvent<Log>) => void;
+        "onPull.box.up"?: (event: GuiWelcomeCustomEvent<boolean>) => void;
+        "player": Nullable<Player>;
+    }
+    interface LoadingModal {
+        "onToggle.volume"?: (event: LoadingModalCustomEvent<void>) => void;
+        "player"?: Nullable<Player>;
+        "progress": number;
+        "progressText": string;
+        "volumeMuted": boolean;
     }
     interface LogoText {
     }
+    interface MainFooter {
+        "menuOpened": boolean;
+        "menuWidth": number;
+    }
+    interface MainHeader {
+        "menuOpened": boolean;
+        "menuWidth": number;
+        "message"?: {
+    text?: string;
+    content?: string
+  };
+        "onConsole.logged"?: (event: MainHeaderCustomEvent<Log>) => void;
+        "onPull.box.up"?: (event: MainHeaderCustomEvent<boolean>) => void;
+        "onToggle.menu"?: (event: MainHeaderCustomEvent<void>) => void;
+        "onToggle.volume"?: (event: MainHeaderCustomEvent<void>) => void;
+        "player"?: Nullable<Player>;
+        "volumeMuted": boolean;
+    }
+    interface MessageBubble {
+        "character"?: Nullable<HTMLElement>;
+        "message"?: string;
+    }
     interface ModalBackdrop {
-        "onConsole.logged"?: (event: CustomEvent<Log>) => void;
+        "onConsole.logged"?: (event: ModalBackdropCustomEvent<Log>) => void;
     }
     interface PageNotFound {
     }
     interface RightPanel {
         "isOpened"?: boolean;
-        "onMenu.closed"?: (event: CustomEvent<Partial<BackDropOptions> | undefined>) => void;
-        "onMenu.opened"?: (event: CustomEvent<Partial<BackDropOptions> | undefined>) => void;
-        "onMenu.resized"?: (event: CustomEvent<string>) => void;
-        "onMenu.resizing"?: (event: CustomEvent<[string, number]>) => void;
-        "onMenu.resizing.start"?: (event: CustomEvent<string>) => void;
+        "onMenu.closed"?: (event: RightPanelCustomEvent<Partial<BackDropOptions> | undefined>) => void;
+        "onMenu.opened"?: (event: RightPanelCustomEvent<Partial<BackDropOptions> | undefined>) => void;
+        "onMenu.resized"?: (event: RightPanelCustomEvent<string>) => void;
+        "onMenu.resizing"?: (event: RightPanelCustomEvent<[string, number]>) => void;
+        "onMenu.resizing.start"?: (event: RightPanelCustomEvent<string>) => void;
     }
     interface SimpleLink {
         "label"?: string;
         "link"?: string;
-        "onState.pushed"?: (event: CustomEvent<{ state: any; title: string; url?: string | URL | null; }>) => void;
+        "onState.pushed"?: (event: SimpleLinkCustomEvent<{ state: any; title: string; url?: string | URL | null; }>) => void;
         "state"?: Object;
+    }
+    interface SocialLinks {
     }
     interface IntrinsicElements {
         "app-home": AppHome;
-        "app-profile": AppProfile;
         "app-root": AppRoot;
+        "background-activity": BackgroundActivity;
         "character-selection": CharacterSelection;
+        "console-about": ConsoleAbout;
         "console-welcome": ConsoleWelcome;
+        "dropdown-button": DropdownButton;
+        "fruit-item": FruitItem;
+        "fruit-tree": FruitTree;
         "gui-404": Gui404;
+        "gui-about": GuiAbout;
         "gui-welcome": GuiWelcome;
+        "loading-modal": LoadingModal;
         "logo-text": LogoText;
+        "main-footer": MainFooter;
+        "main-header": MainHeader;
+        "message-bubble": MessageBubble;
         "modal-backdrop": ModalBackdrop;
         "page-not-found": PageNotFound;
         "right-panel": RightPanel;
         "simple-link": SimpleLink;
+        "social-links": SocialLinks;
     }
 }
 export { LocalJSX as JSX };
@@ -188,17 +420,27 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "app-home": LocalJSX.AppHome & JSXBase.HTMLAttributes<HTMLAppHomeElement>;
-            "app-profile": LocalJSX.AppProfile & JSXBase.HTMLAttributes<HTMLAppProfileElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
+            "background-activity": LocalJSX.BackgroundActivity & JSXBase.HTMLAttributes<HTMLBackgroundActivityElement>;
             "character-selection": LocalJSX.CharacterSelection & JSXBase.HTMLAttributes<HTMLCharacterSelectionElement>;
+            "console-about": LocalJSX.ConsoleAbout & JSXBase.HTMLAttributes<HTMLConsoleAboutElement>;
             "console-welcome": LocalJSX.ConsoleWelcome & JSXBase.HTMLAttributes<HTMLConsoleWelcomeElement>;
+            "dropdown-button": LocalJSX.DropdownButton & JSXBase.HTMLAttributes<HTMLDropdownButtonElement>;
+            "fruit-item": LocalJSX.FruitItem & JSXBase.HTMLAttributes<HTMLFruitItemElement>;
+            "fruit-tree": LocalJSX.FruitTree & JSXBase.HTMLAttributes<HTMLFruitTreeElement>;
             "gui-404": LocalJSX.Gui404 & JSXBase.HTMLAttributes<HTMLGui404Element>;
+            "gui-about": LocalJSX.GuiAbout & JSXBase.HTMLAttributes<HTMLGuiAboutElement>;
             "gui-welcome": LocalJSX.GuiWelcome & JSXBase.HTMLAttributes<HTMLGuiWelcomeElement>;
+            "loading-modal": LocalJSX.LoadingModal & JSXBase.HTMLAttributes<HTMLLoadingModalElement>;
             "logo-text": LocalJSX.LogoText & JSXBase.HTMLAttributes<HTMLLogoTextElement>;
+            "main-footer": LocalJSX.MainFooter & JSXBase.HTMLAttributes<HTMLMainFooterElement>;
+            "main-header": LocalJSX.MainHeader & JSXBase.HTMLAttributes<HTMLMainHeaderElement>;
+            "message-bubble": LocalJSX.MessageBubble & JSXBase.HTMLAttributes<HTMLMessageBubbleElement>;
             "modal-backdrop": LocalJSX.ModalBackdrop & JSXBase.HTMLAttributes<HTMLModalBackdropElement>;
             "page-not-found": LocalJSX.PageNotFound & JSXBase.HTMLAttributes<HTMLPageNotFoundElement>;
             "right-panel": LocalJSX.RightPanel & JSXBase.HTMLAttributes<HTMLRightPanelElement>;
             "simple-link": LocalJSX.SimpleLink & JSXBase.HTMLAttributes<HTMLSimpleLinkElement>;
+            "social-links": LocalJSX.SocialLinks & JSXBase.HTMLAttributes<HTMLSocialLinksElement>;
         }
     }
 }

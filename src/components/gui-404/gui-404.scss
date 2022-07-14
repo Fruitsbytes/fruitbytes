@@ -1,0 +1,24 @@
+:host {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 1rem;
+  background-repeat: no-repeat;
+  background-position: bottom left;
+  padding-left: 48px;
+}
+.img{
+  bottom: 100px;
+  display: block;
+  left: 0px;
+  position: absolute;
+  width: 50%;
+  max-width: 800px;
+  filter: opacity(0.9) drop-shadow(5px 8px 16px red);
+  pointer-events: none;
+}

@@ -1,0 +1,16 @@
+:host {
+  display: block;
+  width: 150px;
+  margin: 12px auto 12px;
+}
+
+
+img {
+  height: 20px;
+  display: block;
+  transition: ease-in .3s;
+  filter: invert(1) opacity(0.5);
+  &:hover{
+    filter: invert(1) opacity(1);
+  }
+}

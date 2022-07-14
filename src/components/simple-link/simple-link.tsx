@@ -1,4 +1,5 @@
-import { Component, Host, h, Prop, EventEmitter, Event } from '@stencil/core';
+import { Component, Host, h, Prop, EventEmitter, Event, Listen } from '@stencil/core';
+import { SoundLibraryService } from '../../services/soundLibraryService';
 
 @Component({
   tag: 'simple-link',
@@ -10,14 +11,21 @@ export class SimpleLink {
   @Prop() link: string = '#';
   @Prop() label: string = 'FruitsBytes';
   @Prop() state: Object = {};
-  @Event({ eventName: 'state.pushed' }) StatePushed: EventEmitter<{ state: any; title: string; url?: string | URL | null; }>;
+  @Event({ eventName: 'state.pushed' }) StatePushed?: EventEmitter<{ state: any; title: string; url?: string | URL | null; }>;
 
-  go = (e) => {
+  soundLib: SoundLibraryService = SoundLibraryService.instance();
+
+  go = (e: MouseEvent) => {
     e.preventDefault();
     //TODO analyze link
     history.pushState(this.state, this.label, this.link);
-    this.StatePushed.emit({state: this.state, title: this.label, url: this.link})
+    this.StatePushed?.emit({state: this.state, title: this.label, url: this.link})
   };
+
+  @Listen('mouseenter')
+  bip(){
+    this.soundLib.sounds.jumpSoft.play();
+  }
 
   render() {
     return (

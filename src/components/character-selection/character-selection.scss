@@ -4,17 +4,7 @@
   display: block;
 }
 
-.tree {
-  position: absolute;
-  display: block;
-  width: 200px;
-  top: -90px;
-  right: -20px;
-  image-rendering: pixelated;
-  filter: hue-rotate(325deg) saturate(.4);
-}
-
-.forest{
+.forest {
   position: absolute;
   display: block;
   top: -90px;
@@ -23,28 +13,64 @@
   height: 1px;
   overflow: visible;
   z-index: -1;
-  img{
+
+  img {
     image-rendering: pixelated;
     position: absolute;
-    top:0;
+    top: 0;
     display: block;
   }
 }
 
-.fruits-sprite {
-  width: 16px;
-  height: 16px;
-  background: url("../../assets/images/fruits.png") top left no-repeat;
-  overflow: hidden;
-  background-size: 608px 96px;
-  display: inline-block;
-  image-rendering: pixelated;
-}
-
-.fruits-avatar{
-  filter: drop-shadow(1px 1px  1px rgba(0, 0, 0, 0.55));
+.fruits-avatar {
+  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.55));
   display: block;
   transform: scale(5);
 }
 
+#frontTree {
+}
 
+.numnum {
+  background: rgb(28, 28, 30);
+  border-radius: 0 0 6px 6px;
+  bottom: -75px;
+  color: rgb(0, 119, 3);
+  font-size: 0.55rem;
+  line-height: 1;
+  /* width: 100%; */
+  height: 70px;
+  left: -1px;
+  right: -1px;
+  padding: 12px 6px;
+  .compu{
+    color: #fefefe;
+  }
+}
+
+@keyframes flickerAnimation {
+  0%   { opacity:1; }
+  50%  { opacity:0; }
+  100% { opacity:1; }
+}
+@-o-keyframes flickerAnimation{
+  0%   { opacity:1; }
+  50%  { opacity:0; }
+  100% { opacity:1; }
+}
+@-moz-keyframes flickerAnimation{
+  0%   { opacity:1; }
+  50%  { opacity:0; }
+  100% { opacity:1; }
+}
+@-webkit-keyframes flickerAnimation{
+  0%   { opacity:1; }
+  50%  { opacity:0; }
+  100% { opacity:1; }
+}
+.animate-flicker {
+  -webkit-animation: flickerAnimation 1s infinite;
+  -moz-animation: flickerAnimation 1s infinite;
+  -o-animation: flickerAnimation 1s infinite;
+  animation: flickerAnimation 1s infinite;
+}

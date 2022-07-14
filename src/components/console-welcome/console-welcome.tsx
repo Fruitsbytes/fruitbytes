@@ -18,8 +18,8 @@ hljs.registerLanguage('javascript', js);
 })
 export class ConsoleWelcome {
 
-  html: string;
-  php: string;
+  html!: string;
+  php!: string;
 
   connectedCallback() {
     this.php = hljs.highlight(phpTXT, { language: 'php' }).value;

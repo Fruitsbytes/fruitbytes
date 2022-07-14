@@ -16,8 +16,12 @@
   --navyBlue: #000C66;
   --blue: #0000FF;
   --babyBlue: #7EC8E3;
+  scrollbar-color: #000C66 #050A30;
+  scrollbar-width: 12px;
 
 }
+
+
 
 [data-color-scheme="dark"] {
   color-scheme: dark;

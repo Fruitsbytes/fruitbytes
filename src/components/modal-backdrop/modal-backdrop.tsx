@@ -1,8 +1,9 @@
 import { Component, Host, h, Listen, State, Event, EventEmitter } from '@stencil/core';
 import { BackDropOptions } from '../../interfaces/options';
 import cleanDeep from 'clean-deep';
-import { deleteProperty, Z_INDEX } from '../../utils';
+import { deleteProperty } from '../../utils';
 import { Log } from '../../interfaces/log';
+import { Z_INDEX } from '../../config';
 
 @Component({
   tag: 'modal-backdrop',
@@ -12,7 +13,7 @@ import { Log } from '../../interfaces/log';
 export class ModalBackdrop {
 
   @State() backdrops: { [id: string]: BackDropOptions } = {};
-  @Event({ eventName: 'console.logged' }) log: EventEmitter<Log>;
+  @Event({ eventName: 'console.logged' }) log!: EventEmitter<Log>;
 
   //TODO whitelist id for reserved names
 
@@ -83,8 +84,8 @@ export class ModalBackdrop {
             const { shield, override, cursor } = this.backdrops[key];
             const style: Partial<CSSStyleDeclaration> = {
               pointerEvents: shield ? 'auto' : 'none',
-              background: override.background,
-              opacity: `${override.opacity}`,
+              background: override?.background || '#000',
+              opacity: `${override?.opacity || 0.5}`,
               cursor: cursor || 'default',
             };
             return (

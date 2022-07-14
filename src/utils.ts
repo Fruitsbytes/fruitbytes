@@ -1,25 +1,7 @@
-export const deleteProperty = (key, { [key]: _, ...newObj }) => newObj;
+import 'flowbite';
+import { Nullable } from './interfaces/geneneral-types';
 
-export enum Z_INDEX {
-  BACKDROP = 15,
-  MENU = 25,
-  MENU_BACKDROP = 20,
-  MENU_BACKDROP_ELEVATED = 29,
-  MODAL = 35,
-  MODAL_BAKDROP = 30
-}
-
-export enum MenuEvents {
-  opened = 'menu.opened',
-  closed = 'menu.closed',
-  resizingStarted = 'menu.resizing',
-  resizingEnded = 'menu.resized'
-}
-
-export enum ModalEvents {
-  opened = 'modal.opened',
-  closed = 'modal.closed',
-}
+export const deleteProperty = (key: string, { [key]: _, ...newObj }) => newObj;
 
 /**
  * Returns a random number between min (inclusive) and max (exclusive)
@@ -49,15 +31,16 @@ export function getRandomInt(min: number, max: number) {
 
 /**
  * https://stackoverflow.com/a/9541579/1427338
- * @param clientWidth
- * @param clientHeight
- * @param scrollWidth
- * @param scrollHeight
+ * @param el
  */
-export const isOverflown = ({ clientWidth, clientHeight, scrollWidth, scrollHeight }: HTMLElement) => {
+export const isOverflown = (el: Nullable<HTMLElement>) => {
+  if (!el) {
+    return false;
+  }
+
+  const { clientWidth, clientHeight, scrollWidth, scrollHeight } = el;
   return scrollHeight > clientHeight || scrollWidth > clientWidth;
 };
-
 
 
 /**
@@ -77,15 +60,42 @@ export function getPosition(el: HTMLElement) {
 export const animateCSS = (node: HTMLElement, animations: string[], prefix = 'animate__') =>
   // We create a Promise and return it
   new Promise((resolve, _reject) => {
-   ;
-    node.classList.add(`${prefix}animated`, ...animations.map( animation => `${prefix}${animation}`));
+    ;
+    node.classList.add(`${prefix}animated`, ...animations.map(animation => `${prefix}${animation}`));
 
     // When the animation ends, we clean the classes and resolve the Promise
-    function handleAnimationEnd(event) {
+    function handleAnimationEnd(event: AnimationEvent) {
       event.stopPropagation();
-      node.classList.remove(`${prefix}animated`, ...animations.map( animation => `${prefix}${animation}`));
+      node.classList.remove(`${prefix}animated`, ...animations.map(animation => `${prefix}${animation}`));
       resolve('Animation ended');
     }
 
-    node.addEventListener('animationend', handleAnimationEnd, {once: true});
+    node.addEventListener('animationend', handleAnimationEnd, { once: true });
   });
+
+
+export const hexToRgb = (hex: string) => {
+  return hex?.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i
+    , (_m, r, g, b) => '#' + r + r + g + g + b + b)
+    ?.substring(1)
+    ?.match(/.{2}/g)
+    ?.map(x => parseInt(x, 16)) || [255, 255, 255];
+};
+
+export function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export function text2Binary(string: string) {
+  return string.split('').map(function(char) {
+    return char.charCodeAt(0).toString(2);
+  }).join(' ');
+}
+
+export function dec2bin(dec: number) {
+  return (dec >>> 0).toString(2);
+}
+
+export function _2(n: number) {
+  return Math.pow(n, 2);
+}

@@ -2,9 +2,9 @@ import { Howl } from 'howler';
 import { BehaviorSubject, first, firstValueFrom } from 'rxjs';
 
 const SOUND_NAMES = [
-  'ambiance', 'bump1', 'bump2', 'menuSelect', 'roll',
+  'ambiance', 'bump1', 'bump2', 'menuSelect', 'roll', 'crush',
   'cheerfull', 'bottlePop1', 'bottlePop2', 'fruitGroundBounce',
-  'groundBump', 'volumeUp', 'mute', 'open', 'close', 'ioBump', 'ping'
+  'groundBump', 'volumeUp', 'mute', 'open', 'close', 'ioBump', 'ping', 'jumpSoft', 'jump'
 ] as const;
 export type SoundName = typeof SOUND_NAMES[number];
 export type LoadingHashMap = Record<SoundName, BehaviorSubject<boolean>>;

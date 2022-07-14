@@ -1,0 +1,47 @@
+:host {
+  background: #E8EFEF;
+  z-index: 10;
+  border-radius: 0.3em;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.75);
+  position: absolute;
+  top: 80px;
+  color: rgb(0, 0, 0);
+  padding: 6px;
+  min-width: 150px;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  font-family: monospace;
+  font-size: 1rem;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border: 25px solid transparent !important;
+    border-bottom-color: #E8EFEF !important;
+    border-top: 0 !important;
+    border-right: 0 !important;
+    margin-left: -35%;
+    margin-top: -16px;
+  }
+}
+
+.input-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1rem;
+  background-color: currentColor;
+  margin-left: 8px;
+  animation: blink .6s linear infinite alternate;
+}
+
+@keyframes blink {
+  0% {opacity: 1;}
+  40% {opacity: 1;}
+  60% {opacity: 0;}
+  100% {opacity: 0;}
+}

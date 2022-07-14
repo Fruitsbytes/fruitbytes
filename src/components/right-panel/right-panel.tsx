@@ -3,8 +3,8 @@ import { BackDropOptions } from '../../interfaces/options';
 import { Log } from '../../interfaces/log';
 import { isOverflown } from '../../utils';
 import { MenuItem } from '../../interfaces/menuItem';
-import { MENU_ITEMS } from '../../config';
-
+import { DEFAULT_MENU_WIDTH, MENU_ITEMS } from '../../config';
+import { isURL, Nullable, StatePushed } from '../../interfaces/geneneral-types';
 
 @Component({
   tag: 'right-panel',
@@ -12,23 +12,24 @@ import { MENU_ITEMS } from '../../config';
   shadow: true,
 })
 export class RightPanel {
-  @Element() el: HTMLElement;
-  @State() width = 449;
+  @Element() el!: HTMLElement;
+  @State() width? = DEFAULT_MENU_WIDTH;
   @State() logs: Array<Log> = [];
-  @State() menuItems: Array<MenuItem> = [];
+  @State() menuItems: MenuItem[] = [];
   @State() chevOpened: boolean = false;
-  @Prop() isOpened: boolean;
-  @Event({ eventName: 'menu.opened' }) Opened: EventEmitter<Partial<BackDropOptions> | undefined>;
-  @Event({ eventName: 'menu.closed' }) Closed: EventEmitter<Partial<BackDropOptions> | undefined>;
-  @Event({ eventName: 'menu.resizing.start' }) ResizingStart: EventEmitter<string>;
-  @Event({ eventName: 'menu.resizing' }) Resizing: EventEmitter<[string, number]>;
-  @Event({ eventName: 'menu.resized' }) Resized: EventEmitter<string>;
+  @State() selectedPath?: string;
+  @Prop() isOpened?: boolean;
+  @Event({ eventName: 'menu.opened' }) Opened?: EventEmitter<Partial<BackDropOptions> | undefined>;
+  @Event({ eventName: 'menu.closed' }) Closed?: EventEmitter<Partial<BackDropOptions> | undefined>;
+  @Event({ eventName: 'menu.resizing.start' }) ResizingStart?: EventEmitter<string>;
+  @Event({ eventName: 'menu.resizing' }) Resizing?: EventEmitter<[string, number]>;
+  @Event({ eventName: 'menu.resized' }) Resized?: EventEmitter<string>;
 
   isResizing: boolean = false;
   consoleNeedsScoll: boolean = false;
 
-  private handle: HTMLElement;
-  private crunchingMenu: HTMLElement;
+  private handle: Nullable<HTMLElement>;
+  private crunchingMenu: Nullable<HTMLElement>;
 
   connectedCallback() {
     this.logs.push({
@@ -36,15 +37,20 @@ export class RightPanel {
       line: 1,
       time: new Date(),
       file: 'logo.txt',
-      message: '<b class="green">Welcome!</b>',
+      message: '<b class="green" style="margin-bottom: 6px; display: inline-block; margin-right: 12px">FruitsBytes</b><span>Welcome!</span>',
     });
-    this.width = parseInt(localStorage.getItem('menu-width')) || 450;
+
+    const width = localStorage.getItem('menu-width');
+    this.width = width ? parseInt(width) : DEFAULT_MENU_WIDTH;
+
+    this.selectedPath = MENU_ITEMS.map(value => value.path).includes(location.pathname) ? location.pathname : '/console-log';
     this.menuItems = MENU_ITEMS.map((i, index) => {
       let isActive;
+
       if (!location.pathname && index === 0) {
         isActive = true;
       } else {
-        isActive = location.pathname === i.path;
+        isActive = this.selectedPath === i.path;
       }
       return { ...i, active: isActive };
     });
@@ -53,8 +59,8 @@ export class RightPanel {
 
   componentDidLoad() {
 
-    this.handle = this.el.shadowRoot.querySelector('#drag');
-    this.crunchingMenu = this.el.shadowRoot.querySelector('#crunching-menu');
+    this.handle = this.el.shadowRoot?.querySelector('#drag');
+    this.crunchingMenu = this.el.shadowRoot?.querySelector('#crunching-menu');
     if (!!this.handle) {
       this.handle.onmouseup = () => {
         this.isResizing = false;
@@ -69,7 +75,7 @@ export class RightPanel {
   }
 
   private handleOnMouseDown = () => {
-    this.ResizingStart.emit('fruits-bytes-menu');
+    this.ResizingStart?.emit('fruits-bytes-menu');
     this.isResizing = true;
   };
 
@@ -85,11 +91,11 @@ export class RightPanel {
       return;
     }
     this.isResizing = false;
-    this.Resized.emit('fruits-bytes-menu');
+    this.Resized?.emit('fruits-bytes-menu');
   };
 
   @Listen('mousemove', { target: 'document' })
-  handleOnMouseMove(e) {
+  handleOnMouseMove(e: MouseEvent) {
     if (!this.isResizing) {
       return;
     }
@@ -105,30 +111,34 @@ export class RightPanel {
     }
 
     this.width = width;
-    this.Resizing.emit(['fruits-bytes-menu', this.width]);
+    this.Resizing?.emit(['fruits-bytes-menu', this.width]);
     this.splitMenus();
   }
 
   @Listen('state.pushed', { target: 'document', capture: true })
-  onRouteChange(e) {
+  onRouteChange(e: CustomEvent<StatePushed>) {
     const { url } = e.detail;
 
-    let selectedPath, items = [];
-    selectedPath = url;
+    const selectedPath=  isURL(url)?  url.pathname : (url || '');
 
+    this.selectedPath = MENU_ITEMS.map(value => value.path).includes(selectedPath) ? selectedPath : '/console-log';
+
+    console.log(isURL(url), selectedPath, this.selectedPath);
+
+    const  items = [];
     for (const item of this.menuItems) {
-      if (item.path === url) {
-        selectedPath = { ...item, active: true };
-        items.push(selectedPath);
+      if (item.path === this.selectedPath) {
+        items.push({ ...item, active: true });
       } else {
         items.push({ ...item, active: false });
       }
     }
+
     this.menuItems = items;
     this.splitMenus();
   }
 
-  @Listen('click', {capture: true, target:'body'})
+  @Listen('click', { capture: true, target: 'body' })
   closeDropdown() {
     this.chevOpened = false;
   }
@@ -139,7 +149,7 @@ export class RightPanel {
 
 
   private _closeMenu = () => {
-    this.Closed.emit(
+    this.Closed?.emit(
       {
         id: 'fruits-bytes-menu',
       },
@@ -155,21 +165,21 @@ export class RightPanel {
     if (typeof menuItems[0].width === typeof undefined) {
       for (const [i, menuItem] of menuItems.entries()) {
         const attr = `[data-key='${menuItem.key}']`;
-        const el: HTMLElement = this.crunchingMenu.querySelector(attr);
+        const el: Nullable<HTMLElement> = this.crunchingMenu?.querySelector(attr);
         if (el) {
           menuItems[i].width = el.getBoundingClientRect().width;
         }
       }
       this.menuItems = menuItems;
     }
-    const selected: number = menuItems.findIndex(i => i.active);
+    const selected = menuItems.findIndex(i => i.active);
     if (selected < 0) {
       return;
     }
 
     let newLength = 32;
 
-    const max = this.crunchingMenu.clientWidth;
+    const max = this.crunchingMenu?.clientWidth || 0;
 
 
     if (isOverflown(this.crunchingMenu)) {
@@ -181,7 +191,7 @@ export class RightPanel {
           }
         } else {
           if (i === 0) {
-            newLength += menuItems[selected].width;
+            newLength += menuItems[selected].width || 0;
             if (newLength > max) {
               menuItems[selected].hidden = true;
               isFull = true;
@@ -190,7 +200,7 @@ export class RightPanel {
               if (i === selected) {
                 continue;
               }
-              newLength += menuItem.width;
+              newLength += menuItem.width || 0;
               if (newLength > max) {
                 menuItems[i].hidden = true;
                 isFull = true;
@@ -202,7 +212,7 @@ export class RightPanel {
             if (i === selected) {
               menuItems[i].hidden = false;
             } else {
-              newLength += menuItem.width;
+              newLength += menuItem.width || 0;
               if (newLength > max) {
                 menuItems[i].hidden = true;
                 isFull = true;
@@ -225,14 +235,14 @@ export class RightPanel {
     } else {
       for (const [j, _menuItem] of this.menuItems.entries()) {
         if (j === 0) {
-          newLength += menuItems[selected].width;
+          newLength += menuItems[selected].width || 0;
 
           if (newLength <= max) {
             menuItems[selected].hidden = false;
             if (j === selected) {
               continue;
             }
-            newLength += menuItems[j].width;
+            newLength += menuItems[j].width || 0;
             if (newLength > max) {
               break;
             }
@@ -245,7 +255,7 @@ export class RightPanel {
           if (j === selected) {
             continue;
           }
-          newLength += menuItems[j].width;
+          newLength += menuItems[j].width || 0;
           if (newLength > max) {
             break;
           }
@@ -268,7 +278,7 @@ export class RightPanel {
   componentDidUpdate() {
     if (this.consoleNeedsScoll) {
       this.consoleNeedsScoll = false;
-      const objDiv = this.el.shadowRoot.querySelector('#console');
+      const objDiv = this.el.shadowRoot?.querySelector('#console');
       if (objDiv) {
         objDiv.scrollTop = objDiv.scrollHeight;
       }
@@ -299,7 +309,7 @@ export class RightPanel {
           <div id='crunching-menu'>
             {
               this.menuItems.map(l => <span data-key={l.key} key={l.key}><simple-link link={l.path} label={l.title}>
-                <div class={{ 'menu-item button': true, 'selected': l.active, hidden: l.hidden }}>
+                <div class={{ 'menu-item button': true, 'selected': l.active || false, hidden: l.hidden || false }}>
                   <span>{l.title}</span>
                 </div>
               </simple-link>
@@ -334,14 +344,14 @@ export class RightPanel {
         </div>
 
         {
-          location.pathname !== '/welcome' ?
+          this.selectedPath !== '/welcome' ?
             null : (
               <console-welcome></console-welcome>
             )
         }
 
         {
-          location.pathname !== '/console-log' ?
+          this.selectedPath !== '/console-log' ?
             null : (
               <div>
                 <div class='sub-menu'>
@@ -353,12 +363,17 @@ export class RightPanel {
                 <div class='console' id='console'>
                   {
                     this.logs.map(l => {
-                        return <div class={{ p: true, withPayload: !!l.payload }}>
+                        return <div class={{
+                          p: true,
+                          withPayload: !!l.payload,
+                          error: l.level === 'error',
+                          warning: l.level === 'warning',
+                        }}>
                           <div>
                             <span class={`message message-${l.level || 'default'}`} innerHTML={l.message}></span>
                             <span class='file'>{l.file}:{l.line}</span>
                           </div>
-                          <div class='payload' style={{ maxWidth: `${this.width - 10}px` }}
+                          <div class='payload' style={{ maxWidth: `${(this.width || 0) - 10}px` }}
                                innerHTML={l.payload}></div>
                         </div>;
                       },
@@ -370,20 +385,19 @@ export class RightPanel {
                   </div>
                 </div>
               </div>
-
             )
         }
 
 
         {
-          this.chevOpened ?  <div class='menu-item-dropdown' id='menuDropdown'>
+          this.chevOpened ? <div class='menu-item-dropdown' id='menuDropdown'>
             <ul>
               {
                 this.menuItems.filter(i => i.hidden).map(l => {
 
                   return (
                     <simple-link key={l.key} link={l.path} label={l.title}>
-                      <li class={{active: l.active}} >{l.title}</li>
+                      <li class={{ active: l.active || false }}>{l.title}</li>
                     </simple-link>
                   );
                 })
