@@ -3,6 +3,7 @@
 @import "../../global/scrollbar";
 
 :host {
+  --avatar-width: 380px;
   display: flex;
   height: calc(100vh - 200px);
   z-index: 2;
@@ -23,15 +24,16 @@
   padding: 24px 12px 12px;
   border: 2px solid #c5c5c5;
 
+
   .me {
     position: relative;
 
-    img {
+    .avatar {
       display: block;
       width: 100%;
       position: absolute;
-      max-width: 380px;
-      max-height: 380px;
+      max-width: var(--avatar-width);
+      max-height: var(--avatar-width);
       left: -60px;
       bottom: -12px;
       image-rendering: pixelated;
@@ -49,7 +51,8 @@
       position: static;
     }
 
-    .text {
+    #text {
+      scroll-behavior: smooth;
       padding-left: 340px;
       text-align: justify;
       text-justify: inter-word;
@@ -67,18 +70,15 @@
     position: absolute;
     right: -14px;
     top: 284px;
-    padding: 12px;
+    padding: 6px 12px;
     background: #000C66;
-    background: linear-gradient(to bottom, #000c66 0%,#0052d6 100%);
-
-    border-radius: 12px 0 6px 6px;
-    z-index: -1;
+    background: linear-gradient(to bottom, #000c66 0%, #0052d6 100%);
+    border-radius: 12px 0 12px 0;
     border: 2px solid #c5c5c5;
+    z-index: 1;
   }
 
-
   .special-link {
-
     width: 200px;
     padding: 4px 0;
     position: relative;
@@ -86,17 +86,19 @@
     text-align: center;
     font-size: 18px;
     background: #000C66;
-    background: linear-gradient(to bottom, #0052d6 0%,#000c66 100%);
+    background: linear-gradient(to bottom, #0052d6 0%, #000c66 100%);
     height: 34px;
     margin-bottom: 6px;
     color: #c5c5c5;
     margin-right: 12px;
+    z-index: 2;
 
     &:hover {
       background: #162abe;
 
       &::before {
         background: #162abe;
+        border: 2px solid #c5c5c5;
       }
     }
 
@@ -104,12 +106,11 @@
       box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.65);
       height: 38px;
       width: 217px;
-      border: 2px solid #c5c5c5;
       content: '';
       position: absolute;
       transform: skew(340deg);
       background: #000C66;
-      background: linear-gradient(to bottom, #0052d6 0%,#000c66 100%);
+      background: linear-gradient(to bottom, #0052d6 0%, #000c66 100%);
       left: -8px;
       top: -2px;
       z-index: -1;
@@ -117,3 +118,91 @@
   }
 }
 
+button, a {
+  cursor: url('../../assets/images/cursor.webp'), auto;
+}
+
+
+.accolades {
+
+  position: absolute;
+  top: calc(100% + 12px);
+  left: -14px;
+  width: 100%;
+  max-width: calc(var(--avatar-width) - 48px);
+  background: #000C66;
+  border: 2px solid #c5c5c5;
+  border-radius: 0 0 12px 12px;
+  height: 100px;
+  overflow: hidden;
+
+  .gr {
+    background: linear-gradient(to bottom, #000c66 0%, #0052d6 100%);
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat( 10, 1fr);
+    overflow: hidden;
+    height: 100px;
+    padding: 6px 6px 48px;
+  }
+
+  .overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(0, 12, 102, 0.4) 50%, #0052d6 100%);
+  }
+
+  .overlay-1 {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    top: 0;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 30%, rgba(0, 7, 56, 0.4) 70%, #003383 100%);
+  }
+
+  .holder {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 20px;
+    max-height: 20px;
+    width: auto;
+    height: auto;
+    margin: 6px 3px;
+
+    img {
+      display: block;
+      object-fit: cover;
+      position: relative;
+      width: 100%;
+      image-rendering: optimizeQuality;
+      cursor: url('../../assets/images/cursor.webp'), auto;
+      filter: drop-shadow(1px 1px 1px black) grayscale(1) contrast(.5);
+      transition: all 300ms ease-in-out;
+    }
+
+    &:hover, &.selected {
+      &::after {
+        content: '';
+        background-color: #fefefe;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        position: absolute;
+        display: block;
+      }
+
+      img {
+        filter: drop-shadow(1px 2px 2px black);
+        transform: scale(2);
+        z-index: 2;
+      }
+    }
+  }
+}

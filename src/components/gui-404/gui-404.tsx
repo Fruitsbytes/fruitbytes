@@ -1,7 +1,5 @@
 import { Component, Host, h, Event, EventEmitter } from '@stencil/core';
 import { Log } from '../../interfaces/log';
-import { cursor } from '../../config';
-
 
 @Component({
   tag: 'gui-404',
@@ -14,7 +12,7 @@ export class Gui404 {
   connectedCallback() {
 
     this.log.emit({
-      message: `<span style='display: flex'><span class='console-icon'></span> <span>Error: Sorry, the path you are trying to reach is not available: <span style='color:#fefefe; text-decoration: underline; cursor: ${cursor}'>.${location.pathname}</span>. Please verify the link and try again.</span></span>`,
+      message: `<span style='display: flex'><span class='console-icon'></span> <span>Error: Sorry, the path you are trying to reach is not available: <span style='color:#fefefe; text-decoration: underline; cursor: url("../../assets/images/cursor.webp"), auto;'>.${location.pathname}</span>. Please verify the link and try again.</span></span>`,
       file: 'spike_spiegel.ts',
       time: new Date(),
       line: 404,

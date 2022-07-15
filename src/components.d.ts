@@ -26,7 +26,7 @@ export namespace Components {
     interface ConsoleWelcome {
     }
     interface DropdownButton {
-        "options": OptionConfig;
+        "options": Partial<OptionConfig>;
     }
     interface FruitItem {
         "crystal": boolean;
@@ -47,6 +47,8 @@ export namespace Components {
     interface Gui404 {
     }
     interface GuiAbout {
+        "menuOpened": boolean;
+        "menuWidth": number;
     }
     interface GuiWelcome {
         "menuOpened": boolean;
@@ -308,7 +310,7 @@ declare namespace LocalJSX {
     interface ConsoleWelcome {
     }
     interface DropdownButton {
-        "options"?: OptionConfig;
+        "options"?: Partial<OptionConfig>;
     }
     interface FruitItem {
         "crystal"?: boolean;
@@ -330,6 +332,8 @@ declare namespace LocalJSX {
         "onConsole.logged"?: (event: Gui404CustomEvent<Log>) => void;
     }
     interface GuiAbout {
+        "menuOpened": boolean;
+        "menuWidth": number;
     }
     interface GuiWelcome {
         "menuOpened": boolean;

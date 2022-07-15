@@ -16,7 +16,8 @@ export interface BackDropOptions {
 
 export type OptionConfig = {
   placement: Placement,
-  triggerType: string,
+  triggerType: string, // TODO
+  closeOnContentClick?: boolean;
   onShow: Function,
   onHide: Function
 };

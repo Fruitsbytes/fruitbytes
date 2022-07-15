@@ -20,6 +20,13 @@ export class LoadingModal {
     this.ToggleVolume.emit();
   };
 
+  _selectLanguage = (e: MouseEvent)=>{
+    const li = e.target as Nullable<HTMLLIElement>;
+    const lang =  li?.dataset.lang || '';
+
+    alert(`Sorry, ${lang.toUpperCase()} language is not ready yet 😅.`)
+  }
+
   render() {
     return (
       <Host id='loading'>
@@ -68,12 +75,12 @@ export class LoadingModal {
                         <span
                           class='bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded'>Haitian</span>
                         <span
-                          class='bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded'>Wireless Network Trainer</span>
+                          class='bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded'>Wireless Network Tech/Trainer</span>
 
                         <span
                           class='bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded'>Graphic Designer</span>
                         <span
-                          class='bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded'>Freelance</span>
+                          class='bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded'>Freelancer</span>
 
                       </div>
                       <p class='text-justify mt-3 mb-1'>Welcome to my personal website. Here I showcase my projects,
@@ -81,14 +88,26 @@ export class LoadingModal {
                         hobbies and everything that motivates me in life. Enjoy!</p>
                     </div>
                     <div class='flex justify-center w-full mt-3 items-center volume'>
-                      <button type='button' onClick={this._toggleVolume}
-                              class='text-gray-300 border mr-1 border-gray-300 hover:bg-gray-50 hover:text-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center'>
-                        <svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'
-                             xmlns='http://www.w3.org/2000/svg'>
-                          <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2'
-                                d='M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129'></path>
-                        </svg>
-                      </button>
+                      <dropdown-button>
+                        <button type='button' data-dropdown-toggle='langDropDown' data-dropdown-placement='top'
+                                class='text-gray-300 border mr-1 border-gray-300 hover:bg-gray-50 hover:text-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center'>
+                          <svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'
+                               xmlns='http://www.w3.org/2000/svg'>
+                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2'
+                                  d='M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129'></path>
+                          </svg>
+                        </button>
+                        <div id='profileDropDown'
+                             class='z-10 hidden divide-y divide-gray-800 rounded shadow w-80 bg-gray-900'>
+                          <ul class='py-1 text-sm text-gray-200 '>
+                            <li data-lang='en' onClick={this._selectLanguage}>English</li>
+                            <li data-lang='ht' onClick={this._selectLanguage}>Kyeyòl</li>
+                            <li data-lang='fr' onClick={this._selectLanguage}>Français</li>
+                            <li data-lang='es' onClick={this._selectLanguage}>Español</li>
+                          </ul>
+                        </div>
+                      </dropdown-button>
+
                       <button type='button' onClick={this._toggleVolume}
                               class='text-gray-300 border border-gray-300 hover:bg-gray-50 hover:text-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center'>
                         {

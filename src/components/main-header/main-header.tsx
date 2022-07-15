@@ -113,9 +113,8 @@ export class MainHeader {
           </div>
 
           <div class='flex flex-row'>
-            <dropdown-button id='myProfile'>
+            <dropdown-button id='myProfile' options={{ closeOnContentClick: true }}>
               <button class='toggle-button relative volume animate__animated animate__pulse animate__delay-2s'
-
                       data-dropdown-toggle='profileDropDown' data-dropdown-placement='bottom'>
                 <fruit-item
                   style={{ transform: 'scale(4)', top: '-2px', left: '-55%' }}
@@ -131,35 +130,35 @@ export class MainHeader {
                     <div class='thong'></div>
                   </div>
                 </div>
-                <div id='profileDropDown'
-                     class='z-10 hidden divide-y divide-gray-700 rounded shadow w-80 bg-gray-800'>
-                  <div class='p-2 text-sm'>
-                    <p class='m-0'>{this.player?.name}</p>
-                    <p
-                      class='m-0 text-gray-400'>{this.player?.characterType.type} • {this.player?.characterType.flavor}</p>
-                    <p class='p-1 font-mono rounded bg-gray-900 text-green-800'
-                       style={{ fontSize: '.6rem', lineHeight: '1' }}>{this.player?.digiCode}</p>
-                  </div>
+              </button>
+              <div id='profileDropDown'
+                   class='z-10 hidden divide-y divide-gray-800 rounded shadow w-80 bg-gray-900 absolute'>
+                <div class='p-2 text-sm'>
+                  <p class='m-0'>{this.player?.name}</p>
+                  <p
+                    class='m-0 text-gray-400'>{this.player?.characterType.type} • {this.player?.characterType.flavor}</p>
+                  <p class='p-1 font-mono rounded bg-gray-900 text-green-800'
+                     style={{ fontSize: '.6rem', lineHeight: '1' }}>{this.player?.digiCode}</p>
+                </div>
 
-                  <ul class='py-1 text-sm text-gray-200 ' aria-labelledby='dropdownBottomButton'>
-                    <li>
+                <ul class='py-1 text-sm text-gray-200 ' aria-labelledby='dropdownBottomButton'>
+                  <li>
                       <span onClick={this.getGift}
                             class='block px-4 py-2 hover:bg-gray-600 hover:text-white flex items-center'>
                        <span class='material-symbols-rounded w-6 h-6  mr-2'>ramen_dining</span>
                         Frosted Binary Fruit Ramen
                       </span>
-                    </li>
-                    <li>
+                  </li>
+                  <li>
                       <span onClick={this.squashCharacter}
                             class='block px-4 py-2 hover:bg-gray-600 hover:text-white flex items-center'>
 
                         <span class='material-symbols-rounded w-6 h-6  mr-2'>logout</span>
                         Squash
                       </span>
-                    </li>
-                  </ul>
-                </div>
-              </button>
+                  </li>
+                </ul>
+              </div>
             </dropdown-button>
 
             <button class='toggle-button volume animate__animated animate__pulse animate__delay-2s'
@@ -181,14 +180,10 @@ export class MainHeader {
 
         </header>
 
-        {
-          this.ready?
-            (
-              <message-bubble class='hero-bubble' message={this.message?.text} character={this.myProfile}>
-                <div innerHTML={this.message?.content}></div>
-              </message-bubble>
-            ): null
-        }
+        <message-bubble class='hero-bubble' message={this.message?.text} character={this.myProfile}>
+          <div innerHTML={this.message?.content}></div>
+        </message-bubble>
+
       </Host>
     );
   }

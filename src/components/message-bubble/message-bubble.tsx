@@ -41,6 +41,8 @@ export class MessageBubble {
       return;
     }
 
+    console.log('Character said:', this.message);
+
     if (this.el) {
       this.el.style.display = 'flex';
     }

@@ -5,6 +5,7 @@ import { Nullable } from '../../interfaces/geneneral-types';
 
 const DEFAULT_CONFIG: OptionConfig = {
   placement: 'bottom',
+  closeOnContentClick: false,
   triggerType: 'click',
   onShow: () => {
   },
@@ -21,7 +22,7 @@ const DEFAULT_CONFIG: OptionConfig = {
 export class DropdownButton {
 
   @Element() el!: HTMLElement;
-  @Prop() options: OptionConfig = DEFAULT_CONFIG;
+  @Prop() options: Partial<OptionConfig> = {};
   private _options: OptionConfig = DEFAULT_CONFIG;
   private _targetEl: Nullable<HTMLElement>;
   private _triggerEl: Nullable<HTMLElement>;
@@ -39,11 +40,15 @@ export class DropdownButton {
     this._triggerEl = this.el.querySelector<HTMLElement>('[data-dropdown-toggle]');
 
     if (this._triggerEl) {
+      this._triggerEl.onclick = ()=>{
+        this.toggle();
+      }
       this._options.placement = this._triggerEl.getAttribute('data-dropdown-placement') as Placement;
       const id = this._triggerEl.getAttribute('data-dropdown-toggle');
       this._targetEl = this.el.querySelector<HTMLElement>(`#${id}`);
-      if (this._targetEl)
+      if (this._targetEl) {
         this._popperInstance = this._createPopperInstance(this._triggerEl, this._targetEl);
+      }
     }
   }
 
@@ -62,7 +67,7 @@ export class DropdownButton {
     });
   }
 
-  @Listen('click')
+
   toggle() {
     if (!this._popperInstance) {
       return;
@@ -84,13 +89,13 @@ export class DropdownButton {
     this._targetEl.classList.add('block');
 
     // Enable the event listeners
-    // this._popperInstance.setOptions(options => ({
-    //   ...options,
-    //   modifiers: [
-    //     ...options.modifiers,
-    //     { name: 'eventListeners', enabled: true },
-    //   ],
-    // }));
+    this._popperInstance.setOptions((options: { modifiers: any; }) => ({
+      ...options,
+      modifiers: [
+        ...options.modifiers,
+        { name: 'eventListeners', enabled: true },
+      ],
+    }));
 
     // document.body.addEventListener('click', (ev) => {
     //   this._handleClickOutside(ev, this._targetEl);
@@ -104,11 +109,19 @@ export class DropdownButton {
     this._options.onShow(this);
   }
 
-  @Listen('blur', { capture: true })
+  @Listen('click', {target:'document', capture:true})
+  checkClickOutside(e: PointerEvent){
+    if(!e.composedPath().includes(this.el) ||  this._options.closeOnContentClick){
+      this.hide();
+    }
+  }
+
+
   hide() {
     if (!this._targetEl) {
       return;
     }
+
     this._targetEl.classList.remove('block');
     this._targetEl.classList.add('hidden');
 

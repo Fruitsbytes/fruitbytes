@@ -110,6 +110,7 @@ export class AppRoot {
           this.muteVolume(true);
           this.ambiance?.once('unlock', () => {
             this.muteVolume(localStorage.getItem('muted') === '1');
+            this.ambiance?.loop(this.ambiance_id);
           }, this.ambiance_id);
         }, this.ambiance_id);
 
@@ -286,6 +287,12 @@ export class AppRoot {
             this.activeRoute !== '/welcome' || this.loading?
               null : (
                 <gui-welcome player={this.player} menuOpened={this.menuOpened} menuWidth={this.menuWidth}></gui-welcome>
+              )
+          }
+          {
+            this.activeRoute !== '/about-me' || this.loading?
+              null : (
+                <gui-about menuOpened={this.menuOpened} menuWidth={this.menuWidth}></gui-about>
               )
           }
           <background-activity digiCode={this.player?.digiCode || ''}

@@ -123,8 +123,6 @@ export class RightPanel {
 
     this.selectedPath = MENU_ITEMS.map(value => value.path).includes(selectedPath) ? selectedPath : '/console-log';
 
-    console.log(isURL(url), selectedPath, this.selectedPath);
-
     const  items = [];
     for (const item of this.menuItems) {
       if (item.path === this.selectedPath) {
@@ -385,6 +383,13 @@ export class RightPanel {
                   </div>
                 </div>
               </div>
+            )
+        }
+
+        {
+          this.selectedPath !== '/about-me' ?
+            null : (
+              <console-about></console-about>
             )
         }
 
