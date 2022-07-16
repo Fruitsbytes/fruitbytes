@@ -38,7 +38,7 @@ export class SocialLinks {
   render() {
     return (
       <Host>
-        <div class='social-links text-gray-100 flex justify-between items-center'>
+        <div class='social-links flex justify-between items-center'>
           {
             this.links.map(
               link => (<a href={link.url}>

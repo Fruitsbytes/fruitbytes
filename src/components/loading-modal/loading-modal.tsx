@@ -145,7 +145,7 @@ export class LoadingModal {
                       }
                     </div>
                   </div>
-                  <social-links></social-links>
+                  <social-links class='text-gray-100'></social-links>
                 </div>
               )
             }

@@ -32,3 +32,5 @@ https://ionicframework.com/blog/how-to-use-storybook-with-stencil/
 
 - ["LowPoly humming-bird animated"](https://skfb.ly/o9YBx) by alexi.smnd is licensed under [Creative Commons Attribution](http://creativecommons.org/licenses/by/4.0/).
 
+- Photo by [JJ Ying](https://unsplash.com/@jjying?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on <a href="https://unsplash.com/s/photos/seamless?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+

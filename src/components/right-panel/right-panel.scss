@@ -1,5 +1,5 @@
 @import "./src/global/global";
-@import '~material-symbols/index';
+@import '~material-symbols';
 
 :host {
   display: block;
@@ -67,6 +67,7 @@
 
 .resize-line {
   position: absolute;
+  z-index: 2;
   transition: all 0.25s;
 
   &.resize-left-line {
@@ -130,7 +131,6 @@
       display: flex;
       font-size: 12px;
       align-items: center;
-      //font-family: "Segoe UI", Tahoma, sans-serif;
       color: var(--text-color);
       cursor: url('../../assets/images/cursor.webp'),auto;
 
@@ -197,7 +197,7 @@
 }
 
 .console {
-  font-family: consolas, 'lucida console', 'courier new', monospace;
+  font-family: consolas, 'lucida console', 'courier new', monospace, 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   color: rgb(232, 234, 237);
   overflow: auto;
   max-height: calc(100vh - 52px);
@@ -333,7 +333,7 @@
         font-feature-settings: "liga";
         direction: ltr;
         display: inline-block;
-        font-family: "Material Symbols Rounded", serif;
+        font-family: "Material Symbols Rounded", serif, 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
         font-size: 20px;
         font-style: normal;
         left: 6px;

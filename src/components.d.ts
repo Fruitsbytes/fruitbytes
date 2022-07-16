@@ -47,6 +47,7 @@ export namespace Components {
     interface Gui404 {
     }
     interface GuiAbout {
+        "hash": string | undefined;
         "menuOpened": boolean;
         "menuWidth": number;
     }
@@ -332,6 +333,7 @@ declare namespace LocalJSX {
         "onConsole.logged"?: (event: Gui404CustomEvent<Log>) => void;
     }
     interface GuiAbout {
+        "hash": string | undefined;
         "menuOpened": boolean;
         "menuWidth": number;
     }

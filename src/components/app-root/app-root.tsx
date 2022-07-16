@@ -52,6 +52,7 @@ export class AppRoot {
     text?: string;
     content?: string
   };
+  hash = location.hash;
 
   connectedCallback() {
     this.loading = true;
@@ -243,12 +244,12 @@ export class AppRoot {
   @Listen('state.pushed', { target: 'document' })
   handleRouteChange(_e: CustomEvent<{ state: any; title: string; url?: string | URL | null; }>) {
     this.activeRoute = location.pathname;
+    this.hash = location.hash
     this.soundLib.sounds.ping.play();
   }
 
   @Listen('popstate', { target: 'window', capture: true })
   onNavigate(_e: PopStateEvent) {
-    this.activeRoute = location.pathname;
     this.StatePushed?.emit({ state: {}, title: '', url: location.pathname });
   }
 
@@ -292,7 +293,7 @@ export class AppRoot {
           {
             this.activeRoute !== '/about-me' || this.loading?
               null : (
-                <gui-about menuOpened={this.menuOpened} menuWidth={this.menuWidth}></gui-about>
+                <gui-about hash={this.hash} menuOpened={this.menuOpened} menuWidth={this.menuWidth}></gui-about>
               )
           }
           <background-activity digiCode={this.player?.digiCode || ''}

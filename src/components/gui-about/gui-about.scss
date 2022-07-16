@@ -1,3 +1,149 @@
+@import '~material-symbols';
+@import '~animate.css';
+
 :host {
   display: block;
+  position: absolute;
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: auto;
+  top: 0;
+  left: 0;
+}
+
+h1 {
+  font-size: 40pt;
+  text-align: center;
+}
+
+h2 {
+  font-size: 32pt;
+}
+
+h3 {
+  font-size: 26pt;
+}
+
+h4 {
+  font-size: 22pt;
+}
+
+h1, h2, h2 {
+  font-weight: bolder;
+}
+
+.avatar {
+  //clip-path: polygon(50% 0, 6.69% 25%, 6.69% 75%, 50% 100%, 93.3% 75%, 93.3% 25%);;
+  //background-color: #000078;
+  //background-image: url("../../assets/images/me.png");
+
+  width: 150px;
+  height: 150px;
+  margin: 12px auto;
+  display: block;
+  position: relative;
+
+  &::before {
+    background-color: rgb(181 181 181 / 53%);;
+    position: absolute;
+    content: ' ';
+    width: 150px;
+    height: 150px;
+    display: block;
+    clip-path: polygon(50% 0, 6.69% 25%, 6.69% 75%, 50% 100%, 93.3% 75%, 93.3% 25%);
+    transform: rotateZ(30deg) scale(1.1);
+    animation: rotating 20s ease-in-out infinite;
+  }
+
+  &::after {
+    //background-color: #0202c9;
+    background-color: #000078;
+    position: absolute;
+    content: '';
+    width: 150px;
+    height: 150px;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: cover;
+    clip-path: polygon(50% 0, 6.69% 25%, 6.69% 75%, 50% 100%, 93.3% 75%, 93.3% 25%);
+    background-image: url("../../assets/images/me.png");
+  }
+}
+
+@keyframes rotating {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(360deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.paper-holder {
+  position: absolute;
+  left: 50%;
+  margin-left: -4.25in;
+  top: 120px;
+  padding-bottom: 100px
+}
+
+.paper {
+  width: 8.5in;
+  height: 11in;
+  padding: .75in;
+  border-radius: 3px;
+  font-size: 10pt;
+  position: relative;
+
+  &:first-child {
+    padding-top: 1in;
+    background-image: url("../../assets/images/bg.png");
+    background-repeat: repeat;
+    background-position: top left;
+    background-size: 600px;
+  }
+
+  & + .paper{
+    margin-top: 12px;
+  }
+
+  .page{
+    align-items: center;
+    border: 2px solid #b1b1b1;
+    border-radius: 50%;
+    bottom: 20px;
+    display: flex;
+    height: 30px;
+    justify-content: center;
+    left: 50%;
+    margin-left: -15px;
+    position: absolute;
+    width: 30px;
+    color: #b1b1b1;
+    font-family: sans-serif;
+    line-height: 1;
+    break-after: page;
+    page-break-after: always;
+  }
+}
+
+.content {
+  label {
+    text-transform: uppercase;
+    color: #5c5d60;
+    font-size: .8em;
+    & + p {
+      font-weight: bold;
+    }
+  }
+
+  .date{
+    line-height: 1;
+    margin-bottom: 12px;
+  }
 }

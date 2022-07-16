@@ -57,7 +57,7 @@
     backdrop-filter: blur(12px);
     .eyes {
       position: absolute;
-      top: 10%;
+      bottom: 61%;
       width: 100%;
       height: 12px;
       left: 0;
@@ -71,7 +71,7 @@
       width: 10px;
       border-radius: 10px;
       height: 12px;
-      top: 0;
+      bottom: 0;
       animation: eye 10s ease-in 0s infinite;
       background: #d5e8ff;
     }
