@@ -16,7 +16,7 @@ import { getRandomArbitrary, getRandomInt } from '../utils';
 import { AmmoPhysics } from '@enable3d/ammo-physics';
 import { ExtendedMesh, PhysicsLoader } from 'enable3d';
 import { BehaviorSubject, first } from 'rxjs';
-import * as Plugins from '@enable3d/three-graphics/jsm/plugins';
+import * as Plugins from '@enable3d/three-graphics/dist/plugins';
 import { AnimationActionLoopStyles } from 'three/src/constants.js';
 import { EventListener } from 'three/src/core/EventDispatcher.js';
 

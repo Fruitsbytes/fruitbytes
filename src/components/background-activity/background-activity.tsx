@@ -5,7 +5,7 @@ import { SimplexNoise } from 'three/examples/jsm/math/SimplexNoise.js';
 import {
   AnimationClip,
   BackSide,
-  BoxBufferGeometry, BoxGeometry, DirectionalLight, IcosahedronGeometry,
+  BoxGeometry, DirectionalLight, IcosahedronGeometry,
   Mesh, MeshBasicMaterial, MeshPhongMaterial,
   MeshPhysicalMaterial,
   MeshPhysicalMaterialParameters, MeshStandardMaterial,
@@ -14,7 +14,7 @@ import {
 } from 'three';
 import WEBGL from 'three/examples/jsm/capabilities/WebGL.js';
 import { SoundLibraryService } from '../../services/soundLibraryService';
-import { CSG } from 'three-csg-ts';
+import { Brush, Evaluator, SUBTRACTION } from 'three-bvh-csg';
 import { getRandomArbitrary } from '../../utils';
 import { colors } from '../../config';
 import { randInt } from 'three/src/math/MathUtils.js';
@@ -153,11 +153,17 @@ export class BackgroundActivity {
 
     const boxRes = 10;
 
-    const meshA = new ExtendedMesh(new BoxBufferGeometry(22, 10, 22, boxRes, boxRes, boxRes));
-    const meshB = new ExtendedMesh(new BoxBufferGeometry(21, 10, 21, boxRes, boxRes, boxRes));
-    meshA.position.set(0, 0, 0);
-    meshB.position.set(0, 1, 0);
-    this._box = CSG.subtract(meshA, meshB) as ExtendedMesh;
+    const geomA = new BoxGeometry(22, 10, 22, boxRes, boxRes, boxRes);
+    const geomB = new BoxGeometry(21, 10, 21, boxRes, boxRes, boxRes);
+    const brushA = new Brush(geomA);
+    const brushB = new Brush(geomB);
+    brushA.position.set(0, 0, 0);
+    brushB.position.set(0, 1, 0);
+    brushA.updateMatrixWorld();
+    brushB.updateMatrixWorld();
+    const evaluator = new Evaluator();
+    const resultMesh = evaluator.evaluate(brushA, brushB, SUBTRACTION);
+    this._box = new ExtendedMesh(resultMesh.geometry) as ExtendedMesh;
     this._box.material = mat;
     this._box.position.set(0, -50, 0);
     this._box.receiveShadow = true;
@@ -403,7 +409,7 @@ export class BackgroundActivity {
           ball.userData = {
             objectType,
           };
-          this.balls.push(ball);
+          this.balls.push(ball as unknown as ExtendedObject3D);
         }
 
 
