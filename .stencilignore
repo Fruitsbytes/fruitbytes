@@ -1,0 +1,4 @@
+# Exclude unused assets from build
+src/assets/sounds/**
+src/assets/logos/**
+src/assets/fonts/**

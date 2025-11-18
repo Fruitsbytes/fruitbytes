@@ -37,7 +37,13 @@ export const config: Config = {
       // Copy additional SEO files
       copy: [
         { src: 'robots.txt' },
-        { src: 'sitemap.xml' }
+        { src: 'sitemap.xml' },
+        // Only copy essential assets (exclude unused sounds, logos, fonts)
+        { src: 'assets/icon', dest: 'assets/icon' },
+        { src: 'assets/images', dest: 'assets/images' },
+        { src: 'assets/models', dest: 'assets/models' },
+        { src: 'assets/texture', dest: 'assets/texture' },
+        { src: 'assets/vendors', dest: 'assets/vendors' }
       ]
     },
   ],
