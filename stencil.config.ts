@@ -1,11 +1,7 @@
 import { Config } from '@stencil/core';
 import { sass } from '@stencil/sass';
 import tailwind, { tailwindHMR } from 'stencil-tailwind-plugin';
-// import tailwindcss from 'tailwindcss';
-// import { defaultExtractor } from 'tailwindcss/lib/lib/defaultExtractor';
- import tailwindConf from './tailwind.config.js';
-// import purgecss from '@fullhuman/postcss-purgecss';
-// import autoprefixer from 'autoprefixer';
+import tailwindConf from './tailwind.config.js';
 
 export const config: Config = {
   globalStyle: 'src/global/app.css',
@@ -21,32 +17,10 @@ export const config: Config = {
   ],
   plugins: [
     sass(),
-    tailwind(
-      {
-        tailwindConf,
-      }
-      // {
-      //
-      // postcss: {
-      //   plugins: [
-      //     tailwindcss(),
-      //     purgecss({
-      //       content: ['./**/*.tsx'],
-      //       safelist: [
-      //         ':root',
-      //         ':host',
-      //         ':shadow',
-      //         '/deep/',
-      //         '::part',
-      //         '::theme'
-      //       ],
-      //       defaultExtractor
-      //     }),
-      //     autoprefixer(),
-      //   ]
-      // }
-    // }
-    ),
+    tailwind({
+      tailwindCssPath: './src/global/tailwind.css',
+      tailwindConf,
+    }),
     tailwindHMR(),
   ],
   devServer: {
