@@ -10,9 +10,41 @@ export const config: Config = {
   outputTargets: [
     {
       type: 'www',
-      // comment the following line to disable service workers in production
-      serviceWorker: null,
-      // baseUrl: 'https://myapp.local/',
+      // Service Worker enabled for offline support and caching
+      serviceWorker: {
+        globPatterns: [
+          '**/*.{js,css,json,html,png,jpg,jpeg,svg,ico,webp}'
+        ],
+        // Exclude heavy assets from initial caching
+        globIgnores: [
+          '**/sounds/**',
+          '**/fonts/**/*.woff',
+          '**/fonts/**/*.woff2'
+        ],
+        // Cache for 1 week
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com/,
+            handler: 'CacheFirst'
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.gstatic\.com/,
+            handler: 'CacheFirst'
+          }
+        ]
+      },
+      baseUrl: 'https://fruitsbytes.com/',
+      // Copy additional SEO files
+      copy: [
+        { src: 'robots.txt' },
+        { src: 'sitemap.xml' },
+        // Only copy essential assets (exclude unused sounds, logos, fonts)
+        { src: 'assets/icon', dest: 'assets/icon' },
+        { src: 'assets/images', dest: 'assets/images' },
+        { src: 'assets/models', dest: 'assets/models' },
+        { src: 'assets/texture', dest: 'assets/texture' },
+        { src: 'assets/vendors', dest: 'assets/vendors' }
+      ]
     },
   ],
   plugins: [
