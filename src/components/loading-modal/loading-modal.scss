@@ -1,0 +1,50 @@
+@import '~material-symbols';
+@import '~animate.css';
+
+:host {
+  position: absolute;
+  top:0;
+  z-index: 9999999;
+}
+
+.loading{
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loadingImg {
+  display: block;
+  width: 200px;
+  filter: contrast(1);
+  transition: all ease-out 1s;
+}
+
+.progress-text {
+  font-style: italic;
+  color: #8a9ccc;
+}
+
+#alert-1 {
+  position: relative;
+  max-width: 300px;
+  filter: drop-shadow(1px 1px 2px black);
+
+  .volume {
+    position: absolute;
+    top: 255px
+  }
+}
+
+.cartouche {
+  transition: all ease-in .5s;
+
+  &:hover {
+    z-index: 1;
+    transform: scale(1.05);
+  }
+}
+

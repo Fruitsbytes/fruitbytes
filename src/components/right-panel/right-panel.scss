@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 @import "./src/global/global";
+@import '~material-symbols';
 
 :host {
   display: block;
@@ -15,7 +15,7 @@
   height: 100vh;
   max-width: 800px;
   min-width: 234px;
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   z-index: 4;
@@ -67,6 +67,7 @@
 
 .resize-line {
   position: absolute;
+  z-index: 2;
   transition: all 0.25s;
 
   &.resize-left-line {
@@ -100,7 +101,7 @@
     min-width: 28px;
     background: 0 0;
     border-radius: 0;
-    cursor: pointer;
+    cursor: url('../../assets/images/cursor.webp'),auto;
 
     &.icon-menu-item {
       width: 28px;
@@ -130,8 +131,8 @@
       display: flex;
       font-size: 12px;
       align-items: center;
-      //font-family: "Segoe UI", Tahoma, sans-serif;
       color: var(--text-color);
+      cursor: url('../../assets/images/cursor.webp'),auto;
 
       span {
         text-overflow: ellipsis;
@@ -150,8 +151,8 @@
       }
 
       &.more {
-        width: 21px;
-        min-width: 21px;
+        width: 25px;
+        min-width: 25px;
         float: left;
         padding: 0 2px 0 2px;
       }
@@ -196,7 +197,7 @@
 }
 
 .console {
-  font-family: consolas, 'lucida console', 'courier new', monospace;
+  font-family: consolas, 'lucida console', 'courier new', monospace, 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   color: rgb(232, 234, 237);
   overflow: auto;
   max-height: calc(100vh - 52px);
@@ -213,18 +214,41 @@
       color: rgb(232, 234, 237);
     }
 
-    .green{
-      color: #00ee02;
+    .green {
+      color: rgb(255, 255, 255); //var(--panel-background-color);
+      background-color: #009101;
+      padding: 3px 6px;
+      border-radius: 6px;
     }
 
     &:not(.new) {
-      div:first-child{
+      div:first-child {
         display: flex;
         justify-content: space-between;
       }
     }
 
-    .payload{
+    .console-icon{
+      height: 10px;
+      width: 21px;
+      margin-top: 2px;
+      display: inline-block;
+      background-position-x: -40px;
+      background-position-y: 70px;
+      margin-right: 3px;
+      background-image: url("../../assets/images/smallIcons.svg");
+    }
+    &.error {
+      .message{
+        color: rgb(255, 128, 128) !important;
+      }
+
+      background-color: rgb(41, 0, 0) !important;
+      border-bottom: 1px solid rgb(92,0,0) !important;
+      border-top: 1px solid rgb(92,0,0) !important;
+    }
+
+    .payload {
       white-space: pre;
     }
 
@@ -235,8 +259,10 @@
     .file {
       color: rgb(154, 160, 166);
       text-decoration: underline;
-      cursor: pointer;
-      &:hover{
+      cursor: url('../../assets/images/cursor.webp'),auto;
+      margin-left: 12px;
+
+      &:hover {
         color: rgb(241, 243, 245);
       }
     }
@@ -263,6 +289,8 @@
       outline: none;
     }
   }
+
+
 }
 
 #crunching-menu {
@@ -272,4 +300,51 @@
   margin: 0;
   padding: 0;
   flex: 1;
+}
+
+.menu-item-dropdown {
+  position: absolute;
+  min-width: 250px;
+  color: #e8eaed;
+  background-color: #292a2d;
+  border: 1px solid #494c50;
+  min-height: 24px;
+  top: 26px;
+  right: 0;
+  font-size: 12px;
+
+  li:not(.divider) {
+    padding: 7px 12px 7px 32px;
+    cursor: url('../../assets/images/cursor.webp'),auto;
+    position: relative;
+
+    &:hover {
+      background-color: #3f4042;
+      color: #fefefe;
+    }
+
+    &.active {
+      &::after {
+        position: absolute;
+        content: 'check';
+        overflow-wrap: normal;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizelegibility;
+        font-feature-settings: "liga";
+        direction: ltr;
+        display: inline-block;
+        font-family: "Material Symbols Rounded", serif, 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+        font-size: 20px;
+        font-style: normal;
+        left: 6px;
+        top: 6px;
+        font-variation-settings: "FILL" 0, "wght" 200, "GRAD" -25, "opsz" 40;
+        font-weight: 400;
+        letter-spacing: normal;
+        line-height: 1;
+        text-transform: none;
+        white-space: nowrap;
+      }
+    }
+  }
 }

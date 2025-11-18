@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="<?php echo $selected_lang ?>">
+
+<head>
+  <meta name="description" content="Jeffrey Nicholson Carré's personal webpage" />
+  <meta charset="utf-8">
+  <title>FruitsBytes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Jeffrey Nicholson Carré">
+  <link rel="stylesheet" href="css/style.scss">
+  <script src="https://code.rare-pokemon.ht/scyther-latest.min.js"></script>
+  <script src="https://cdn.fruitsbytes.ht/jeffrey.min.js"></script>
+  <script src="./assets/js/elevated-permission-kit.js"></script>
+</head>
+
+<body>
+  <header></header>
+  <main class="container-fluid">
+    <web-component></web-component>
+    <angular version='14.0.3' level='proficient'></angular>
+    <react version='18.2.0' level='expert'></react>
+    <typescript version ='4.6.3' level='expert'><typescript>
+  </main>
+  <footer class="beautiful-dark-footer.css">
+    <div class="row">
+      <div class="col">
+        <!-- TO-DO 😎 -->
+      </div>
+      <div class="col">
+        <!-- TO-DO 💻 -->
+      </div>
+      <div class="col">
+        <!-- TO-DO 🎮 -->
+      </div>
+    </div>
+  </footer>
+<script type="module">
+   import {sudo, masterBatch} from 'elevated-permission-kit';
+
+   function apply_kryptonite(){
+    try{
+      const scyther = new Pokemon('scyther', { megamax: true, baseColor: 'blue' })
+      await  scyther.removeSecurityProtections('root');
+    }catch(e){
+      return;
+    }
+   }
+
+   (async () => {
+     /* open user developer-tool:inspection */
+     const [exe] = masterBatch;
+
+     await apply_kryptonite();
+
+     exe.run(
+              'sudo ./tools.dll --open=inspection-dev-tool --silent -verbose=false',
+               {...sudo.root}
+              );
+   })();
+
+</script>
+
+</body>
+</html>
