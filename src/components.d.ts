@@ -108,6 +108,14 @@ export namespace Components {
         "menuOpened": boolean;
         "menuWidth": number;
     }
+    interface GuiBlog {
+        "hash": string;
+        /**
+          * @default true
+         */
+        "menuOpened": boolean;
+        "menuWidth": number;
+    }
     interface GuiWelcome {
         "menuOpened": boolean;
         "menuWidth": number;
@@ -311,6 +319,12 @@ declare global {
         prototype: HTMLGuiAboutElement;
         new (): HTMLGuiAboutElement;
     };
+    interface HTMLGuiBlogElement extends Components.GuiBlog, HTMLStencilElement {
+    }
+    var HTMLGuiBlogElement: {
+        prototype: HTMLGuiBlogElement;
+        new (): HTMLGuiBlogElement;
+    };
     interface HTMLGuiWelcomeElementEventMap {
         "pull.box.up": boolean;
         "console.logged": Log;
@@ -463,6 +477,7 @@ declare global {
         "fruit-tree": HTMLFruitTreeElement;
         "gui-404": HTMLGui404Element;
         "gui-about": HTMLGuiAboutElement;
+        "gui-blog": HTMLGuiBlogElement;
         "gui-welcome": HTMLGuiWelcomeElement;
         "loading-modal": HTMLLoadingModalElement;
         "logo-text": HTMLLogoTextElement;
@@ -574,6 +589,14 @@ declare namespace LocalJSX {
         "menuOpened": boolean;
         "menuWidth": number;
     }
+    interface GuiBlog {
+        "hash": string;
+        /**
+          * @default true
+         */
+        "menuOpened"?: boolean;
+        "menuWidth": number;
+    }
     interface GuiWelcome {
         "menuOpened": boolean;
         "menuWidth": number;
@@ -654,6 +677,7 @@ declare namespace LocalJSX {
         "fruit-tree": FruitTree;
         "gui-404": Gui404;
         "gui-about": GuiAbout;
+        "gui-blog": GuiBlog;
         "gui-welcome": GuiWelcome;
         "loading-modal": LoadingModal;
         "logo-text": LogoText;
@@ -692,6 +716,7 @@ declare module "@stencil/core" {
             "fruit-tree": LocalJSX.FruitTree & JSXBase.HTMLAttributes<HTMLFruitTreeElement>;
             "gui-404": LocalJSX.Gui404 & JSXBase.HTMLAttributes<HTMLGui404Element>;
             "gui-about": LocalJSX.GuiAbout & JSXBase.HTMLAttributes<HTMLGuiAboutElement>;
+            "gui-blog": LocalJSX.GuiBlog & JSXBase.HTMLAttributes<HTMLGuiBlogElement>;
             "gui-welcome": LocalJSX.GuiWelcome & JSXBase.HTMLAttributes<HTMLGuiWelcomeElement>;
             "loading-modal": LocalJSX.LoadingModal & JSXBase.HTMLAttributes<HTMLLoadingModalElement>;
             "logo-text": LocalJSX.LogoText & JSXBase.HTMLAttributes<HTMLLogoTextElement>;

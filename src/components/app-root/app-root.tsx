@@ -296,8 +296,19 @@ export class AppRoot {
                 <gui-about hash={this.hash} menuOpened={this.menuOpened} menuWidth={this.menuWidth}></gui-about>
               )
           }
-          <background-activity digiCode={this.player?.digiCode || ''}
-                               menuWidth={this.menuOpened ? this.menuWidth : 0}></background-activity>
+          {
+            this.activeRoute !== '/my-blog' || this.loading?
+              null : (
+                <gui-blog hash={this.hash} menuOpened={this.menuOpened} menuWidth={this.menuWidth}></gui-blog>
+              )
+          }
+          {
+            /* Only load 3D background on welcome page to reduce initial bundle size */
+            this.activeRoute === '/welcome' && !this.loading ? (
+              <background-activity digiCode={this.player?.digiCode || ''}
+                                   menuWidth={this.menuOpened ? this.menuWidth : 0}></background-activity>
+            ) : null
+          }
           {
             MENU_ITEMS.map(value => value.path).includes(this.activeRoute) ? null : <gui-404></gui-404>
           }
