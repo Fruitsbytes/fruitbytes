@@ -104,10 +104,38 @@ export class GuiAbout {
 
               <div
                 class='content grid grid-cols-1 divide-y divide-gray-200 rounded-md p-2 border border-gray-200'>
-                <div class='content grid grid-cols-12 pb-4'>
-                  <div class='pt-4 text-center col-span-2' id='transversal'>
+                <div class='content grid grid-cols-12 pb-4' id='cgi'>
+                  <div class='pt-4 text-center col-span-2'>
+                    <div class='date font-mono text-orange-600'>
+                      2023<br />
+                      —<br />
+                      Present
+                    </div>
+                    <div class='location text-gray-500'>
+                      Montréal
+                    </div>
+                  </div>
+                  <div class='col-span-10'>
+                    <h3 class='my-0'>Senior Consultant <span class='company text-green-800'>
+                      <span class='text-gray-300 text-2xl'>@</span>CGI Inc.</span>
+                    </h3>
+                    <small class='mb-3'><a href='https://www.cgi.com'>https://www.cgi.com</a></small>
+                    <p class='mt-2'>Senior consultant working on enterprise-level software solutions for major clients.</p>
+                    <ul class='list-disc list-inside mt-2'>
+                      <li>Frontend Development with Angular and modern frameworks</li>
+                      <li>Enterprise application architecture and design</li>
+                      <li>Client consultation and technical leadership</li>
+                      <li>Agile development and team collaboration</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class='content grid grid-cols-12 pb-4' id='transversal-consultant'>
+                  <div class='pt-4 text-center col-span-2'>
                     <div class='date  font-mono text-orange-600'>
-                      Sept 2021
+                      Sept 2021<br />
+                      —<br />
+                      2023
                     </div>
                     <div class='location text-gray-500'>
                       Port-au-Prince
@@ -122,7 +150,7 @@ export class GuiAbout {
                   </div>
                 </div>
 
-                <div class='content grid grid-cols-12 pb-4'>
+                <div class='content grid grid-cols-12 pb-4' id='transversal-cto'>
                   <div class='pt-4 text-center col-span-2'>
                     <div class='date font-mono text-orange-600'>
                       Apr 2013<br />
@@ -170,8 +198,8 @@ export class GuiAbout {
                   </div>
                 </div>
 
-                <div class='content grid grid-cols-12 pb-4'>
-                  <div class='pt-4 text-center col-span-2' id='transversal'>
+                <div class='content grid grid-cols-12 pb-4' id='global-hawk'>
+                  <div class='pt-4 text-center col-span-2'>
                     <div class='date  font-mono text-orange-600'>
                       Jan 2020<br/>
                       —<br/>

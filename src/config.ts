@@ -103,18 +103,23 @@ export const ABOUT_SECTION: MenuItem2[] = [
     children: [
       {
         icon: 'business_center',
-        title: 'Transversal S.A.',
-        hash: 'employment-1',
+        title: 'CGI Inc.',
+        hash: 'cgi',
       },
       {
         icon: 'business_center',
-        title: 'Fondation Réseau Développement Durable Haïtien',
-        hash: 'employment-2',
+        title: 'Transversal S.A. (Consultant)',
+        hash: 'transversal-consultant',
       },
       {
         icon: 'business_center',
-        title: 'Freelancing',
-        hash: 'freelancing',
+        title: 'Transversal S.A. (CTO)',
+        hash: 'transversal-cto',
+      },
+      {
+        icon: 'business_center',
+        title: 'Global Hawk',
+        hash: 'global-hawk',
       },
 
     ],
