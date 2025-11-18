@@ -116,6 +116,14 @@ export namespace Components {
         "menuOpened": boolean;
         "menuWidth": number;
     }
+    interface GuiProjects {
+        "hash": string;
+        /**
+          * @default true
+         */
+        "menuOpened": boolean;
+        "menuWidth": number;
+    }
     interface GuiWelcome {
         "menuOpened": boolean;
         "menuWidth": number;
@@ -325,6 +333,12 @@ declare global {
         prototype: HTMLGuiBlogElement;
         new (): HTMLGuiBlogElement;
     };
+    interface HTMLGuiProjectsElement extends Components.GuiProjects, HTMLStencilElement {
+    }
+    var HTMLGuiProjectsElement: {
+        prototype: HTMLGuiProjectsElement;
+        new (): HTMLGuiProjectsElement;
+    };
     interface HTMLGuiWelcomeElementEventMap {
         "pull.box.up": boolean;
         "console.logged": Log;
@@ -478,6 +492,7 @@ declare global {
         "gui-404": HTMLGui404Element;
         "gui-about": HTMLGuiAboutElement;
         "gui-blog": HTMLGuiBlogElement;
+        "gui-projects": HTMLGuiProjectsElement;
         "gui-welcome": HTMLGuiWelcomeElement;
         "loading-modal": HTMLLoadingModalElement;
         "logo-text": HTMLLogoTextElement;
@@ -597,6 +612,14 @@ declare namespace LocalJSX {
         "menuOpened"?: boolean;
         "menuWidth": number;
     }
+    interface GuiProjects {
+        "hash": string;
+        /**
+          * @default true
+         */
+        "menuOpened"?: boolean;
+        "menuWidth": number;
+    }
     interface GuiWelcome {
         "menuOpened": boolean;
         "menuWidth": number;
@@ -678,6 +701,7 @@ declare namespace LocalJSX {
         "gui-404": Gui404;
         "gui-about": GuiAbout;
         "gui-blog": GuiBlog;
+        "gui-projects": GuiProjects;
         "gui-welcome": GuiWelcome;
         "loading-modal": LoadingModal;
         "logo-text": LogoText;
@@ -717,6 +741,7 @@ declare module "@stencil/core" {
             "gui-404": LocalJSX.Gui404 & JSXBase.HTMLAttributes<HTMLGui404Element>;
             "gui-about": LocalJSX.GuiAbout & JSXBase.HTMLAttributes<HTMLGuiAboutElement>;
             "gui-blog": LocalJSX.GuiBlog & JSXBase.HTMLAttributes<HTMLGuiBlogElement>;
+            "gui-projects": LocalJSX.GuiProjects & JSXBase.HTMLAttributes<HTMLGuiProjectsElement>;
             "gui-welcome": LocalJSX.GuiWelcome & JSXBase.HTMLAttributes<HTMLGuiWelcomeElement>;
             "loading-modal": LocalJSX.LoadingModal & JSXBase.HTMLAttributes<HTMLLoadingModalElement>;
             "logo-text": LocalJSX.LogoText & JSXBase.HTMLAttributes<HTMLLogoTextElement>;

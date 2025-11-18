@@ -303,6 +303,12 @@ export class AppRoot {
               )
           }
           {
+            this.activeRoute !== '/my-projects' || this.loading?
+              null : (
+                <gui-projects hash={this.hash} menuOpened={this.menuOpened} menuWidth={this.menuWidth}></gui-projects>
+              )
+          }
+          {
             /* Only load 3D background on welcome page to reduce initial bundle size */
             this.activeRoute === '/welcome' && !this.loading ? (
               <background-activity digiCode={this.player?.digiCode || ''}
