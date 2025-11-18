@@ -1,3 +1,6 @@
+// Import poly-decomp shim FIRST so Matter.js can find window.decomp
+import './poly-decomp-shim';
+
 export default async () => {
   /**
    * The code to be executed should be placed within a default function that is

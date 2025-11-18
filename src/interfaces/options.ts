@@ -1,3 +1,5 @@
+import { Placement } from '@popperjs/core';
+
 export interface BackDropOptions {
   id: string;
   target?: 'menu' | 'modal';
@@ -10,3 +12,12 @@ export interface BackDropOptions {
     opacity?: number;
   }
 }
+
+
+export type OptionConfig = {
+  placement: Placement,
+  triggerType: string, // TODO
+  closeOnContentClick?: boolean;
+  onShow: Function,
+  onHide: Function
+};

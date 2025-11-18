@@ -1,7 +1,57 @@
-#background {
-  width: 100vw;
+@import '~material-symbols';
+@import '~animate.css';
+@import "../../global/scrollbar";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:host {
+  position: relative;
   height: 100vh;
-  z-index: -1;
-  position: absolute;
-  /*background: linear-gradient(to bottom,  rgba(30,87,153,0) 0%,rgba(30,87,153,0.01) 1%,rgba(255,18,79,1) 100%);*/
+  width: 100vw;
+  display: block;
+  overflow: hidden;
+  --animate-duration: 1s;
+  --animate-delay: 1s;
+  --animate-repeat: 1;
 }
+
+.smooth {
+  transition: width ease-out 1s;
+}
+
+#background {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  /*background: linear-gradient(to bottom,  rgba(30,87,153,0) 0%,rgba(30,87,153,0.01) 1%,rgba(255,18,79,1) 100%);*/
+  .stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-size: cover;
+    background-image: url('../../assets/images/stars.png');
+    background-repeat: repeat-x;
+    background-position: top left;
+    z-index: 0;
+    animation-name: twinkle;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+  }
+}
+
+@keyframes twinkle {
+  20% {
+    opacity: 0.7;
+  }
+}
+
+
+

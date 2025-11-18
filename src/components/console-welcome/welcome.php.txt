@@ -1,0 +1,16 @@
+<?php
+/**
+ * PHP 8.1.7 - Laravel 9.1.10 - MySql 8.0.29
+ *
+ * Hi,
+ * I am a graphic designer and a senior software developer from Haïti
+ * with many years on web technology, mobile technology, C++,
+ * and managing teams
+ *
+ * More info on the About page ↑
+ *
+ **/
+
+ $selected_lang =  $_GET['lang'] ?: 'en'; // You are not dreaming, PHP code snippet in a isnpection dev tool, I had to do it 😂🤣😅
+
+?>

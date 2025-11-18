@@ -1,16 +1,16 @@
-import { Component, h, Host} from '@stencil/core';
-import  * as txt from  './logo.txt';
+import { Component, h, Host } from '@stencil/core';
+import * as txt from './logo.txt';
 
 
 @Component({
   tag: 'logo-text',
-  styleUrl: 'logo-text.css',
+  styleUrl: 'logo-text.scss',
   shadow: true,
 })
 export class LogoText {
 
-  fontSize: 12;
-  lineHeight: 1.4;
+  fontSize = 12;
+  lineHeight = 1.4;
 
   render() {
 

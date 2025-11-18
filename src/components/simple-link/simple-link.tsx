@@ -1,4 +1,5 @@
-import { Component, Host, h, Prop, EventEmitter, Event } from '@stencil/core';
+import { Component, Host, h, Prop, EventEmitter, Event, Listen } from '@stencil/core';
+import { SoundLibraryService } from '../../services/soundLibraryService';
 
 @Component({
   tag: 'simple-link',
@@ -7,17 +8,30 @@ import { Component, Host, h, Prop, EventEmitter, Event } from '@stencil/core';
 })
 export class SimpleLink {
 
-  @Prop() link: string = '#';
-  @Prop() title: string = 'FruitsBytes';
+  @Prop() link: string = '/welcome#';
+  @Prop() label: string = 'FruitsBytes';
   @Prop() state: Object = {};
-  @Event({ eventName: 'state.pushed' }) StatePushed: EventEmitter<{ state: any; title: string; url?: string | URL | null; }>;
+  @Event({ eventName: 'state.pushed' }) StatePushed?: EventEmitter<{ state: any; title: string; url?: string | URL | null; }>;
 
-  go = (e) => {
+  soundLib: SoundLibraryService = SoundLibraryService.instance();
+
+  go = (e: MouseEvent) => {
     e.preventDefault();
-    //TODO analyze link
-    history.pushState(this.state, this.title, this.link);
-    this.StatePushed.emit({state: this.state, title: this.title, url: this.link})
+    let url;
+    try {
+      url = new URL(this.link);
+    } catch (_) {
+      url = new URL(this.link, window.location.origin)
+    }
+
+    history.pushState(this.state, this.label, url);
+    this.StatePushed?.emit({state: this.state, title: this.label, url})
   };
+
+  @Listen('mouseenter')
+  bip(){
+    this.soundLib.sounds.jumpSoft.play();
+  }
 
   render() {
     return (

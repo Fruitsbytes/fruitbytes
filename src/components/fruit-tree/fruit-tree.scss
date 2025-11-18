@@ -1,0 +1,51 @@
+@import '~animate.css';
+:host {
+  --tree-url: url("../../assets/images/tree.png");
+  --tree-width: 200px;
+  --tree-height: 215px;
+  --tree-top: -90px;
+  --tree-right: -20px;
+  --tree-hue: 325deg;
+  --tree-filter: inherit;
+  --transform: inherit;
+
+  position: absolute;
+  display: inherit;
+  width: var(--tree-width);
+  height: var(--tree-height);
+  top: var(--tree-top);
+  right: var(--tree-right);
+  image-rendering: pixelated;
+
+
+  &::before, &::after{
+    position: absolute;
+    transform: var(--transform);
+  }
+  &::before {
+    content: '';
+    display: inherit;
+    top: initial;
+    left: initial;
+    width: inherit;
+    height: inherit;
+    right: initial;
+    background: rgb(0 0 0 / 47%);
+    border-radius: 40%;
+    inset: auto auto -41%;
+    filter: blur(41px);
+    transform: scaleX(1.05) scaleY(0.3);
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    width: inherit;
+    height: inherit;
+    background-image: var(--tree-url);
+    background-repeat: no-repeat;
+    background-size: contain;
+    filter: var(--tree-filter) ;
+  }
+}
+
