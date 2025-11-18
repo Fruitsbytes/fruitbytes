@@ -10,22 +10,30 @@ import {
 import { createStore, Store } from '@ngneat/elf';
 import { debounceTime } from 'rxjs';
 import { persistState } from '@ngneat/elf-persist-state';
-import * as localForage from 'localforage';
+import localForage from 'localforage';
 import { dec2bin, text2Binary } from '../utils';
 
 export const characterStore = createStore({ name: 'characters' }, withEntities<Character>());
 export const playerStore = createStore({ name: 'auth' }, withEntities<Player>());
 
-localForage.config({
+// Configure localForage for IndexedDB storage
+const storage = localForage.createInstance({
   driver: localForage.INDEXEDDB,
   name: 'FruitsBytes',
   version: 1.0,
   storeName: 'auth',
 });
 
+// Create a storage adapter that wraps localForage for elf-persist-state
+const localForageAdapter = {
+  getItem: <T>(key: string) => storage.getItem<T>(key),
+  setItem: (key: string, value: any) => storage.setItem(key, value),
+  removeItem: (key: string) => storage.removeItem(key)
+};
+
 export const persist = persistState(playerStore, {
   key: 'auth',
-  storage: localForage as any,
+  storage: localForageAdapter,
   source: () => playerStore.pipe(debounceTime(1000)),
 });
 
