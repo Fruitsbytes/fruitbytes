@@ -37,7 +37,7 @@ export class GuiAbout {
                 <span
                   class='bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded'>Video Games</span>
                 <span
-                  class='bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded'>Haiti</span>
+                  class='bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded'>Montréal</span>
                 <span
                   class='bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded'>Wireless Network</span>
                 <span
@@ -60,7 +60,7 @@ export class GuiAbout {
                 <div class='content grid grid-cols-4 grid-rows-1 divide-x divide-gray-200 rounded rounded-md p-2 border border-gray-200'>
                   <div>
                     <label htmlFor='info-location'>Location</label>
-                    <p id='info-location'>Haïti</p>
+                    <p id='info-location'>Montréal, QC</p>
                   </div>
                   <div class='col-span-2 pl-2'>
                     <label htmlFor='info-email'>Email</label>
@@ -69,9 +69,9 @@ export class GuiAbout {
                     </p>
                   </div>
                   <div class='pl-2'>
-                    <label htmlFor='info-location'>Phone</label>
-                    <p id='info-location'>
-                      <a href='tel:+50937024301'>+509 37 02 4301</a>
+                    <label htmlFor='info-phone'>Phone</label>
+                    <p id='info-phone'>
+                      <a href='tel:+15145699574'>+1 514 569 9574</a>
                     </p>
                   </div>
                 </div>
