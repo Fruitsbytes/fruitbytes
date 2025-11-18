@@ -10,15 +10,15 @@ import {
   Vector3,
   WebGLRenderer,
 } from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { getRandomArbitrary, getRandomInt } from '../utils';
 import { AmmoPhysics } from '@enable3d/ammo-physics';
 import { ExtendedMesh, PhysicsLoader } from 'enable3d';
 import { BehaviorSubject, first } from 'rxjs';
 import * as Plugins from '@enable3d/three-graphics/jsm/plugins';
-import { AnimationActionLoopStyles } from 'three/src/constants';
-import { EventListener } from 'three/src/core/EventDispatcher';
+import { AnimationActionLoopStyles } from 'three/src/constants.js';
+import { EventListener } from 'three/src/core/EventDispatcher.js';
 
 export type CameraConfig = {
   position: [x: number, y: number, z: number],

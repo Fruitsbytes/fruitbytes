@@ -1,7 +1,7 @@
 import { Component, Host, h, Prop, Element, Listen, Watch } from '@stencil/core';
 import { ThreeDService } from '../../services/threeDService';
 import { ExtendedMesh, ExtendedObject3D } from 'enable3d';
-import { SimplexNoise } from 'three/examples/jsm/math/SimplexNoise';
+import { SimplexNoise } from 'three/examples/jsm/math/SimplexNoise.js';
 import {
   AnimationClip,
   BackSide,
@@ -12,12 +12,12 @@ import {
   RepeatWrapping,
   SphereGeometry, Vector3, VectorKeyframeTrack,
 } from 'three';
-import WEBGL from 'three/examples/jsm/capabilities/WebGL';
+import WEBGL from 'three/examples/jsm/capabilities/WebGL.js';
 import { SoundLibraryService } from '../../services/soundLibraryService';
-import { CSG } from '@enable3d/three-graphics/jsm/csg';
+import { CSG } from 'three-csg-ts';
 import { getRandomArbitrary } from '../../utils';
 import { colors } from '../../config';
-import { randInt } from 'three/src/math/MathUtils';
+import { randInt } from 'three/src/math/MathUtils.js';
 import _debounce from 'lodash/debounce';
 
 @Component({
@@ -82,7 +82,7 @@ export class BackgroundActivity {
           const newArray: ExtendedObject3D[] = [];
 
           if (this.dataArray) {
-            this.analyser?.getByteFrequencyData(this.dataArray);
+            this.analyser?.getByteFrequencyData(this.dataArray as any);
 
             const lowerHalfArray = this.dataArray.slice(0, (this.dataArray.length / 2) - 1);
             const upperHalfArray = this.dataArray.slice((this.dataArray.length / 2) - 1, this.dataArray.length - 1);
@@ -409,7 +409,7 @@ export class BackgroundActivity {
 
       }
 
-      this.my3d.physics?.collisionEvents.on('collision', data => {
+      this.my3d.physics?.collisionEvents.on('collision', (data: any) => {
         const { bodies } = data;
 
         let b1: ExtendedObject3D = bodies[0];
@@ -428,7 +428,7 @@ export class BackgroundActivity {
           }
 
 
-          og.body.impact.forEach(async imp => {
+          og.body.impact.forEach(async (imp: any) => {
             const { x = 0, y = 0, z = 0 } = imp.normal;
             const impulse = Math.floor(imp.impulse);
             const velocity = Math.floor(otherBod.body.ammo.getLinearVelocity().length());
