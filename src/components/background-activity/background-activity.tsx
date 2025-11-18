@@ -403,7 +403,7 @@ export class BackgroundActivity {
           ball.userData = {
             objectType,
           };
-          this.balls.push(ball);
+          this.balls.push(ball as unknown as ExtendedObject3D);
         }
 
 
