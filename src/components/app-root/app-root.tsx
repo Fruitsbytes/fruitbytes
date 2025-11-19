@@ -35,6 +35,7 @@ export class AppRoot {
   @State() menuOpened: boolean = true;
   @State() loading: boolean = true;
   @State() activeRoute: string = location.pathname;
+  @State() hash: string = location.hash;
   @State() routeLoading: boolean = false;
   @State() volumeMuted: boolean = !!localStorage.getItem('muted') && localStorage.getItem('muted') === '1';
   @State() menuWidth: number = parseInt(localStorage.getItem('menu-width') || '') || DEFAULT_MENU_WIDTH;
@@ -53,7 +54,6 @@ export class AppRoot {
     text?: string;
     content?: string
   };
-  hash = location.hash;
 
   connectedCallback() {
     this.loading = true;

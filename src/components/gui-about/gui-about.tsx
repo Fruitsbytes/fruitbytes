@@ -26,20 +26,28 @@ export class GuiAbout {
 
   @Watch('hash')
   goto(newValue: string, _oldValue: string) {
-    console.log('hash changed', newValue, _oldValue);
+    console.log('hash changed from', _oldValue, 'to', newValue);
 
     // Only scroll if hash actually changed
-    if (newValue !== _oldValue) {
+    if (newValue !== _oldValue && newValue) {
       this.scrollToElement(newValue);
     }
   }
 
   private scrollToElement(hash: string) {
-    if (!hash || hash === '') return;
+    if (!hash || hash === '') {
+      console.log('scrollToElement: empty hash, skipping');
+      return;
+    }
 
     // Remove # if present
     const elementId = hash.replace('#', '');
-    if (!elementId) return;
+    if (!elementId) {
+      console.log('scrollToElement: no elementId after removing #, skipping');
+      return;
+    }
+
+    console.log('scrollToElement: attempting to scroll to', elementId);
 
     // Small delay to ensure DOM is ready and transitions complete
     setTimeout(() => {
@@ -47,6 +55,8 @@ export class GuiAbout {
       const targetElement = this.el.shadowRoot?.querySelector(`#${elementId}`) as HTMLElement;
 
       if (targetElement) {
+        console.log('scrollToElement: found target element', elementId);
+
         // Get the scrollable container (the Host element itself)
         const scrollContainer = this.el;
 
@@ -58,13 +68,15 @@ export class GuiAbout {
         const scrollTop = scrollContainer.scrollTop;
         const targetPosition = scrollTop + elementRect.top - containerRect.top - 80;
 
+        console.log('scrollToElement: scrolling to position', targetPosition);
+
         // Smooth scroll to the element
         scrollContainer.scrollTo({
           top: targetPosition,
           behavior: 'smooth'
         });
       } else {
-        console.warn(`Element with id "${elementId}" not found in About page`);
+        console.warn(`scrollToElement: Element with id "${elementId}" not found in About page`);
       }
     }, 100);
   }
