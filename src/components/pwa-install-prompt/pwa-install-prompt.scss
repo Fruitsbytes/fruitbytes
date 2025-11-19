@@ -1,0 +1,222 @@
+@import '~animate.css';
+
+:host {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  pointer-events: all;
+}
+
+.pwa-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+.pwa-prompt {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  background: linear-gradient(to bottom, #000c66 0%, #0052d6 100%);
+  border: 2px solid #c5c5c5;
+  border-radius: 24px 24px 0 0;
+  padding: 32px 24px;
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.6);
+  animation-duration: 0.4s;
+
+  @media (min-width: 768px) {
+    bottom: 24px;
+    border-radius: 24px;
+  }
+}
+
+.close-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(197, 197, 197, 0.3);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #c5c5c5;
+  transition: all 0.2s ease;
+
+  &:hover, &:focus {
+    background: rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+    border-color: #7EC8E3;
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #7EC8E3;
+    outline-offset: 2px;
+  }
+
+  .material-symbols-sharp {
+    font-size: 20px;
+  }
+}
+
+.pwa-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  background: linear-gradient(135deg, #7EC8E3 0%, #0000FF 100%);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 82, 214, 0.4);
+
+  .material-symbols-sharp {
+    font-size: 36px;
+    color: #ffffff;
+  }
+}
+
+.pwa-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  margin: 0 0 16px 0;
+}
+
+.pwa-description {
+  color: #c5c5c5;
+  text-align: center;
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+
+  .share-icon {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    background: rgba(126, 200, 227, 0.2);
+    border: 1px solid #7EC8E3;
+    border-radius: 4px;
+    padding: 2px 6px;
+
+    .material-symbols-sharp {
+      font-size: 18px;
+      color: #7EC8E3;
+    }
+  }
+
+  strong {
+    color: #7EC8E3;
+  }
+}
+
+.pwa-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+
+  .feature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(197, 197, 197, 0.2);
+    border-radius: 12px;
+    color: #c5c5c5;
+    font-size: 12px;
+    text-align: center;
+
+    .material-symbols-sharp {
+      font-size: 24px;
+      color: #7EC8E3;
+    }
+  }
+}
+
+.pwa-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  button {
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    &:focus-visible {
+      outline: 2px solid #7EC8E3;
+      outline-offset: 2px;
+    }
+  }
+
+  .btn-install {
+    background: linear-gradient(135deg, #7EC8E3 0%, #0000FF 100%);
+    color: #ffffff;
+    border-color: #7EC8E3;
+
+    &:hover, &:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(126, 200, 227, 0.4);
+    }
+
+    .material-symbols-sharp {
+      font-size: 20px;
+    }
+  }
+
+  .btn-dismiss {
+    background: rgba(0, 0, 0, 0.3);
+    color: #c5c5c5;
+    border-color: rgba(197, 197, 197, 0.3);
+
+    &:hover, &:focus {
+      background: rgba(0, 0, 0, 0.5);
+      color: #ffffff;
+      border-color: #7EC8E3;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .pwa-prompt {
+    max-width: 100%;
+    padding: 24px 16px;
+  }
+
+  .pwa-features {
+    grid-template-columns: 1fr;
+    gap: 8px;
+
+    .feature {
+      flex-direction: row;
+      justify-content: flex-start;
+      text-align: left;
+    }
+  }
+}

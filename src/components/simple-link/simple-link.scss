@@ -4,4 +4,20 @@
 .simple-link{
   text-decoration: none;
   cursor: url('../../assets/images/cursor.webp'),auto;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #7EC8E3;
+    outline-offset: 4px;
+    box-shadow: 0 0 0 4px rgba(126, 200, 227, 0.2);
+  }
+
+  &:hover, &:focus-visible {
+    transform: translateY(-2px);
+  }
 }

@@ -1,5 +1,5 @@
+@use "../../global/scrollbar";
 @import '~animate.css';
-@import "../../global/scrollbar";
 
 
 :host {
@@ -13,7 +13,39 @@
   --animate-repeat: 1;
 }
 
+// Skip link for accessibility
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  background: #0052d6;
+  color: #ffffff;
+  padding: 12px 24px;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 0 0 8px 0;
+  z-index: 10000;
+  transition: top 0.3s ease;
+
+  &:focus {
+    top: 0;
+    outline: 2px solid #7EC8E3;
+    outline-offset: 2px;
+  }
+}
+
 .smooth {
+  transition: width ease-out 1s;
+}
+
+.route-skeleton {
+  position: absolute;
+  top: 80px;
+  left: 0;
+  padding: 48px;
+  z-index: 10;
+  background: linear-gradient(to bottom, rgba(5, 10, 48, 0.95), rgba(0, 12, 102, 0.85));
+  min-height: calc(100vh - 80px);
   transition: width ease-out 1s;
 }
 
