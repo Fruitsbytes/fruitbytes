@@ -35,6 +35,7 @@ export class AppRoot {
   @State() menuOpened: boolean = true;
   @State() loading: boolean = true;
   @State() activeRoute: string = location.pathname;
+  @State() routeLoading: boolean = false;
   @State() volumeMuted: boolean = !!localStorage.getItem('muted') && localStorage.getItem('muted') === '1';
   @State() menuWidth: number = parseInt(localStorage.getItem('menu-width') || '') || DEFAULT_MENU_WIDTH;
   @Element() el!: HTMLElement;
@@ -243,9 +244,20 @@ export class AppRoot {
 
   @Listen('state.pushed', { target: 'document' })
   handleRouteChange(_e: CustomEvent<{ state: any; title: string; url?: string | URL | null; }>) {
-    this.activeRoute = location.pathname;
-    this.hash = location.hash
-    this.soundLib.sounds.ping.play();
+    // Show loading skeleton during route transition
+    this.routeLoading = true;
+
+    // Simulate brief loading for UX (allows skeleton to be visible)
+    setTimeout(() => {
+      this.activeRoute = location.pathname;
+      this.hash = location.hash;
+      this.soundLib.sounds.ping.play();
+
+      // Hide skeleton after content loads
+      setTimeout(() => {
+        this.routeLoading = false;
+      }, 100);
+    }, 200);
   }
 
   @Listen('popstate', { target: 'window', capture: true })
@@ -266,7 +278,10 @@ export class AppRoot {
   render() {
     return (
       <Host>
-        <div id='background'>
+        {/* Skip to main content link for accessibility */}
+        <a href="#main-content" class="skip-link">Skip to main content</a>
+
+        <div id='background' role="presentation">
           <div class='stars'></div>
         </div>
 
@@ -282,28 +297,39 @@ export class AppRoot {
           ) : null
         }
 
-        <main style={{ display: 'block' }}
-              class='relative main'>
+        <main id="main-content"
+              style={{ display: 'block' }}
+              class='relative main'
+              role="main"
+              aria-label="Main content">
           {
-            this.activeRoute !== '/welcome' || this.loading?
+            /* Show skeleton loader during route transitions */
+            this.routeLoading && !this.loading ? (
+              <div class="route-skeleton" style={{ width: `calc(100vw - ${this.menuOpened ? this.menuWidth : 0}px)` }}>
+                <skeleton-loader type="card" count={2}></skeleton-loader>
+              </div>
+            ) : null
+          }
+          {
+            this.activeRoute !== '/welcome' || this.loading || this.routeLoading?
               null : (
                 <gui-welcome player={this.player} menuOpened={this.menuOpened} menuWidth={this.menuWidth}></gui-welcome>
               )
           }
           {
-            this.activeRoute !== '/about-me' || this.loading?
+            this.activeRoute !== '/about-me' || this.loading || this.routeLoading?
               null : (
                 <gui-about hash={this.hash} menuOpened={this.menuOpened} menuWidth={this.menuWidth}></gui-about>
               )
           }
           {
-            this.activeRoute !== '/my-blog' || this.loading?
+            this.activeRoute !== '/my-blog' || this.loading || this.routeLoading?
               null : (
                 <gui-blog hash={this.hash} menuOpened={this.menuOpened} menuWidth={this.menuWidth}></gui-blog>
               )
           }
           {
-            this.activeRoute !== '/my-projects' || this.loading?
+            this.activeRoute !== '/my-projects' || this.loading || this.routeLoading?
               null : (
                 <gui-projects hash={this.hash} menuOpened={this.menuOpened} menuWidth={this.menuWidth}></gui-projects>
               )
@@ -319,9 +345,12 @@ export class AppRoot {
             MENU_ITEMS.map(value => value.path).includes(this.activeRoute) ? null : <gui-404></gui-404>
           }
         </main>
-        <right-panel id='rightP' isOpened={this.menuOpened}></right-panel>
+        <right-panel id='rightP' isOpened={this.menuOpened} role="complementary" aria-label="Navigation menu"></right-panel>
 
         <main-footer menuOpened={this.menuOpened} menuWidth={this.menuWidth}></main-footer>
+
+        {/* PWA Install Prompt */}
+        {!this.loading && <pwa-install-prompt></pwa-install-prompt>}
 
       </Host>
     );

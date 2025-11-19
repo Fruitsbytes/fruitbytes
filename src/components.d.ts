@@ -10,11 +10,13 @@ import { BackDropOptions, OptionConfig } from "./interfaces/options";
 import { FoliageRatio } from "./components/fruit-tree/fruit";
 import { Nullable } from "./interfaces/geneneral-types";
 import { Player } from "./facade/character";
+import { SkeletonType } from "./components/skeleton-loader/skeleton-loader";
 export { Log } from "./interfaces/log";
 export { BackDropOptions, OptionConfig } from "./interfaces/options";
 export { FoliageRatio } from "./components/fruit-tree/fruit";
 export { Nullable } from "./interfaces/geneneral-types";
 export { Player } from "./facade/character";
+export { SkeletonType } from "./components/skeleton-loader/skeleton-loader";
 export namespace Components {
     interface AppHome {
     }
@@ -159,6 +161,8 @@ export namespace Components {
     }
     interface PageNotFound {
     }
+    interface PwaInstallPrompt {
+    }
     interface RightPanel {
         "isOpened"?: boolean;
     }
@@ -175,6 +179,28 @@ export namespace Components {
           * @default {}
          */
         "state": Object;
+    }
+    interface SkeletonLoader {
+        /**
+          * @default true
+         */
+        "animated": boolean;
+        /**
+          * @default 1
+         */
+        "count": number;
+        /**
+          * @default '20px'
+         */
+        "height": string;
+        /**
+          * @default 'text'
+         */
+        "type": SkeletonType;
+        /**
+          * @default '100%'
+         */
+        "width": string;
     }
     interface SocialLinks {
     }
@@ -435,6 +461,12 @@ declare global {
         prototype: HTMLPageNotFoundElement;
         new (): HTMLPageNotFoundElement;
     };
+    interface HTMLPwaInstallPromptElement extends Components.PwaInstallPrompt, HTMLStencilElement {
+    }
+    var HTMLPwaInstallPromptElement: {
+        prototype: HTMLPwaInstallPromptElement;
+        new (): HTMLPwaInstallPromptElement;
+    };
     interface HTMLRightPanelElementEventMap {
         "menu.opened": Partial<BackDropOptions> | undefined;
         "menu.closed": Partial<BackDropOptions> | undefined;
@@ -473,6 +505,12 @@ declare global {
         prototype: HTMLSimpleLinkElement;
         new (): HTMLSimpleLinkElement;
     };
+    interface HTMLSkeletonLoaderElement extends Components.SkeletonLoader, HTMLStencilElement {
+    }
+    var HTMLSkeletonLoaderElement: {
+        prototype: HTMLSkeletonLoaderElement;
+        new (): HTMLSkeletonLoaderElement;
+    };
     interface HTMLSocialLinksElement extends Components.SocialLinks, HTMLStencilElement {
     }
     var HTMLSocialLinksElement: {
@@ -501,8 +539,10 @@ declare global {
         "message-bubble": HTMLMessageBubbleElement;
         "modal-backdrop": HTMLModalBackdropElement;
         "page-not-found": HTMLPageNotFoundElement;
+        "pwa-install-prompt": HTMLPwaInstallPromptElement;
         "right-panel": HTMLRightPanelElement;
         "simple-link": HTMLSimpleLinkElement;
+        "skeleton-loader": HTMLSkeletonLoaderElement;
         "social-links": HTMLSocialLinksElement;
     }
 }
@@ -663,6 +703,8 @@ declare namespace LocalJSX {
     }
     interface PageNotFound {
     }
+    interface PwaInstallPrompt {
+    }
     interface RightPanel {
         "isOpened"?: boolean;
         "onMenu.closed"?: (event: RightPanelCustomEvent<Partial<BackDropOptions> | undefined>) => void;
@@ -685,6 +727,28 @@ declare namespace LocalJSX {
           * @default {}
          */
         "state"?: Object;
+    }
+    interface SkeletonLoader {
+        /**
+          * @default true
+         */
+        "animated"?: boolean;
+        /**
+          * @default 1
+         */
+        "count"?: number;
+        /**
+          * @default '20px'
+         */
+        "height"?: string;
+        /**
+          * @default 'text'
+         */
+        "type"?: SkeletonType;
+        /**
+          * @default '100%'
+         */
+        "width"?: string;
     }
     interface SocialLinks {
     }
@@ -710,8 +774,10 @@ declare namespace LocalJSX {
         "message-bubble": MessageBubble;
         "modal-backdrop": ModalBackdrop;
         "page-not-found": PageNotFound;
+        "pwa-install-prompt": PwaInstallPrompt;
         "right-panel": RightPanel;
         "simple-link": SimpleLink;
+        "skeleton-loader": SkeletonLoader;
         "social-links": SocialLinks;
     }
 }
@@ -750,8 +816,10 @@ declare module "@stencil/core" {
             "message-bubble": LocalJSX.MessageBubble & JSXBase.HTMLAttributes<HTMLMessageBubbleElement>;
             "modal-backdrop": LocalJSX.ModalBackdrop & JSXBase.HTMLAttributes<HTMLModalBackdropElement>;
             "page-not-found": LocalJSX.PageNotFound & JSXBase.HTMLAttributes<HTMLPageNotFoundElement>;
+            "pwa-install-prompt": LocalJSX.PwaInstallPrompt & JSXBase.HTMLAttributes<HTMLPwaInstallPromptElement>;
             "right-panel": LocalJSX.RightPanel & JSXBase.HTMLAttributes<HTMLRightPanelElement>;
             "simple-link": LocalJSX.SimpleLink & JSXBase.HTMLAttributes<HTMLSimpleLinkElement>;
+            "skeleton-loader": LocalJSX.SkeletonLoader & JSXBase.HTMLAttributes<HTMLSkeletonLoaderElement>;
             "social-links": LocalJSX.SocialLinks & JSXBase.HTMLAttributes<HTMLSocialLinksElement>;
         }
     }
