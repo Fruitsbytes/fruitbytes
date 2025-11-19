@@ -244,25 +244,38 @@ export class AppRoot {
 
   @Listen('state.pushed', { target: 'document' })
   handleRouteChange(_e: CustomEvent<{ state: any; title: string; url?: string | URL | null; }>) {
-    // Show loading skeleton during route transition
-    this.routeLoading = true;
+    const previousRoute = this.activeRoute;
+    const newRoute = location.pathname;
+
+    // Only show loading skeleton if the route actually changed (not just hash)
+    if (previousRoute !== newRoute) {
+      this.routeLoading = true;
+    }
 
     // Simulate brief loading for UX (allows skeleton to be visible)
     setTimeout(() => {
-      this.activeRoute = location.pathname;
+      this.activeRoute = newRoute;
       this.hash = location.hash;
       this.soundLib.sounds.ping.play();
 
       // Hide skeleton after content loads
-      setTimeout(() => {
-        this.routeLoading = false;
-      }, 100);
-    }, 200);
+      if (this.routeLoading) {
+        setTimeout(() => {
+          this.routeLoading = false;
+        }, 100);
+      }
+    }, previousRoute !== newRoute ? 200 : 0);
   }
 
   @Listen('popstate', { target: 'window', capture: true })
   onNavigate(_e: PopStateEvent) {
-    this.StatePushed?.emit({ state: {}, title: '', url: location.pathname });
+    this.hash = location.hash;
+    this.StatePushed?.emit({ state: {}, title: '', url: location.pathname + location.hash });
+  }
+
+  @Listen('hashchange', { target: 'window', capture: true })
+  onHashChange(_e: HashChangeEvent) {
+    this.hash = location.hash;
   }
 
   @Listen('menu.closed', { target: 'document', capture: true })

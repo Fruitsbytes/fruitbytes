@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop, Watch } from '@stencil/core';
+import { Component, Host, h, Prop, Watch, Element } from '@stencil/core';
 
 @Component({
   tag: 'gui-about',
@@ -6,14 +6,67 @@ import { Component, Host, h, Prop, Watch } from '@stencil/core';
   shadow: true,
 })
 export class GuiAbout {
+  @Element() el!: HTMLElement;
 
   @Prop() menuOpened!: boolean;
   @Prop() menuWidth!: number;
   @Prop() hash!: string | undefined;
 
+  componentDidLoad() {
+    // Scroll to hash on an initial load if present (with longer delay for rendering)
+    if (this.hash) {
+      setTimeout(() => {
+        if(this.hash){
+          this.scrollToElement(this.hash);
+        }
+
+      }, 300);
+    }
+  }
+
   @Watch('hash')
   goto(newValue: string, _oldValue: string) {
-    console.log(newValue);
+    console.log('hash changed', newValue, _oldValue);
+
+    // Only scroll if hash actually changed
+    if (newValue !== _oldValue) {
+      this.scrollToElement(newValue);
+    }
+  }
+
+  private scrollToElement(hash: string) {
+    if (!hash || hash === '') return;
+
+    // Remove # if present
+    const elementId = hash.replace('#', '');
+    if (!elementId) return;
+
+    // Small delay to ensure DOM is ready and transitions complete
+    setTimeout(() => {
+      // Find element in shadow DOM
+      const targetElement = this.el.shadowRoot?.querySelector(`#${elementId}`) as HTMLElement;
+
+      if (targetElement) {
+        // Get the scrollable container (the Host element itself)
+        const scrollContainer = this.el;
+
+        // Get the position of the target element
+        const containerRect = scrollContainer.getBoundingClientRect();
+        const elementRect = targetElement.getBoundingClientRect();
+
+        // Calculate the scroll position
+        const scrollTop = scrollContainer.scrollTop;
+        const targetPosition = scrollTop + elementRect.top - containerRect.top - 80;
+
+        // Smooth scroll to the element
+        scrollContainer.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+      } else {
+        console.warn(`Element with id "${elementId}" not found in About page`);
+      }
+    }, 100);
   }
 
   render() {
@@ -48,7 +101,7 @@ export class GuiAbout {
                   class='bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded'>Web</span>
               </div>
 
-              <div class='text-center'>
+              <div id='links' class='text-center'>
                 <social-links class='text-gray-100' style={{ filter: 'invert(1)' }}></social-links>
               </div>
 
@@ -57,7 +110,7 @@ export class GuiAbout {
                   <span class='border-b-4 border-green-500'>Info</span>
                 </h3>
 
-                <div class='content grid grid-cols-4 grid-rows-1 divide-x divide-gray-200 rounded rounded-md p-2 border border-gray-200'>
+                <div class='content grid grid-cols-3 grid-rows-1 divide-x divide-gray-200 rounded rounded-md p-2 border border-gray-200'>
                   <div>
                     <label htmlFor='info-location'>Location</label>
                     <p id='info-location'>Montréal, QC</p>
@@ -68,16 +121,10 @@ export class GuiAbout {
                       <a href='mailto:jeffrey.carre@anbapyezanman.com'>jeffrey.carre@anbapyezanman.com</a>
                     </p>
                   </div>
-                  <div class='pl-2'>
-                    <label htmlFor='info-phone'>Phone</label>
-                    <p id='info-phone'>
-                      <a href='tel:+15145699574'>+1 514 569 9574</a>
-                    </p>
-                  </div>
                 </div>
               </div>
 
-              <div id='info' class='mt-4'>
+              <div id='bio' class='mt-4'>
                 <h3 class='mb-3'>
                   <span class='border-b-4 border-green-500'>Bio</span>
                 </h3>

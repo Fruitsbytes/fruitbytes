@@ -5,6 +5,7 @@ import { isOverflown } from '../../utils';
 import { MenuItem } from '../../interfaces/menuItem';
 import { DEFAULT_MENU_WIDTH, MENU_ITEMS } from '../../config';
 import { isURL, Nullable, StatePushed } from '../../interfaces/geneneral-types';
+import { BlogService } from '../../services/blogService';
 
 @Component({
   tag: 'right-panel',
@@ -18,6 +19,8 @@ export class RightPanel {
   @State() menuItems: MenuItem[] = [];
   @State() chevOpened: boolean = false;
   @State() selectedPath?: string;
+  @State() selectedCategory: string | null = null;
+  @State() selectedTag: string | null = null;
   @Prop() isOpened?: boolean;
   @Event({ eventName: 'menu.opened' }) Opened?: EventEmitter<Partial<BackDropOptions> | undefined>;
   @Event({ eventName: 'menu.closed' }) Closed?: EventEmitter<Partial<BackDropOptions> | undefined>;
@@ -30,6 +33,7 @@ export class RightPanel {
 
   private handle: Nullable<HTMLElement>;
   private crunchingMenu: Nullable<HTMLElement>;
+  private blogService = BlogService.getInstance();
 
   connectedCallback() {
     this.logs.push({
@@ -390,6 +394,81 @@ export class RightPanel {
           this.selectedPath !== '/about-me' ?
             null : (
               <console-about></console-about>
+            )
+        }
+
+        {
+          this.selectedPath !== '/my-blog' ?
+            null : (
+              <div class='blog-navigation'>
+                <div class='blog-section'>
+                  <div class='blog-section-header'>
+                    <span class='material-symbols-sharp'>category</span>
+                    <h3>Categories</h3>
+                  </div>
+                  <div class='blog-category-list'>
+                    {this.blogService.getAllCategories().map(category => (
+                      <div
+                        key={category}
+                        class={{
+                          'blog-category-item': true,
+                          'active': this.selectedCategory === category,
+                        }}
+                      >
+                        <span class='category-name'>{category}</span>
+                        <span class='category-count'>
+                          {this.blogService.getPostsByCategory(category).length}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div class='blog-section'>
+                  <div class='blog-section-header'>
+                    <span class='material-symbols-sharp'>label</span>
+                    <h3>Tags</h3>
+                  </div>
+                  <div class='blog-tag-list'>
+                    {this.blogService.getAllTags().map(tag => (
+                      <div
+                        key={tag}
+                        class={{
+                          'blog-tag-item': true,
+                          'active': this.selectedTag === tag,
+                        }}
+                      >
+                        #{tag}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div class='blog-section'>
+                  <div class='blog-section-header'>
+                    <span class='material-symbols-sharp'>schedule</span>
+                    <h3>Recent Posts</h3>
+                  </div>
+                  <div class='blog-recent-list'>
+                    {this.blogService.getRecentPosts(5).map(post => (
+                      <div key={post.id} class='blog-recent-item'>
+                        <div class='recent-title'>{post.metadata.title}</div>
+                        <div class='recent-meta'>
+                          <span class='recent-date'>
+                            {new Date(post.metadata.date).toLocaleDateString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                              year: 'numeric',
+                            })}
+                          </span>
+                          <span class='separator'>•</span>
+                          <span class='recent-time'>{post.metadata.readTime} min</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             )
         }
 
