@@ -182,8 +182,8 @@ export class ResumeService {
   public async generateCustomResume(
     roleId: string,
     languageCode: string,
-    jobDescription?: string,
-    force?: boolean,
+    _jobDescription?: string,
+    _force?: boolean,
   ): Promise<ResumeCacheEntry> {
     // TODO: Implement AI generation logic
     // For now, just return the regular resume

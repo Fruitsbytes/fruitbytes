@@ -156,8 +156,9 @@ export class ConsoleAbout {
       console.error('Error downloading CV:', error);
       this.errorMessage = 'Failed to generate CV. Please try again.';
 
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       this.log?.emit({
-        message: `❌ <strong>Error generating CV:</strong> ${error.message}`,
+        message: `❌ <strong>Error generating CV:</strong> ${errorMessage}`,
         file: 'console-about.tsx',
         time: new Date(),
         line: 3,
@@ -216,13 +217,12 @@ export class ConsoleAbout {
                 <label htmlFor='speciality' class='block mb-2 text-sm font-medium  text-gray-400'>Target</label>
                 <select
                   id='speciality'
-                  value={this.selectedRole}
                   onInput={this.handleRoleChange}
                   disabled={this.isDownloading}
                   class='bb border text-sm rounded-lg bg-opacity-0 block w-full p-2.5 bg-gray-900 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'>
-                  <option value='frontend'>Frontend Software Developer</option>
-                  <option value='fullStack'>FullStack Software Developer</option>
-                  <option value='wireless'>Wireless Network Engineer/Instructor</option>
+                  <option value='frontend' selected={this.selectedRole === 'frontend'}>Frontend Software Developer</option>
+                  <option value='fullStack' selected={this.selectedRole === 'fullStack'}>FullStack Software Developer</option>
+                  <option value='wireless' selected={this.selectedRole === 'wireless'}>Wireless Network Engineer/Instructor</option>
                 </select>
               </div>
 
@@ -230,13 +230,12 @@ export class ConsoleAbout {
                 <label htmlFor='lang' class='block mb-2 text-sm font-medium  text-gray-400'>Language</label>
                 <select
                   id='lang'
-                  value={this.selectedLanguage}
                   onInput={this.handleLanguageChange}
                   disabled={this.isDownloading}
                   class='bb border text-sm rounded-lg block bg-opacity-0 w-full p-2.5 bg-gray-900 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'>
-                  <option value='en'>English</option>
-                  <option value='fr'>Français</option>
-                  <option value='es'>Español</option>
+                  <option value='en' selected={this.selectedLanguage === 'en'}>English</option>
+                  <option value='fr' selected={this.selectedLanguage === 'fr'}>Français</option>
+                  <option value='es' selected={this.selectedLanguage === 'es'}>Español</option>
                 </select>
               </div>
 
