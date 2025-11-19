@@ -1,0 +1,67 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "close": "Fermer",
+    "open": "Ouvrir",
+    "save": "Enregistrer",
+    "cancel": "Annuler"
+  },
+  "nav": {
+    "home": "Accueil",
+    "console": "Console",
+    "about": "À propos",
+    "contact": "Contact",
+    "blog": "Blog",
+    "projects": "Projets"
+  },
+  "welcome": {
+    "title": "Bienvenue sur FruitsBytes",
+    "subtitle": "Portfolio de Développeur",
+    "description": "Explorez mes projets, lisez mon blog et contactez-moi"
+  },
+  "about": {
+    "title": "À Propos de Moi",
+    "description": "Découvrez mon parcours et mon expérience"
+  },
+  "contact": {
+    "title": "Me Contacter",
+    "description": "Contactez-moi pour des collaborations ou des questions"
+  },
+  "blog": {
+    "title": "Mon Blog",
+    "description": "Réflexions, tutoriels et idées",
+    "readMore": "Lire plus",
+    "postedOn": "Publié le"
+  },
+  "projects": {
+    "title": "Mes Projets",
+    "description": "Présentation de mon travail",
+    "viewProject": "Voir le Projet",
+    "sourceCode": "Code Source"
+  },
+  "console": {
+    "title": "Journal de Console",
+    "description": "Journaux et messages du système",
+    "clear": "Effacer",
+    "level": {
+      "info": "Info",
+      "warning": "Avertissement",
+      "error": "Erreur",
+      "default": "Journal"
+    }
+  },
+  "errors": {
+    "404": "Page Non Trouvée",
+    "404Description": "La page que vous recherchez n'existe pas",
+    "goHome": "Aller à l'Accueil"
+  },
+  "language": {
+    "select": "Sélectionner la Langue",
+    "en": "Anglais",
+    "ht": "Créole Haïtien",
+    "es": "Espagnol",
+    "fr": "Français"
+  }
+}

@@ -3,9 +3,10 @@ import { BackDropOptions } from '../../interfaces/options';
 import { Log } from '../../interfaces/log';
 import { isOverflown } from '../../utils';
 import { MenuItem } from '../../interfaces/menuItem';
-import { DEFAULT_MENU_WIDTH, MENU_ITEMS } from '../../config';
+import { DEFAULT_MENU_WIDTH, MENU_ITEMS, getTranslatedMenuItems } from '../../config';
 import { isURL, Nullable, StatePushed } from '../../interfaces/geneneral-types';
 import { BlogService } from '../../services/blogService';
+import { Language } from '../../interfaces/translation';
 
 @Component({
   tag: 'right-panel',
@@ -48,7 +49,15 @@ export class RightPanel {
     this.width = width ? parseInt(width) : DEFAULT_MENU_WIDTH;
 
     this.selectedPath = MENU_ITEMS.map(value => value.path).includes(location.pathname) ? location.pathname : '/console-log';
-    this.menuItems = MENU_ITEMS.map((i, index) => {
+    this.updateMenuItems();
+  }
+
+  /**
+   * Update menu items with current translations
+   */
+  private updateMenuItems() {
+    const translatedItems = getTranslatedMenuItems();
+    this.menuItems = translatedItems.map((i, index) => {
       let isActive;
 
       if (!location.pathname && index === 0) {
@@ -58,6 +67,15 @@ export class RightPanel {
       }
       return { ...i, active: isActive };
     });
+  }
+
+  @Listen('language.changed', { target: 'document' })
+  handleLanguageChange(_event: CustomEvent<Language>) {
+    this.updateMenuItems();
+    // Force menu recalculation after language change
+    setTimeout(() => {
+      this.splitMenus();
+    }, 100);
   }
 
 
@@ -332,6 +350,9 @@ export class RightPanel {
           </div>
 
           <div class='right-top-nav'>
+            <div class='menu-item language-selector-wrapper'>
+              <language-selector></language-selector>
+            </div>
             <div class='menu-item icon-menu-item'>
               <span class='icon material-symbols-rounded filled'>settings</span>
             </div>

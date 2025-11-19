@@ -530,3 +530,14 @@
     }
   }
 }
+
+// Language selector styling
+.language-selector-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+
+  language-selector {
+    display: block;
+  }
+}

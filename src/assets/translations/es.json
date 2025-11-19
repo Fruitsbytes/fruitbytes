@@ -1,0 +1,67 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "close": "Cerrar",
+    "open": "Abrir",
+    "save": "Guardar",
+    "cancel": "Cancelar"
+  },
+  "nav": {
+    "home": "Inicio",
+    "console": "Consola",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "blog": "Blog",
+    "projects": "Proyectos"
+  },
+  "welcome": {
+    "title": "Bienvenido a FruitsBytes",
+    "subtitle": "Portafolio de Desarrollador",
+    "description": "Explora mis proyectos, lee mi blog y ponte en contacto"
+  },
+  "about": {
+    "title": "Acerca de Mí",
+    "description": "Conoce más sobre mi experiencia y trayectoria"
+  },
+  "contact": {
+    "title": "Contáctame",
+    "description": "Ponte en contacto para colaboraciones o consultas"
+  },
+  "blog": {
+    "title": "Mi Blog",
+    "description": "Pensamientos, tutoriales y conocimientos",
+    "readMore": "Leer más",
+    "postedOn": "Publicado el"
+  },
+  "projects": {
+    "title": "Mis Proyectos",
+    "description": "Muestra de mi trabajo",
+    "viewProject": "Ver Proyecto",
+    "sourceCode": "Código Fuente"
+  },
+  "console": {
+    "title": "Registro de Consola",
+    "description": "Registros y mensajes del sistema",
+    "clear": "Limpiar",
+    "level": {
+      "info": "Información",
+      "warning": "Advertencia",
+      "error": "Error",
+      "default": "Registro"
+    }
+  },
+  "errors": {
+    "404": "Página No Encontrada",
+    "404Description": "La página que buscas no existe",
+    "goHome": "Ir a Inicio"
+  },
+  "language": {
+    "select": "Seleccionar Idioma",
+    "en": "Inglés",
+    "ht": "Criollo Haitiano",
+    "es": "Español",
+    "fr": "Francés"
+  }
+}

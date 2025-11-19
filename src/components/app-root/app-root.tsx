@@ -9,6 +9,8 @@ import { Howl } from 'howler';
 
 import { animateCSS } from '../../utils';
 import { Nullable } from '../../interfaces/geneneral-types';
+import { Language } from '../../interfaces/translation';
+import i18nService, { getCurrentLanguage, loadTranslations } from '../../services/i18n';
 
 devTools();
 
@@ -39,10 +41,12 @@ export class AppRoot {
   @State() routeLoading: boolean = false;
   @State() volumeMuted: boolean = !!localStorage.getItem('muted') && localStorage.getItem('muted') === '1';
   @State() menuWidth: number = parseInt(localStorage.getItem('menu-width') || '') || DEFAULT_MENU_WIDTH;
+  @State() currentLanguage: Language = getCurrentLanguage();
   @Element() el!: HTMLElement;
   @Event({ eventName: 'state.pushed' }) StatePushed!: EventEmitter<{ state: any; title: string; url?: string | URL | null; }>;
   @Event({ eventName: 'console.logged' }) log!: EventEmitter<Log>;
   @Event({ eventName: 'redraw.screen' }) Redraw!: EventEmitter<boolean>;
+  @Event({ eventName: 'language.changed' }) LanguageChanged!: EventEmitter<Language>;
 
   soundLib: SoundLibraryService = SoundLibraryService.instance();
   progress: number = 0;
@@ -58,6 +62,24 @@ export class AppRoot {
   connectedCallback() {
     this.loading = true;
     this.audioLib = this.soundLib.sounds;
+
+    // Initialize i18n and load current language translations
+    loadTranslations(this.currentLanguage).catch(err => {
+      console.error('Failed to load translations:', err);
+    });
+
+    // Subscribe to language changes
+    i18nService.subscribe((language) => {
+      this.currentLanguage = language;
+      this.LanguageChanged?.emit(language);
+      this.log?.emit({
+        message: `🌐 <b>Language</b> changed to ${language.toUpperCase()}`,
+        file: 'app-root.tsx',
+        time: new Date(),
+        line: 67,
+      });
+    });
+
     AuthService.instance().player$.pipe().subscribe(_p => {
       this.player = _p ? new Player(_p) : null;
 
