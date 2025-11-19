@@ -156,7 +156,6 @@ class I18nService {
     }
 
     await this.loadTranslations(language);
-    const previousLanguage = this.currentLanguage;
     this.currentLanguage = language;
     this.storeLanguage(language);
 
@@ -263,12 +262,12 @@ class I18nService {
    * This can be called when a translation key is missing
    * and you want to fetch it from an AI API
    */
-  async fetchTranslationFromAPI(key: string, language: Language, context?: string): Promise<string> {
+  async fetchTranslationFromAPI(key: string, _language: Language, _context?: string): Promise<string> {
     // TODO: Implement API integration for AI-based translations
     // Example:
     // const response = await fetch('/api/translate', {
     //   method: 'POST',
-    //   body: JSON.stringify({ key, language, context })
+    //   body: JSON.stringify({ key, _language, _context })
     // });
     // return response.json();
 

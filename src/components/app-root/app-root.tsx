@@ -285,36 +285,36 @@ export class AppRoot {
     const baseTitle = 'FruitsBytes';
 
     // Route-specific meta tags
-    const routeMetaTags = {
+    const routeMetaTags: Record<string, { title: string; description: string; type: 'website' | 'article' | 'profile' }> = {
       '/welcome': {
         title: `${t('welcome.title')} | ${baseTitle}`,
         description: t('welcome.description'),
-        type: 'website' as const,
+        type: 'website',
       },
       '/about-me': {
         title: `${t('about.title')} | ${baseTitle}`,
         description: t('about.description'),
-        type: 'profile' as const,
+        type: 'profile',
       },
       '/contact-me': {
         title: `${t('contact.title')} | ${baseTitle}`,
         description: t('contact.description'),
-        type: 'website' as const,
+        type: 'website',
       },
       '/my-blog': {
         title: `${t('blog.title')} | ${baseTitle}`,
         description: t('blog.description'),
-        type: 'website' as const,
+        type: 'website',
       },
       '/my-projects': {
         title: `${t('projects.title')} | ${baseTitle}`,
         description: t('projects.description'),
-        type: 'website' as const,
+        type: 'website',
       },
       '/console-log': {
         title: `${t('console.title')} | ${baseTitle}`,
         description: t('console.description'),
-        type: 'website' as const,
+        type: 'website',
       },
     };
 

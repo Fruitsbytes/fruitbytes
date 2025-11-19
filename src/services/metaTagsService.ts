@@ -161,7 +161,7 @@ class MetaTagsService {
         this.updateMetaTag('[property="article:section"]', section, 'property');
       }
       if (tags.length > 0) {
-        tags.forEach((tag, index) => {
+        tags.forEach((tag) => {
           this.updateMetaTag(`[property="article:tag"][content="${tag}"]`, tag, 'property');
         });
       }
