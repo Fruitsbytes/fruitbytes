@@ -9,7 +9,11 @@
   background: linear-gradient(to bottom, rgba(5, 10, 48, 0.95), rgba(0, 12, 102, 0.85));
 
   .material-symbols-sharp {
-    font-family: 'Material Symbols Sharp';
+    font-family: 'Material Symbols Sharp', sans-serif;
+  }
+
+  .material-symbols-rounded {
+    font-family: 'Material Symbols Rounded', sans-serif;
   }
 }
 
@@ -91,6 +95,7 @@
 
   .material-symbols-sharp {
     font-size: 16px;
+    text-transform: none;
   }
 }
 

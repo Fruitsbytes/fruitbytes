@@ -160,7 +160,7 @@ export const ABOUT_SECTION: MenuItem2[] = [
       {
         icon: 'workspace_premium',
         title: 'Tower climbing profesional',
-        hash: 'GC',
+        hash: 'tower',
       },
 
     ],

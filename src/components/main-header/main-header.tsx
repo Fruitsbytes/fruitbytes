@@ -163,14 +163,14 @@ export class MainHeader {
 
             <button class='toggle-button volume animate__animated animate__pulse animate__delay-2s'
                     onClick={this._toggleVolume}>
-              <span class='material-symbols-rounded'>
+              <span class='material-symbols-rounded text-4xl'>
                 {
                   this.volumeMuted ? 'volume_off' : 'volume_up'
                 }
               </span>
             </button>
             <button class='toggle-button inspection ml-2' onClick={this._toggleMenu}>
-              <span class='material-symbols-rounded'>
+              <span class='material-symbols-rounded text-4xl'>
                {
                  this.menuOpened ? 'close' : 'menu'
                }

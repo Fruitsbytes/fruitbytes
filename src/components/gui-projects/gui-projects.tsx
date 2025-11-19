@@ -141,7 +141,7 @@ export class GuiProjects {
           transition: 'width ease-out 1s',
         }}
       >
-        <div class='container max-w-6xl mx-auto px-6 py-8'>
+        <div class='container max-w-6xl mx-auto my-48 px-6 py-8'>
           <header class='text-center mb-12'>
             <h1 class='text-5xl font-bold mb-4 gradient-text'>My Projects</h1>
             <p class='text-xl text-gray-300'>

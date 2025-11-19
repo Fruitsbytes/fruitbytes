@@ -72,8 +72,8 @@ export class ConsoleAbout {
   render() {
     return (
       <Host>
-        <div innerHTML={generatedMenu} style={{ paddingTop: '2px', maxHeight: 'calc(100% - 470px)', overflowY: 'scroll', overflowX: 'auto' }}></div>
-        <div class='cvs absolute bottom-0 px-3'>
+        <div innerHTML={generatedMenu} style={{  }}></div>
+        <div class='cvs mt-auto px-3 mb-24'>
 
           <div class='rounded border p-2 my-3 bb relative'>
             <h1 class='font-medium text-lg flex justify-between py-1'>Download CV <pre
