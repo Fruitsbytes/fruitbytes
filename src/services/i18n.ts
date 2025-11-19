@@ -15,6 +15,13 @@ class I18nService {
    * and loading the corresponding translation file
    */
   private init(): void {
+    // Priority: URL > localStorage > Browser > Default
+    const urlLang = this.getLanguageFromURL();
+    if (urlLang) {
+      this.currentLanguage = urlLang;
+      return;
+    }
+
     const savedLanguage = this.getStoredLanguage();
     if (savedLanguage) {
       this.currentLanguage = savedLanguage;
@@ -25,6 +32,59 @@ class I18nService {
         this.currentLanguage = browserLang;
       }
     }
+  }
+
+  /**
+   * Extract language from URL pathname
+   * Supports formats: /en/welcome, /ht/about-me, etc.
+   */
+  getLanguageFromURL(): Language | null {
+    const pathname = window.location.pathname;
+    const segments = pathname.split('/').filter(s => s.length > 0);
+
+    if (segments.length > 0) {
+      const potentialLang = segments[0] as Language;
+      const supportedLanguages: Language[] = ['en', 'ht', 'es', 'fr'];
+      if (supportedLanguages.includes(potentialLang)) {
+        return potentialLang;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Get the page path without language prefix
+   * /en/welcome => /welcome
+   */
+  getPathWithoutLanguage(pathname?: string): string {
+    const path = pathname || window.location.pathname;
+    const segments = path.split('/').filter(s => s.length > 0);
+
+    if (segments.length > 0) {
+      const potentialLang = segments[0] as Language;
+      const supportedLanguages: Language[] = ['en', 'ht', 'es', 'fr'];
+      if (supportedLanguages.includes(potentialLang)) {
+        return '/' + segments.slice(1).join('/');
+      }
+    }
+
+    return path || '/';
+  }
+
+  /**
+   * Build URL with language prefix
+   * /welcome => /en/welcome (if current language is en)
+   */
+  buildURLWithLanguage(path: string, language?: Language): string {
+    const lang = language || this.currentLanguage;
+    // Remove leading slash if present
+    const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+    // Remove language prefix if already present
+    const pathWithoutLang = this.getPathWithoutLanguage('/' + cleanPath);
+    const cleanPathWithoutLang = pathWithoutLang.startsWith('/') ? pathWithoutLang.substring(1) : pathWithoutLang;
+
+    return `/${lang}/${cleanPathWithoutLang}`;
   }
 
   /**
@@ -87,15 +147,27 @@ class I18nService {
 
   /**
    * Set current language and load its translations
+   * @param language - The language to switch to
+   * @param updateURL - Whether to update the URL (default: true)
    */
-  async setLanguage(language: Language): Promise<void> {
+  async setLanguage(language: Language, updateURL: boolean = true): Promise<void> {
     if (this.currentLanguage === language) {
       return;
     }
 
     await this.loadTranslations(language);
+    const previousLanguage = this.currentLanguage;
     this.currentLanguage = language;
     this.storeLanguage(language);
+
+    // Update URL if requested
+    if (updateURL) {
+      const currentPath = this.getPathWithoutLanguage();
+      const newPath = this.buildURLWithLanguage(currentPath, language);
+      const hash = window.location.hash;
+      window.history.replaceState({}, '', newPath + hash);
+    }
+
     this.notifyListeners();
   }
 
@@ -249,6 +321,18 @@ export const isLanguageLoaded = (language: Language): boolean => {
 
 export const preloadLanguages = async (languages: Language[]): Promise<void> => {
   return i18nService.preloadLanguages(languages);
+};
+
+export const getLanguageFromURL = (): Language | null => {
+  return i18nService.getLanguageFromURL();
+};
+
+export const getPathWithoutLanguage = (pathname?: string): string => {
+  return i18nService.getPathWithoutLanguage(pathname);
+};
+
+export const buildURLWithLanguage = (path: string, language?: Language): string => {
+  return i18nService.buildURLWithLanguage(path, language);
 };
 
 // Export the service instance as well for advanced usage

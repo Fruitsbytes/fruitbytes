@@ -1,5 +1,7 @@
-import { Component, Host, h, Prop, EventEmitter, Event, Listen } from '@stencil/core';
+import { Component, Host, h, Prop, EventEmitter, Event, Listen, State } from '@stencil/core';
 import { SoundLibraryService } from '../../services/soundLibraryService';
+import { buildURLWithLanguage, getCurrentLanguage, subscribeToLanguageChange } from '../../services/i18n';
+import { Language } from '../../interfaces/translation';
 
 @Component({
   tag: 'simple-link',
@@ -11,17 +13,37 @@ export class SimpleLink {
   @Prop() link: string = '/welcome#';
   @Prop() label: string = 'FruitsBytes';
   @Prop() state: Object = {};
+  @State() currentLanguage: Language = getCurrentLanguage();
   @Event({ eventName: 'state.pushed' }) StatePushed?: EventEmitter<{ state: any; title: string; url?: string | URL | null; }>;
 
   soundLib: SoundLibraryService = SoundLibraryService.instance();
+  private unsubscribe?: () => void;
+
+  connectedCallback() {
+    this.currentLanguage = getCurrentLanguage();
+    // Subscribe to language changes
+    this.unsubscribe = subscribeToLanguageChange((language) => {
+      this.currentLanguage = language;
+    });
+  }
+
+  disconnectedCallback() {
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
+  }
 
   go = (e: MouseEvent | KeyboardEvent) => {
     e.preventDefault();
+
+    // Build URL with current language prefix
+    const linkWithLanguage = buildURLWithLanguage(this.link);
+
     let url;
     try {
-      url = new URL(this.link);
+      url = new URL(linkWithLanguage, window.location.origin);
     } catch (_) {
-      url = new URL(this.link, window.location.origin)
+      url = new URL(linkWithLanguage, window.location.origin);
     }
 
     history.pushState(this.state, this.label, url);
@@ -41,10 +63,12 @@ export class SimpleLink {
   }
 
   render() {
+    const href = buildURLWithLanguage(this.link);
+
     return (
       <Host>
         <a
-          href={this.link}
+          href={href}
           class='simple-link'
           onClick={this.go}
           onKeyDown={this.handleKeyDown}

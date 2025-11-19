@@ -7,6 +7,7 @@ import { DEFAULT_MENU_WIDTH, MENU_ITEMS, getTranslatedMenuItems } from '../../co
 import { isURL, Nullable, StatePushed } from '../../interfaces/geneneral-types';
 import { BlogService } from '../../services/blogService';
 import { Language } from '../../interfaces/translation';
+import { getPathWithoutLanguage } from '../../services/i18n';
 
 @Component({
   tag: 'right-panel',
@@ -48,7 +49,9 @@ export class RightPanel {
     const width = localStorage.getItem('menu-width');
     this.width = width ? parseInt(width) : DEFAULT_MENU_WIDTH;
 
-    this.selectedPath = MENU_ITEMS.map(value => value.path).includes(location.pathname) ? location.pathname : '/console-log';
+    // Extract path without language prefix
+    const pathWithoutLang = getPathWithoutLanguage();
+    this.selectedPath = MENU_ITEMS.map(value => value.path).includes(pathWithoutLang) ? pathWithoutLang : '/console-log';
     this.updateMenuItems();
   }
 
@@ -141,7 +144,9 @@ export class RightPanel {
   onRouteChange(e: CustomEvent<StatePushed>) {
     const { url } = e.detail;
 
-    const selectedPath=  isURL(url)?  url.pathname : (url || '');
+    let selectedPath =  isURL(url)?  url.pathname : (url || '');
+    // Extract path without language prefix
+    selectedPath = getPathWithoutLanguage(selectedPath);
 
     this.selectedPath = MENU_ITEMS.map(value => value.path).includes(selectedPath) ? selectedPath : '/console-log';
 

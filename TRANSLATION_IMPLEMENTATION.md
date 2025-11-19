@@ -9,6 +9,35 @@ This document describes the internationalization (i18n) system implemented for t
 - **Spanish (es)**
 - **French (fr)**
 
+## URL-Based Language Routing
+
+The translation system uses URL prefixes to maintain language consistency across navigation:
+
+**URL Format:** `/:language/:page`
+
+Examples:
+- `/en/welcome` - English welcome page
+- `/ht/about-me` - Haitian Creole about page
+- `/es/my-blog` - Spanish blog page
+- `/fr/contact-me` - French contact page
+
+**Language Detection Priority:**
+1. **URL parameter** (e.g., `/en/welcome`) - Highest priority
+2. **LocalStorage** (`fruitbytes_language`) - Saved user preference
+3. **Browser language** - Auto-detected from `navigator.language`
+4. **Default** (`en`) - Fallback when none of the above apply
+
+**Automatic URL Updates:**
+- When user selects a language, the URL updates automatically
+- Navigation links include the current language prefix
+- Back/forward browser buttons maintain language context
+- Refreshing the page preserves language from URL
+
+**URL Redirects:**
+- `/` → `/:language/welcome` (based on detected language)
+- `/welcome` → `/:language/welcome` (adds missing language prefix)
+- Invalid paths show 404 while maintaining language
+
 ## Architecture Overview
 
 The translation system consists of the following components:
@@ -52,11 +81,14 @@ Core translation service with the following features:
 
 **Key Functions:**
 - `t(key, variables?, language?)` - Translate a key to the current language
-- `setLanguage(language)` - Change the current language
+- `setLanguage(language, updateURL?)` - Change the current language and optionally update URL
 - `getCurrentLanguage()` - Get the current language
 - `loadTranslations(language)` - Load translation file for a language
 - `subscribeToLanguageChange(callback)` - Subscribe to language changes
 - `preloadLanguages(languages)` - Preload multiple language files
+- `getLanguageFromURL()` - Extract language code from current URL
+- `getPathWithoutLanguage(pathname?)` - Get page path without language prefix
+- `buildURLWithLanguage(path, language?)` - Build URL with language prefix
 
 **Features:**
 - Automatic language detection from browser settings
@@ -91,6 +123,10 @@ User interface for language selection:
 - Subscribes to language change events
 - Emits `language.changed` event to all components
 - Logs language changes to console
+- **Handles URL language routing:**
+  - Redirects URLs without language prefix
+  - Syncs language state from URL changes
+  - Updates language on browser back/forward navigation
 
 #### right-panel Component
 - Uses `getTranslatedMenuItems()` for menu items
@@ -98,6 +134,13 @@ User interface for language selection:
 - Updates menu items when language changes
 - Recalculates menu layout after language change
 - Includes language-selector in top navigation
+- **Extracts page paths without language prefix for route matching**
+
+#### simple-link Component
+- **Automatically adds language prefix to all navigation links**
+- Subscribes to language changes to update hrefs
+- Builds URLs with current language using `buildURLWithLanguage()`
+- Ensures consistent language across all navigation
 
 #### config.ts
 - Added `getTranslatedMenuItems()` function

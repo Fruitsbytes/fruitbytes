@@ -10,7 +10,7 @@ import { Howl } from 'howler';
 import { animateCSS } from '../../utils';
 import { Nullable } from '../../interfaces/geneneral-types';
 import { Language } from '../../interfaces/translation';
-import i18nService, { getCurrentLanguage, loadTranslations } from '../../services/i18n';
+import i18nService, { getCurrentLanguage, loadTranslations, getLanguageFromURL, getPathWithoutLanguage, buildURLWithLanguage } from '../../services/i18n';
 
 devTools();
 
@@ -95,12 +95,27 @@ export class AppRoot {
   }
 
   componentDidLoad() {
+    // Handle URL language prefix
+    const urlLang = getLanguageFromURL();
+    const pathWithoutLang = getPathWithoutLanguage();
 
-    if (!location.pathname || location.pathname === '/') {
-      history.replaceState({}, 'Welcome', '/welcome');
-      this.StatePushed?.emit({ state: {}, url: '/welcome', title: 'Welcome' });
-    } else if (!AVAILABLE_PATHS.includes(location.pathname)) {
-      // TODO show 404
+    // If no language in URL, redirect to include language
+    if (!urlLang) {
+      const targetPath = pathWithoutLang === '/' || pathWithoutLang === '' ? '/welcome' : pathWithoutLang;
+      const newURL = buildURLWithLanguage(targetPath);
+      history.replaceState({}, '', newURL);
+      this.StatePushed?.emit({ state: {}, url: newURL, title: '' });
+    }
+    // If URL has language, check if page path is valid
+    else {
+      const pagePath = pathWithoutLang || '/welcome';
+      if (pagePath === '/' || pagePath === '') {
+        const newURL = buildURLWithLanguage('/welcome');
+        history.replaceState({}, 'Welcome', newURL);
+        this.StatePushed?.emit({ state: {}, url: newURL, title: 'Welcome' });
+      } else if (!AVAILABLE_PATHS.includes(pagePath)) {
+        // TODO show 404
+      }
     }
 
     this.muteVolume(this.volumeMuted);
@@ -267,7 +282,13 @@ export class AppRoot {
   @Listen('state.pushed', { target: 'document' })
   handleRouteChange(_e: CustomEvent<{ state: any; title: string; url?: string | URL | null; }>) {
     const previousRoute = this.activeRoute;
-    const newRoute = location.pathname;
+    const newRoute = getPathWithoutLanguage(); // Extract path without language prefix
+
+    // Update language if URL language changed
+    const urlLang = getLanguageFromURL();
+    if (urlLang && urlLang !== this.currentLanguage) {
+      i18nService.setLanguage(urlLang, false); // Don't update URL since it's already correct
+    }
 
     // Only show loading skeleton if the route actually changed (not just hash)
     if (previousRoute !== newRoute) {
@@ -292,6 +313,10 @@ export class AppRoot {
   @Listen('popstate', { target: 'window', capture: true })
   onNavigate(_e: PopStateEvent) {
     this.hash = location.hash;
+    const urlLang = getLanguageFromURL();
+    if (urlLang && urlLang !== this.currentLanguage) {
+      i18nService.setLanguage(urlLang, false); // Sync language from URL
+    }
     this.StatePushed?.emit({ state: {}, title: '', url: location.pathname + location.hash });
   }
 
