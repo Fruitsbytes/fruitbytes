@@ -18,3 +18,14 @@
   filter: drop-shadow(1px 3px 2px rgba(0, 0, 0, 0.39));
   transition-timing-function: ease-out;
 }
+
+/* ========================================
+   Mobile Responsive Styles
+   ======================================== */
+@media (max-width: 768px) {
+  :host {
+    &.mobile {
+      display: none; /* Hide footer completely on mobile to save screen space */
+    }
+  }
+}

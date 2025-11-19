@@ -99,3 +99,47 @@ export function dec2bin(dec: number) {
 export function _2(n: number) {
   return Math.pow(n, 2);
 }
+
+/**
+ * Mobile breakpoint constant (768px)
+ * Screens <= 768px are considered mobile
+ * Screens > 768px are considered desktop
+ */
+export const MOBILE_BREAKPOINT = 768;
+
+/**
+ * Check if current viewport width is mobile
+ * @returns true if viewport width <= 768px
+ */
+export function isMobileViewport(): boolean {
+  return window.innerWidth <= MOBILE_BREAKPOINT;
+}
+
+/**
+ * Add a listener for viewport changes with debouncing
+ * @param callback Function to call when viewport crosses mobile/desktop boundary
+ * @param debounceMs Debounce delay in milliseconds (default 150ms)
+ * @returns Cleanup function to remove the listener
+ */
+export function addViewportChangeListener(callback: (isMobile: boolean) => void, debounceMs: number = 150): () => void {
+  let timeoutId: NodeJS.Timeout;
+  let lastIsMobile = isMobileViewport();
+
+  const handleResize = () => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      const currentIsMobile = isMobileViewport();
+      if (currentIsMobile !== lastIsMobile) {
+        lastIsMobile = currentIsMobile;
+        callback(currentIsMobile);
+      }
+    }, debounceMs);
+  };
+
+  window.addEventListener('resize', handleResize);
+
+  return () => {
+    clearTimeout(timeoutId);
+    window.removeEventListener('resize', handleResize);
+  };
+}

@@ -140,10 +140,18 @@ export namespace Components {
     interface LogoText {
     }
     interface MainFooter {
+        /**
+          * @default false
+         */
+        "isMobile"?: boolean;
         "menuOpened": boolean;
         "menuWidth": number;
     }
     interface MainHeader {
+        /**
+          * @default false
+         */
+        "isMobile"?: boolean;
         "menuOpened": boolean;
         "menuWidth": number;
         "message"?: {
@@ -164,6 +172,10 @@ export namespace Components {
     interface PwaInstallPrompt {
     }
     interface RightPanel {
+        /**
+          * @default false
+         */
+        "isMobile"?: boolean;
         "isOpened"?: boolean;
     }
     interface SimpleLink {
@@ -677,10 +689,18 @@ declare namespace LocalJSX {
     interface LogoText {
     }
     interface MainFooter {
+        /**
+          * @default false
+         */
+        "isMobile"?: boolean;
         "menuOpened": boolean;
         "menuWidth": number;
     }
     interface MainHeader {
+        /**
+          * @default false
+         */
+        "isMobile"?: boolean;
         "menuOpened": boolean;
         "menuWidth": number;
         "message"?: {
@@ -706,6 +726,10 @@ declare namespace LocalJSX {
     interface PwaInstallPrompt {
     }
     interface RightPanel {
+        /**
+          * @default false
+         */
+        "isMobile"?: boolean;
         "isOpened"?: boolean;
         "onMenu.closed"?: (event: RightPanelCustomEvent<Partial<BackDropOptions> | undefined>) => void;
         "onMenu.opened"?: (event: RightPanelCustomEvent<Partial<BackDropOptions> | undefined>) => void;
