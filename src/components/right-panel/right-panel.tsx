@@ -40,7 +40,6 @@ export class RightPanel {
   // Touch gesture tracking for mobile
   private touchStartY: number = 0;
   private touchStartTime: number = 0;
-  private drawerElement: Nullable<HTMLElement>;
 
   connectedCallback() {
     this.logs.push({
@@ -355,15 +354,16 @@ export class RightPanel {
   };
 
   render() {
+    const isMobileView = !!this.isMobile;
     const hostClasses = {
-      'mobile': this.isMobile || false,
-      'desktop': !this.isMobile,
-      'drawer-collapsed': this.isMobile && this.mobileDrawerState === 'collapsed',
-      'drawer-expanded': this.isMobile && this.mobileDrawerState === 'expanded',
-      'drawer-fullscreen': this.isMobile && this.mobileDrawerState === 'fullscreen',
+      'mobile': isMobileView,
+      'desktop': !isMobileView,
+      'drawer-collapsed': isMobileView && this.mobileDrawerState === 'collapsed',
+      'drawer-expanded': isMobileView && this.mobileDrawerState === 'expanded',
+      'drawer-fullscreen': isMobileView && this.mobileDrawerState === 'fullscreen',
     };
 
-    const hostStyle = this.isMobile
+    const hostStyle = isMobileView
       ? {} // Mobile styles handled by CSS
       : {
           width: this.width + 'px',
@@ -374,19 +374,19 @@ export class RightPanel {
       <Host
         class={hostClasses}
         style={hostStyle}
-        onTouchStart={this.isMobile ? this.handleTouchStart : undefined}
-        onTouchMove={this.isMobile ? this.handleTouchMove : undefined}
-        onTouchEnd={this.isMobile ? this.handleTouchEnd : undefined}
+        onTouchStart={isMobileView ? this.handleTouchStart : undefined}
+        onTouchMove={isMobileView ? this.handleTouchMove : undefined}
+        onTouchEnd={isMobileView ? this.handleTouchEnd : undefined}
       >
         {/* Drag handle - desktop only */}
-        {!this.isMobile && (
+        {!isMobileView && (
           <div id='drag'
                onMouseDown={this.handleOnMouseDown}
                class='resize-line resize-left-line'></div>
         )}
 
         {/* Mobile drawer handle */}
-        {this.isMobile && (
+        {isMobileView && (
           <div class='mobile-drawer-handle' onClick={this.toggleMobileDrawer}>
             <div class='handle-bar'></div>
           </div>
