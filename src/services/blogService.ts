@@ -1,4 +1,4 @@
-import { BlogPost, BlogMetadata } from '../interfaces/blog';
+import { BlogPost } from '../interfaces/blog';
 
 // This would normally fetch from your markdown files
 // For now, we'll create the blog data directly from our markdown content
