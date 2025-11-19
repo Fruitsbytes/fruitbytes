@@ -10,7 +10,8 @@ import { Howl } from 'howler';
 import { animateCSS } from '../../utils';
 import { Nullable } from '../../interfaces/geneneral-types';
 import { Language } from '../../interfaces/translation';
-import i18nService, { getCurrentLanguage, loadTranslations, getLanguageFromURL, getPathWithoutLanguage, buildURLWithLanguage } from '../../services/i18n';
+import i18nService, { getCurrentLanguage, loadTranslations, getLanguageFromURL, getPathWithoutLanguage, buildURLWithLanguage, t } from '../../services/i18n';
+import metaTagsService from '../../services/metaTagsService';
 
 devTools();
 
@@ -72,6 +73,11 @@ export class AppRoot {
     i18nService.subscribe((language) => {
       this.currentLanguage = language;
       this.LanguageChanged?.emit(language);
+
+      // Update meta tags when language changes
+      metaTagsService.updateLanguage(language);
+      this.updateMetaTags();
+
       this.log?.emit({
         message: `🌐 <b>Language</b> changed to ${language.toUpperCase()}`,
         file: 'app-root.tsx',
@@ -121,6 +127,8 @@ export class AppRoot {
     this.muteVolume(this.volumeMuted);
     this.rightP = this.el.shadowRoot?.querySelector('#rightP');
 
+    // Initialize meta tags
+    this.updateMetaTags();
 
     setTimeout(this.init);
   }
@@ -269,6 +277,63 @@ export class AppRoot {
     });
   }
 
+  /**
+   * Update meta tags based on current route
+   */
+  updateMetaTags() {
+    const pathWithoutLang = getPathWithoutLanguage();
+    const baseTitle = 'FruitsBytes';
+
+    // Route-specific meta tags
+    const routeMetaTags = {
+      '/welcome': {
+        title: `${t('welcome.title')} | ${baseTitle}`,
+        description: t('welcome.description'),
+        type: 'website' as const,
+      },
+      '/about-me': {
+        title: `${t('about.title')} | ${baseTitle}`,
+        description: t('about.description'),
+        type: 'profile' as const,
+      },
+      '/contact-me': {
+        title: `${t('contact.title')} | ${baseTitle}`,
+        description: t('contact.description'),
+        type: 'website' as const,
+      },
+      '/my-blog': {
+        title: `${t('blog.title')} | ${baseTitle}`,
+        description: t('blog.description'),
+        type: 'website' as const,
+      },
+      '/my-projects': {
+        title: `${t('projects.title')} | ${baseTitle}`,
+        description: t('projects.description'),
+        type: 'website' as const,
+      },
+      '/console-log': {
+        title: `${t('console.title')} | ${baseTitle}`,
+        description: t('console.description'),
+        type: 'website' as const,
+      },
+    };
+
+    const currentMeta = routeMetaTags[pathWithoutLang] || {
+      title: baseTitle,
+      description: 'Developer Portfolio & Blog',
+      type: 'website' as const,
+    };
+
+    metaTagsService.setMetaTags({
+      title: currentMeta.title,
+      description: currentMeta.description,
+      type: currentMeta.type,
+      locale: this.currentLanguage,
+      url: window.location.href,
+      siteName: baseTitle,
+    });
+  }
+
   @Listen('menu.resizing', { target: 'document', capture: true })
   handleMenuResized(e: CustomEvent<[string, number]>) {
     const [menuName, width] = e.detail;
@@ -300,6 +365,9 @@ export class AppRoot {
       this.activeRoute = newRoute;
       this.hash = location.hash;
       this.soundLib.sounds.ping.play();
+
+      // Update meta tags for new route
+      this.updateMetaTags();
 
       // Hide skeleton after content loads
       if (this.routeLoading) {

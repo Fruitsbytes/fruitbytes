@@ -394,6 +394,124 @@ Current translations include:
 - Error messages
 - Language selector labels
 
+## Multilingual Blog Support
+
+The blog system fully supports multiple languages:
+
+### Blog Post Structure
+
+Each blog post can have multiple language versions with the same ID:
+
+```typescript
+{
+  id: 'claude-code-ai-assistant', // Same ID for all language versions
+  metadata: {
+    title: 'Claude Code: The AI-Powered Development Assistant',
+    language: 'en', // Language indicator
+    // ... other metadata
+  },
+  content: '...',
+  excerpt: '...'
+}
+```
+
+### Blog Service Methods
+
+All blog service methods support language filtering:
+
+- `getAllPosts(language?)` - Get all posts for a language
+- `getPostById(id, language?)` - Get specific post in a language
+- `getPostsByCategory(category, language?)` - Filter by category and language
+- `getPostsByTag(tag, language?)` - Filter by tag and language
+- `getAvailableLanguages(postId)` - Check which languages a post is available in
+- `getPostWithFallback(id, language)` - Get post with English fallback
+
+### Adding Multilingual Blog Posts
+
+1. Create blog posts with the same `id` but different `language` values
+2. The blog service automatically filters posts by current language
+3. Users only see posts in their selected language
+4. Fallback to English if post not available in current language
+
+## SEO & Meta Tags
+
+Complete SEO support with automatic meta tag management:
+
+### Meta Tags Service
+
+Location: `/src/services/metaTagsService.ts`
+
+**Features:**
+- Automatic HTML `lang` attribute updates
+- Standard meta tags (description, keywords, author)
+- Open Graph tags for social media previews
+- Twitter Card tags for Twitter sharing
+- Alternate language links (`hreflang`)
+- Canonical URLs
+- Article-specific meta tags
+
+### Auto-Generated Meta Tags
+
+The system automatically generates:
+
+1. **Language-Specific Tags:**
+   - `<html lang="xx">` - Current language
+   - `<meta name="language" content="xx">`
+   - `<meta property="og:locale" content="xx_XX">`
+   - `<meta property="og:locale:alternate">` for other languages
+
+2. **Alternate Language Links:**
+   ```html
+   <link rel="alternate" hreflang="en" href="/en/welcome">
+   <link rel="alternate" hreflang="ht" href="/ht/welcome">
+   <link rel="alternate" hreflang="es" href="/es/welcome">
+   <link rel="alternate" hreflang="fr" href="/fr/welcome">
+   <link rel="alternate" hreflang="x-default" href="/en/welcome">
+   ```
+
+3. **Open Graph Tags:**
+   ```html
+   <meta property="og:title" content="...">
+   <meta property="og:description" content="...">
+   <meta property="og:url" content="...">
+   <meta property="og:image" content="...">
+   <meta property="og:type" content="website|article">
+   <meta property="og:locale" content="en_US">
+   <meta property="og:locale:alternate" content="es_ES">
+   ```
+
+4. **Twitter Card Tags:**
+   ```html
+   <meta name="twitter:card" content="summary_large_image">
+   <meta name="twitter:title" content="...">
+   <meta name="twitter:description" content="...">
+   <meta name="twitter:image" content="...">
+   ```
+
+### Route-Specific Meta Tags
+
+Meta tags update automatically based on current route:
+
+- **Welcome Page:** Uses `welcome.title` and `welcome.description` translations
+- **About Page:** Uses `about.title` and `about.description` translations
+- **Blog Page:** Uses `blog.title` and `blog.description` translations
+- **Projects Page:** Uses `projects.title` and `projects.description` translations
+- **Contact Page:** Uses `contact.title` and `contact.description` translations
+
+### Meta Tags Update on:
+- Page load
+- Language change
+- Route navigation
+
+### SEO Benefits
+
+- **Language-Specific URLs:** `/en/welcome`, `/es/welcome` help search engines index content properly
+- **Hreflang Tags:** Tell search engines about language versions
+- **Open Graph:** Rich previews when shared on Facebook, LinkedIn
+- **Twitter Cards:** Rich previews when shared on Twitter
+- **Canonical URLs:** Prevent duplicate content issues
+- **Responsive Images:** OG images optimized for social sharing (1200x630)
+
 ## Next Steps
 
 To complete the translation system:
