@@ -3,6 +3,14 @@
   display: block;
   position: absolute;
   z-index: 10;
+
+  .material-symbols-sharp {
+    font-family: 'Material Symbols Sharp';
+  }
+
+  .material-symbols-rounded {
+    font-family: 'Material Symbols Rounded';
+  }
 }
 
 .top-menu {

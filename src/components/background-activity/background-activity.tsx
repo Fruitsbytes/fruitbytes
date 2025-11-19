@@ -26,7 +26,7 @@ import _debounce from 'lodash/debounce';
   shadow: true,
 })
 export class BackgroundActivity {
-  isWebGLAvailable = false;
+  isWebGL2Available = false;
   my3d?: ThreeDService;
   @Prop() menuWidth!: number;
   @Prop() digiCode: string = '';
@@ -48,15 +48,15 @@ export class BackgroundActivity {
     Howler.masterGain.connect(this.analyser);
     this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
 
-    if (WEBGL.isWebGLAvailable()) {
-      this.isWebGLAvailable = true;
+    if (WEBGL.isWebGL2Available()) {
+      this.isWebGL2Available = true;
       this.my3d = ThreeDService.instance();
     } else {
-      const warning = WEBGL.getWebGLErrorMessage();
+      const warning = WEBGL.getWebGL2ErrorMessage();
       console.warn(warning);
-      this.isWebGLAvailable = false;
+      this.isWebGL2Available = false;
     }
-    if (this.isWebGLAvailable) {
+    if (this.isWebGL2Available) {
       await this.loadWorld();
     } else {
       console.log('unavailable', true);
