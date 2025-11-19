@@ -8,7 +8,11 @@
   right: 0;
   bottom: 0;
   z-index: 9999;
-  pointer-events: all;
+  pointer-events: none; // Don't block clicks by default
+}
+
+:host([data-visible]) {
+  pointer-events: all; // Only block clicks when prompt is visible
 }
 
 .pwa-backdrop {

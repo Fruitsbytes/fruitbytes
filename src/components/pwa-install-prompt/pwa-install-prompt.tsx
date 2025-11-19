@@ -105,7 +105,7 @@ export class PwaInstallPrompt {
     }
 
     return (
-      <Host role="dialog" aria-labelledby="pwa-prompt-title" aria-describedby="pwa-prompt-description">
+      <Host data-visible role="dialog" aria-labelledby="pwa-prompt-title" aria-describedby="pwa-prompt-description">
         <div class="pwa-backdrop" onClick={this.handleDismiss}></div>
         <div class="pwa-prompt animate__animated animate__fadeInUp">
           <button
