@@ -25,7 +25,7 @@ export class GuiBlog {
                 Claude Code: The AI-Powered Development Assistant That's Changing the Game
               </h1>
               <div class='text-gray-400 mb-4'>
-                <time datetime='2024-11-18'>November 18, 2024</time>
+                <time dateTime='2024-11-18'>November 18, 2024</time>
                 <span class='mx-2'>•</span>
                 <span>By Jeffrey Nicholson Carré</span>
               </div>
