@@ -112,7 +112,7 @@ export class GuiProjects {
   ];
 
   private getCategoryColor(category: string): string {
-    const colors = {
+    const colors: { [key: string]: string } = {
       web: 'blue',
       mobile: 'green',
       '3d': 'purple',
@@ -123,7 +123,7 @@ export class GuiProjects {
   }
 
   private getCategoryIcon(category: string): string {
-    const icons = {
+    const icons: { [key: string]: string } = {
       web: 'language',
       mobile: 'smartphone',
       '3d': 'view_in_ar',
@@ -201,7 +201,7 @@ export class GuiProjects {
               <p class='text-gray-300 mb-4'>
                 I'm always open to discussing new projects and opportunities.
               </p>
-              <simple-link url='/contact-me' class='inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors'>
+              <simple-link link='/contact-me' class='inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors'>
                 Get in Touch
               </simple-link>
             </div>
