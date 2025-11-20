@@ -32,19 +32,24 @@ export class LanguageSelector {
     this.isOpen = !this.isOpen;
   };
 
-  private handleClickOutside = (event: MouseEvent) => {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.language-selector')) {
+  private handleClickOutside = (event: Event) => {
+    // For Shadow DOM, we need to check composedPath instead of target
+    const path = event.composedPath();
+    const clickedInside = path.some((el: any) =>
+      el.classList && el.classList.contains('language-selector')
+    );
+
+    if (!clickedInside) {
       this.isOpen = false;
     }
   };
 
   componentDidLoad() {
-    document.addEventListener('click', this.handleClickOutside);
+    document.addEventListener('click', this.handleClickOutside, true);
   }
 
   disconnectedCallback() {
-    document.removeEventListener('click', this.handleClickOutside);
+    document.removeEventListener('click', this.handleClickOutside, true);
   }
 
   render() {
