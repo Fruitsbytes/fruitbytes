@@ -77,5 +77,19 @@
     },
     "welcomeMessage": "Welcome to my personal website. Here I showcase my projects, passions, hobbies and everything that motivates me in life. Enjoy!",
     "soundOn": "Sound ON"
+  },
+  "character": {
+    "question1": "Which one would it be,",
+    "question2": "if you could be a",
+    "fruitWord": "Fruit",
+    "buildCharacter": "(Build your character)",
+    "nameLabel": "Name",
+    "namePlaceholder": "John",
+    "typeLabel": "Type + Variety",
+    "selectFruit": "Select a fruit",
+    "flavorLabel": "Flavor",
+    "selectFlavor": "Select a flavor",
+    "randomizeButton": "GMO",
+    "pluckButton": "Pluck"
   }
 }

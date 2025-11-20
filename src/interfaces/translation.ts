@@ -80,6 +80,20 @@ export interface TranslationKeys {
     welcomeMessage: string;
     soundOn: string;
   };
+  character: {
+    question1: string;
+    question2: string;
+    fruitWord: string;
+    buildCharacter: string;
+    nameLabel: string;
+    namePlaceholder: string;
+    typeLabel: string;
+    selectFruit: string;
+    flavorLabel: string;
+    selectFlavor: string;
+    randomizeButton: string;
+    pluckButton: string;
+  };
 }
 
 export interface LanguageInfo {

@@ -77,5 +77,19 @@
     },
     "welcomeMessage": "Byenveni sou sit pèsonèl mwen. Isit la m ap montre pwojè m yo, pasyon m yo, lwaziwa m yo ak tout sa ki bay m fòs nan lavi. Jwi l!",
     "soundOn": "Son AKTIF"
+  },
+  "character": {
+    "question1": "Ki sa li ta ye,",
+    "question2": "si ou te kapab yon",
+    "fruitWord": "Fwi",
+    "buildCharacter": "(Kreye karaktè w)",
+    "nameLabel": "Non",
+    "namePlaceholder": "Jan",
+    "typeLabel": "Kalite + Varyete",
+    "selectFruit": "Chwazi yon fwi",
+    "flavorLabel": "Gou",
+    "selectFlavor": "Chwazi yon gou",
+    "randomizeButton": "OGM",
+    "pluckButton": "Keyi"
   }
 }

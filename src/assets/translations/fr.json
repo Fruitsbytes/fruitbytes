@@ -77,5 +77,19 @@
     },
     "welcomeMessage": "Bienvenue sur mon site personnel. Ici je présente mes projets, passions, loisirs et tout ce qui me motive dans la vie. Profitez-en !",
     "soundOn": "Son ACTIVÉ"
+  },
+  "character": {
+    "question1": "Lequel serait-ce,",
+    "question2": "si vous pouviez être un",
+    "fruitWord": "Fruit",
+    "buildCharacter": "(Créez votre personnage)",
+    "nameLabel": "Nom",
+    "namePlaceholder": "Jean",
+    "typeLabel": "Type + Variété",
+    "selectFruit": "Sélectionnez un fruit",
+    "flavorLabel": "Saveur",
+    "selectFlavor": "Sélectionnez une saveur",
+    "randomizeButton": "OGM",
+    "pluckButton": "Cueillir"
   }
 }
