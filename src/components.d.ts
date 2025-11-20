@@ -6,12 +6,14 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { Log } from "./interfaces/log";
+import { Language } from "./interfaces/translation";
 import { BackDropOptions, OptionConfig } from "./interfaces/options";
 import { FoliageRatio } from "./components/fruit-tree/fruit";
 import { Nullable } from "./interfaces/geneneral-types";
 import { Player } from "./facade/character";
 import { SkeletonType } from "./components/skeleton-loader/skeleton-loader";
 export { Log } from "./interfaces/log";
+export { Language } from "./interfaces/translation";
 export { BackDropOptions, OptionConfig } from "./interfaces/options";
 export { FoliageRatio } from "./components/fruit-tree/fruit";
 export { Nullable } from "./interfaces/geneneral-types";
@@ -130,6 +132,8 @@ export namespace Components {
         "menuOpened": boolean;
         "menuWidth": number;
         "player": Nullable<Player>;
+    }
+    interface LanguageSelector {
     }
     interface LoadingModal {
         "player"?: Nullable<Player>;
@@ -252,6 +256,7 @@ declare global {
         "state.pushed": { state: any; title: string; url?: string | URL | null; };
         "console.logged": Log;
         "redraw.screen": boolean;
+        "language.changed": Language;
     }
     /**
      * -  TODO aria
@@ -382,6 +387,12 @@ declare global {
     var HTMLGuiWelcomeElement: {
         prototype: HTMLGuiWelcomeElement;
         new (): HTMLGuiWelcomeElement;
+    };
+    interface HTMLLanguageSelectorElement extends Components.LanguageSelector, HTMLStencilElement {
+    }
+    var HTMLLanguageSelectorElement: {
+        prototype: HTMLLanguageSelectorElement;
+        new (): HTMLLanguageSelectorElement;
     };
     interface HTMLLoadingModalElementEventMap {
         "toggle.volume": void;
@@ -532,6 +543,7 @@ declare global {
         "gui-blog": HTMLGuiBlogElement;
         "gui-projects": HTMLGuiProjectsElement;
         "gui-welcome": HTMLGuiWelcomeElement;
+        "language-selector": HTMLLanguageSelectorElement;
         "loading-modal": HTMLLoadingModalElement;
         "logo-text": HTMLLogoTextElement;
         "main-footer": HTMLMainFooterElement;
@@ -561,6 +573,7 @@ declare namespace LocalJSX {
      */
     interface AppRoot {
         "onConsole.logged"?: (event: AppRootCustomEvent<Log>) => void;
+        "onLanguage.changed"?: (event: AppRootCustomEvent<Language>) => void;
         "onRedraw.screen"?: (event: AppRootCustomEvent<boolean>) => void;
         "onState.pushed"?: (event: AppRootCustomEvent<{ state: any; title: string; url?: string | URL | null; }>) => void;
     }
@@ -667,6 +680,8 @@ declare namespace LocalJSX {
         "onPull.box.up"?: (event: GuiWelcomeCustomEvent<boolean>) => void;
         "player": Nullable<Player>;
     }
+    interface LanguageSelector {
+    }
     interface LoadingModal {
         "onToggle.volume"?: (event: LoadingModalCustomEvent<void>) => void;
         "player"?: Nullable<Player>;
@@ -767,6 +782,7 @@ declare namespace LocalJSX {
         "gui-blog": GuiBlog;
         "gui-projects": GuiProjects;
         "gui-welcome": GuiWelcome;
+        "language-selector": LanguageSelector;
         "loading-modal": LoadingModal;
         "logo-text": LogoText;
         "main-footer": MainFooter;
@@ -809,6 +825,7 @@ declare module "@stencil/core" {
             "gui-blog": LocalJSX.GuiBlog & JSXBase.HTMLAttributes<HTMLGuiBlogElement>;
             "gui-projects": LocalJSX.GuiProjects & JSXBase.HTMLAttributes<HTMLGuiProjectsElement>;
             "gui-welcome": LocalJSX.GuiWelcome & JSXBase.HTMLAttributes<HTMLGuiWelcomeElement>;
+            "language-selector": LocalJSX.LanguageSelector & JSXBase.HTMLAttributes<HTMLLanguageSelectorElement>;
             "loading-modal": LocalJSX.LoadingModal & JSXBase.HTMLAttributes<HTMLLoadingModalElement>;
             "logo-text": LocalJSX.LogoText & JSXBase.HTMLAttributes<HTMLLogoTextElement>;
             "main-footer": LocalJSX.MainFooter & JSXBase.HTMLAttributes<HTMLMainFooterElement>;

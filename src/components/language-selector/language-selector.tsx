@@ -1,4 +1,4 @@
-import { Component, h, State, Listen } from '@stencil/core';
+import { Component, h, State, Listen, Element } from '@stencil/core';
 import { Language, AVAILABLE_LANGUAGES } from '../../interfaces/translation';
 import { setLanguage, getCurrentLanguage } from '../../services/i18n';
 
@@ -8,6 +8,7 @@ import { setLanguage, getCurrentLanguage } from '../../services/i18n';
   shadow: true,
 })
 export class LanguageSelector {
+  @Element() el!: HTMLElement;
   @State() currentLanguage: Language = getCurrentLanguage();
   @State() isOpen: boolean = false;
 
@@ -28,18 +29,17 @@ export class LanguageSelector {
     }
   };
 
-  private toggleDropdown = () => {
+  private toggleDropdown = (event: Event) => {
+    event.stopPropagation();
     this.isOpen = !this.isOpen;
   };
 
   private handleClickOutside = (event: Event) => {
-    // For Shadow DOM, we need to check composedPath instead of target
+    // Check if the click is outside the component
     const path = event.composedPath();
-    const clickedInside = path.some((el: any) =>
-      el.classList && el.classList.contains('language-selector')
-    );
+    const clickedInside = path.includes(this.el);
 
-    if (!clickedInside) {
+    if (!clickedInside && this.isOpen) {
       this.isOpen = false;
     }
   };
