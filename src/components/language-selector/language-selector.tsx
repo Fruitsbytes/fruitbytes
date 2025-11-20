@@ -58,6 +58,7 @@ export class LanguageSelector {
     return (
       <div class="language-selector">
         <button
+          part="button"
           class="language-button"
           onClick={this.toggleDropdown}
           aria-label="Select language"
@@ -70,7 +71,7 @@ export class LanguageSelector {
         </button>
 
         {this.isOpen && (
-          <div class="language-dropdown" role="menu">
+          <div part="dropdown" class="language-dropdown" role="menu">
             {AVAILABLE_LANGUAGES.map(lang => (
               <button
                 key={lang.code}
