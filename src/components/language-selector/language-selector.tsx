@@ -64,7 +64,7 @@ export class LanguageSelector {
           aria-haspopup="true"
           aria-expanded={this.isOpen ? 'true' : 'false'}
         >
-          <span class="material-symbols-outlined">language</span>
+          <span class="material-symbols-sharp">language</span>
           <span class="language-label">{currentLang?.code.toUpperCase()}</span>
           <span class={`arrow ${this.isOpen ? 'open' : ''}`}>▼</span>
         </button>

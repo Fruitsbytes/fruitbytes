@@ -31,7 +31,9 @@
     outline-offset: 2px;
   }
 
-  .material-symbols-outlined {
+  .material-symbols-sharp,
+  .material-symbols-outlined,
+  .material-symbols-rounded {
     font-size: 18px;
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
   }
