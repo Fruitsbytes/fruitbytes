@@ -91,5 +91,20 @@
     "selectFlavor": "Select a flavor",
     "randomizeButton": "GMO",
     "pluckButton": "Pluck"
+  },
+  "resume": {
+    "downloadCV": "Download CV",
+    "targetLabel": "Target",
+    "languageLabel": "Language",
+    "roles": {
+      "frontend": "Frontend Software Developer",
+      "fullStack": "FullStack Software Developer",
+      "wireless": "Wireless Network Engineer/Instructor"
+    },
+    "downloadButton": "Download",
+    "generatingButton": "Generating...",
+    "copyLinkButton": "Copy Link",
+    "errorMessage": "Failed to generate CV. Please try again.",
+    "versionLabel": "v1.0.1"
   }
 }

@@ -91,5 +91,20 @@
     "selectFlavor": "Sélectionnez une saveur",
     "randomizeButton": "OGM",
     "pluckButton": "Cueillir"
+  },
+  "resume": {
+    "downloadCV": "Télécharger CV",
+    "targetLabel": "Cible",
+    "languageLabel": "Langue",
+    "roles": {
+      "frontend": "Développeur Logiciel Frontend",
+      "fullStack": "Développeur Logiciel FullStack",
+      "wireless": "Ingénieur/Formateur Réseau Sans Fil"
+    },
+    "downloadButton": "Télécharger",
+    "generatingButton": "Génération...",
+    "copyLinkButton": "Copier le Lien",
+    "errorMessage": "Échec de la génération du CV. Veuillez réessayer.",
+    "versionLabel": "v1.0.1"
   }
 }

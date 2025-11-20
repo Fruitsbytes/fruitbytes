@@ -91,5 +91,20 @@
     "selectFlavor": "Chwazi yon gou",
     "randomizeButton": "OGM",
     "pluckButton": "Keyi"
+  },
+  "resume": {
+    "downloadCV": "Telechaje CV",
+    "targetLabel": "Sib",
+    "languageLabel": "Lang",
+    "roles": {
+      "frontend": "Devlopè Lojisyèl Frontend",
+      "fullStack": "Devlopè Lojisyèl FullStack",
+      "wireless": "Enjenyè/Enstriktè Rezo San Fil"
+    },
+    "downloadButton": "Telechaje",
+    "generatingButton": "Ap jenere...",
+    "copyLinkButton": "Kopye Lyen",
+    "errorMessage": "Echèk nan jenere CV. Tanpri eseye ankò.",
+    "versionLabel": "v1.0.1"
   }
 }

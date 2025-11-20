@@ -91,5 +91,20 @@
     "selectFlavor": "Selecciona un sabor",
     "randomizeButton": "OGM",
     "pluckButton": "Recoger"
+  },
+  "resume": {
+    "downloadCV": "Descargar CV",
+    "targetLabel": "Objetivo",
+    "languageLabel": "Idioma",
+    "roles": {
+      "frontend": "Desarrollador de Software Frontend",
+      "fullStack": "Desarrollador de Software FullStack",
+      "wireless": "Ingeniero/Instructor de Redes Inalámbricas"
+    },
+    "downloadButton": "Descargar",
+    "generatingButton": "Generando...",
+    "copyLinkButton": "Copiar Enlace",
+    "errorMessage": "Error al generar CV. Por favor, inténtalo de nuevo.",
+    "versionLabel": "v1.0.1"
   }
 }
