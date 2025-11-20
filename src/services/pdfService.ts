@@ -1,5 +1,4 @@
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import { PDFOptions, ResumeMetadata } from '../interfaces/resume';
 
 export class PDFService {
@@ -15,7 +14,8 @@ export class PDFService {
   }
 
   /**
-   * Generate PDF from HTML content
+   * Generate PDF from HTML content using jsPDF's html method
+   * This creates a proper text-based PDF that is parseable by ATS systems
    */
   public async generatePDF(html: string, metadata: ResumeMetadata, options?: PDFOptions): Promise<Blob> {
     const pdfOptions: PDFOptions = options || {
@@ -33,46 +33,13 @@ export class PDFService {
       // Wait for fonts and styles to load
       await this.waitForRender();
 
-      // Convert HTML to canvas
-      const canvas = await html2canvas(container, {
-        scale: 2, // Higher quality
-        useCORS: true,
-        logging: false,
-        backgroundColor: '#ffffff',
-      });
-
-      // Remove temporary container
-      document.body.removeChild(container);
-
-      // Create PDF
+      // Create PDF with jsPDF
       const pdf = new jsPDF({
         orientation: pdfOptions.orientation,
         unit: pdfOptions.unit,
         format: pdfOptions.format,
         compress: pdfOptions.compress,
       });
-
-      // Calculate dimensions
-      const imgWidth = pdfOptions.format === 'a4' ? 210 : 216; // A4 or Letter width in mm
-      const pageHeight = pdfOptions.format === 'a4' ? 297 : 279; // A4 or Letter height in mm
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
-
-      // Add image to PDF
-      const imgData = canvas.toDataURL('image/png');
-      let position = 0;
-
-      // Add first page
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
-
-      // Add additional pages if needed
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-      }
 
       // Add metadata
       pdf.setProperties({
@@ -81,6 +48,24 @@ export class PDFService {
         author: 'Your Name',
         keywords: metadata.role,
         creator: 'FruitsBytes Portfolio',
+      });
+
+      // Use jsPDF's html method to convert HTML to PDF with proper text
+      await pdf.html(container, {
+        callback: () => {
+          // Cleanup after PDF generation
+          document.body.removeChild(container);
+        },
+        x: 15,
+        y: 15,
+        width: 180, // Content width in mm (A4 width - margins)
+        windowWidth: 800, // Virtual window width for HTML rendering
+        margin: [15, 15, 15, 15], // [top, right, bottom, left] in mm
+        autoPaging: 'text', // Enable automatic page breaks
+        html2canvas: {
+          scale: 0.25, // Lower scale for text rendering
+          logging: false,
+        },
       });
 
       // Return as blob
@@ -99,12 +84,11 @@ export class PDFService {
     container.style.position = 'absolute';
     container.style.left = '-9999px';
     container.style.top = '0';
-    container.style.width = '210mm'; // A4 width
-    container.style.padding = '20mm';
+    container.style.width = '800px'; // Virtual window width
     container.style.backgroundColor = '#ffffff';
     container.style.fontFamily = 'Arial, sans-serif';
-    container.style.fontSize = '11pt';
-    container.style.lineHeight = '1.6';
+    container.style.fontSize = '12px';
+    container.style.lineHeight = '1.5';
     container.style.color = '#000000';
 
     // Apply print-friendly styles
@@ -117,47 +101,61 @@ export class PDFService {
    * Apply print-friendly styles to HTML
    */
   private applyPrintStyles(html: string): string {
-    // Wrap content in styled div
+    // Wrap content in styled div with clean, professional formatting
     return `
       <style>
         * {
           box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+        body, div {
+          font-family: Arial, Helvetica, sans-serif;
+          color: #000000;
+          line-height: 1.4;
         }
         h1 {
-          font-size: 24pt;
-          margin: 0 0 10px 0;
+          font-size: 22px;
+          margin: 0 0 12px 0;
           color: #000000;
           font-weight: bold;
+          page-break-after: avoid;
         }
         h2 {
-          font-size: 16pt;
-          margin: 20px 0 10px 0;
-          color: #333333;
+          font-size: 16px;
+          margin: 18px 0 10px 0;
+          color: #1a1a1a;
+          font-weight: bold;
           border-bottom: 2px solid #2563eb;
-          padding-bottom: 5px;
+          padding-bottom: 4px;
+          page-break-after: avoid;
         }
         h3 {
-          font-size: 14pt;
-          margin: 15px 0 8px 0;
-          color: #444444;
+          font-size: 14px;
+          margin: 14px 0 8px 0;
+          color: #333333;
           font-weight: bold;
+          page-break-after: avoid;
         }
         p {
-          margin: 8px 0;
-          text-align: justify;
+          margin: 6px 0;
+          font-size: 11px;
+          line-height: 1.5;
         }
         ul, ol {
-          margin: 8px 0;
-          padding-left: 25px;
+          margin: 8px 0 8px 20px;
+          padding: 0;
         }
         li {
-          margin: 4px 0;
+          margin: 3px 0;
+          font-size: 11px;
+          line-height: 1.4;
         }
-        strong {
+        strong, b {
           font-weight: bold;
           color: #000000;
         }
-        em {
+        em, i {
           font-style: italic;
         }
         a {
@@ -167,28 +165,35 @@ export class PDFService {
         hr {
           border: none;
           border-top: 1px solid #cccccc;
-          margin: 15px 0;
+          margin: 12px 0;
+          page-break-after: avoid;
         }
         code {
-          background-color: #f5f5f5;
-          padding: 2px 4px;
-          border-radius: 3px;
-          font-family: 'Courier New', monospace;
-          font-size: 10pt;
+          background-color: #f0f0f0;
+          padding: 1px 3px;
+          font-family: 'Courier New', Courier, monospace;
+          font-size: 10px;
         }
         pre {
           background-color: #f5f5f5;
-          padding: 10px;
-          border-radius: 5px;
-          overflow-x: auto;
-          font-family: 'Courier New', monospace;
-          font-size: 10pt;
+          padding: 8px;
+          font-family: 'Courier New', Courier, monospace;
+          font-size: 10px;
+          white-space: pre-wrap;
+          page-break-inside: avoid;
         }
         blockquote {
           border-left: 3px solid #2563eb;
-          padding-left: 15px;
-          margin: 10px 0;
+          padding-left: 12px;
+          margin: 8px 0;
           color: #555555;
+        }
+        /* Page break control */
+        .page-break {
+          page-break-after: always;
+        }
+        .avoid-break {
+          page-break-inside: avoid;
         }
       </style>
       <div>${html}</div>
