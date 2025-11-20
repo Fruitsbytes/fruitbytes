@@ -217,6 +217,10 @@ export interface CharacterSelectionCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCharacterSelectionElement;
 }
+export interface ConsoleAboutCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLConsoleAboutElement;
+}
 export interface Gui404CustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLGui404Element;
@@ -305,7 +309,18 @@ declare global {
         prototype: HTMLCharacterSelectionElement;
         new (): HTMLCharacterSelectionElement;
     };
+    interface HTMLConsoleAboutElementEventMap {
+        "console.logged": Log;
+    }
     interface HTMLConsoleAboutElement extends Components.ConsoleAbout, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLConsoleAboutElementEventMap>(type: K, listener: (this: HTMLConsoleAboutElement, ev: ConsoleAboutCustomEvent<HTMLConsoleAboutElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLConsoleAboutElementEventMap>(type: K, listener: (this: HTMLConsoleAboutElement, ev: ConsoleAboutCustomEvent<HTMLConsoleAboutElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLConsoleAboutElement: {
         prototype: HTMLConsoleAboutElement;
@@ -588,6 +603,7 @@ declare namespace LocalJSX {
         "onClose.loading"?: (event: CharacterSelectionCustomEvent<boolean>) => void;
     }
     interface ConsoleAbout {
+        "onConsole.logged"?: (event: ConsoleAboutCustomEvent<Log>) => void;
     }
     interface ConsoleWelcome {
     }

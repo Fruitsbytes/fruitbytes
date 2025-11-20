@@ -470,7 +470,8 @@ export class AppRoot {
             ) : null
           }
           {
-            MENU_ITEMS.map(value => value.path).includes(this.activeRoute) ? null : <gui-404></gui-404>
+            /* Show 404 only for invalid routes and not during loading */
+            !this.loading && !this.routeLoading && this.activeRoute && !MENU_ITEMS.map(value => value.path).includes(this.activeRoute) ? <gui-404></gui-404> : null
           }
         </main>
         <right-panel id='rightP' isOpened={this.menuOpened} role="complementary" aria-label="Navigation menu"></right-panel>

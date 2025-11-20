@@ -1,0 +1,48 @@
+{
+  "roles": [
+    {
+      "id": "frontend",
+      "title": "Frontend Software Developer",
+      "description": "Specialized for frontend development positions",
+      "icon": "code"
+    },
+    {
+      "id": "fullStack",
+      "title": "FullStack Software Developer",
+      "description": "Specialized for full-stack positions",
+      "icon": "developer_board"
+    },
+    {
+      "id": "wireless",
+      "title": "Wireless Network Engineer/Instructor",
+      "description": "Specialized for wireless network and instructor positions",
+      "icon": "wifi"
+    }
+  ],
+  "languages": [
+    {
+      "code": "en",
+      "name": "English",
+      "nativeName": "English"
+    },
+    {
+      "code": "fr",
+      "name": "Français",
+      "nativeName": "Français"
+    },
+    {
+      "code": "es",
+      "name": "Español",
+      "nativeName": "Español"
+    }
+  ],
+  "defaultRole": "frontend",
+  "defaultLanguage": "en",
+  "cacheTTL": 604800000,
+  "pdfOptions": {
+    "orientation": "portrait",
+    "unit": "mm",
+    "format": "a4",
+    "compress": true
+  }
+}
