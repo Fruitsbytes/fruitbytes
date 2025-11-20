@@ -1,5 +1,9 @@
-import jsPDF from 'jspdf';
+import pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { PDFOptions, ResumeMetadata } from '../interfaces/resume';
+
+// Initialize pdfMake with fonts
+(pdfMake as any).vfs = pdfFonts;
 
 export class PDFService {
   private static _instance: PDFService;
@@ -14,62 +18,75 @@ export class PDFService {
   }
 
   /**
-   * Generate PDF from HTML content using jsPDF's html method
-   * This creates a proper text-based PDF that is parseable by ATS systems
+   * Generate PDF from HTML content using pdfMake
+   * This creates a proper text-based PDF that is fully parseable by ATS systems
    */
-  public async generatePDF(html: string, metadata: ResumeMetadata, options?: PDFOptions): Promise<Blob> {
-    const pdfOptions: PDFOptions = options || {
-      orientation: 'portrait',
-      unit: 'mm',
-      format: 'a4',
-      compress: true,
-    };
-
+  public async generatePDF(html: string, metadata: ResumeMetadata, _options?: PDFOptions): Promise<Blob> {
     try {
-      // Create temporary container for rendering
-      const container = this.createTemporaryContainer(html);
-      document.body.appendChild(container);
+      // Convert HTML to pdfMake document definition
+      const content = this.htmlToPdfMakeContent(html);
 
-      // Wait for fonts and styles to load
-      await this.waitForRender();
-
-      // Create PDF with jsPDF
-      const pdf = new jsPDF({
-        orientation: pdfOptions.orientation,
-        unit: pdfOptions.unit,
-        format: pdfOptions.format,
-        compress: pdfOptions.compress,
-      });
-
-      // Add metadata
-      pdf.setProperties({
-        title: `Resume - ${metadata.role}`,
-        subject: `Resume for ${metadata.role} position`,
-        author: 'Your Name',
-        keywords: metadata.role,
-        creator: 'FruitsBytes Portfolio',
-      });
-
-      // Use jsPDF's html method to convert HTML to PDF with proper text
-      await pdf.html(container, {
-        callback: () => {
-          // Cleanup after PDF generation
-          document.body.removeChild(container);
+      // Define document
+      const docDefinition: any = {
+        info: {
+          title: `Resume - ${metadata.role}`,
+          author: 'Your Name',
+          subject: `Resume for ${metadata.role} position`,
+          keywords: metadata.role,
+          creator: 'FruitsBytes Portfolio',
         },
-        x: 15,
-        y: 15,
-        width: 180, // Content width in mm (A4 width - margins)
-        windowWidth: 800, // Virtual window width for HTML rendering
-        margin: [15, 15, 15, 15], // [top, right, bottom, left] in mm
-        autoPaging: 'text', // Enable automatic page breaks
-        html2canvas: {
-          scale: 0.25, // Lower scale for text rendering
-          logging: false,
+        pageSize: 'A4',
+        pageMargins: [40, 60, 40, 60],
+        content,
+        defaultStyle: {
+          font: 'Roboto',
+          fontSize: 11,
+          lineHeight: 1.3,
         },
-      });
+        styles: {
+          h1: {
+            fontSize: 24,
+            bold: true,
+            color: '#000000',
+            margin: [0, 0, 0, 12] as [number, number, number, number],
+          },
+          h2: {
+            fontSize: 16,
+            bold: true,
+            color: '#1a1a1a',
+            margin: [0, 18, 0, 10] as [number, number, number, number],
+            decoration: 'underline',
+            decorationColor: '#2563eb',
+          },
+          h3: {
+            fontSize: 14,
+            bold: true,
+            color: '#333333',
+            margin: [0, 14, 0, 8] as [number, number, number, number],
+          },
+          paragraph: {
+            margin: [0, 6, 0, 6] as [number, number, number, number],
+            alignment: 'left' as const,
+          },
+          link: {
+            color: '#2563eb',
+            decoration: 'none',
+          },
+          code: {
+            font: 'Courier',
+            fontSize: 10,
+            background: '#f0f0f0',
+          },
+        },
+      };
 
-      // Return as blob
-      return pdf.output('blob');
+      // Generate PDF
+      return new Promise((resolve) => {
+        const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+        pdfDocGenerator.getBlob((blob: Blob) => {
+          resolve(blob);
+        });
+      });
     } catch (error) {
       console.error('Error generating PDF:', error);
       throw new Error('Failed to generate PDF');
@@ -77,138 +94,207 @@ export class PDFService {
   }
 
   /**
-   * Create temporary container with styled HTML
+   * Convert HTML string to pdfMake content array
    */
-  private createTemporaryContainer(html: string): HTMLDivElement {
-    const container = document.createElement('div');
-    container.style.position = 'absolute';
-    container.style.left = '-9999px';
-    container.style.top = '0';
-    container.style.width = '800px'; // Virtual window width
-    container.style.backgroundColor = '#ffffff';
-    container.style.fontFamily = 'Arial, sans-serif';
-    container.style.fontSize = '12px';
-    container.style.lineHeight = '1.5';
-    container.style.color = '#000000';
+  private htmlToPdfMakeContent(html: string): any[] {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const body = doc.body;
 
-    // Apply print-friendly styles
-    container.innerHTML = this.applyPrintStyles(html);
-
-    return container;
+    return this.processNode(body);
   }
 
   /**
-   * Apply print-friendly styles to HTML
+   * Process DOM node and convert to pdfMake content
    */
-  private applyPrintStyles(html: string): string {
-    // Wrap content in styled div with clean, professional formatting
-    return `
-      <style>
-        * {
-          box-sizing: border-box;
-          margin: 0;
-          padding: 0;
-        }
-        body, div {
-          font-family: Arial, Helvetica, sans-serif;
-          color: #000000;
-          line-height: 1.4;
-        }
-        h1 {
-          font-size: 22px;
-          margin: 0 0 12px 0;
-          color: #000000;
-          font-weight: bold;
-          page-break-after: avoid;
-        }
-        h2 {
-          font-size: 16px;
-          margin: 18px 0 10px 0;
-          color: #1a1a1a;
-          font-weight: bold;
-          border-bottom: 2px solid #2563eb;
-          padding-bottom: 4px;
-          page-break-after: avoid;
-        }
-        h3 {
-          font-size: 14px;
-          margin: 14px 0 8px 0;
-          color: #333333;
-          font-weight: bold;
-          page-break-after: avoid;
-        }
-        p {
-          margin: 6px 0;
-          font-size: 11px;
-          line-height: 1.5;
-        }
-        ul, ol {
-          margin: 8px 0 8px 20px;
-          padding: 0;
-        }
-        li {
-          margin: 3px 0;
-          font-size: 11px;
-          line-height: 1.4;
-        }
-        strong, b {
-          font-weight: bold;
-          color: #000000;
-        }
-        em, i {
-          font-style: italic;
-        }
-        a {
-          color: #2563eb;
-          text-decoration: none;
-        }
-        hr {
-          border: none;
-          border-top: 1px solid #cccccc;
-          margin: 12px 0;
-          page-break-after: avoid;
-        }
-        code {
-          background-color: #f0f0f0;
-          padding: 1px 3px;
-          font-family: 'Courier New', Courier, monospace;
-          font-size: 10px;
-        }
-        pre {
-          background-color: #f5f5f5;
-          padding: 8px;
-          font-family: 'Courier New', Courier, monospace;
-          font-size: 10px;
-          white-space: pre-wrap;
-          page-break-inside: avoid;
-        }
-        blockquote {
-          border-left: 3px solid #2563eb;
-          padding-left: 12px;
-          margin: 8px 0;
-          color: #555555;
-        }
-        /* Page break control */
-        .page-break {
-          page-break-after: always;
-        }
-        .avoid-break {
-          page-break-inside: avoid;
-        }
-      </style>
-      <div>${html}</div>
-    `;
-  }
+  private processNode(node: Node): any[] {
+    const content: any[] = [];
 
-  /**
-   * Wait for styles and fonts to load
-   */
-  private async waitForRender(): Promise<void> {
-    return new Promise((resolve) => {
-      requestAnimationFrame(() => {
-        setTimeout(resolve, 100);
-      });
+    node.childNodes.forEach((child) => {
+      if (child.nodeType === Node.TEXT_NODE) {
+        const text = child.textContent?.trim();
+        if (text) {
+          content.push({ text, preserveLeadingSpaces: true });
+        }
+      } else if (child.nodeType === Node.ELEMENT_NODE) {
+        const element = child as HTMLElement;
+        const tagName = element.tagName.toLowerCase();
+
+        switch (tagName) {
+          case 'h1':
+            content.push({
+              text: element.textContent,
+              style: 'h1',
+            });
+            break;
+
+          case 'h2':
+            content.push({
+              text: element.textContent,
+              style: 'h2',
+            });
+            break;
+
+          case 'h3':
+            content.push({
+              text: element.textContent,
+              style: 'h3',
+            });
+            break;
+
+          case 'p':
+            const pContent = this.processInlineElements(element);
+            if (pContent.length > 0) {
+              content.push({
+                text: pContent,
+                style: 'paragraph',
+              });
+            }
+            break;
+
+          case 'ul':
+          case 'ol':
+            const listItems: any[] = [];
+            element.querySelectorAll('li').forEach((li) => {
+              const liContent = this.processInlineElements(li);
+              if (liContent.length > 0 || typeof liContent === 'string') {
+                listItems.push(liContent);
+              }
+            });
+            if (listItems.length > 0) {
+              content.push({
+                [tagName]: listItems,
+                margin: [0, 8, 0, 8] as [number, number, number, number],
+              });
+            }
+            break;
+
+          case 'hr':
+            content.push({
+              canvas: [
+                {
+                  type: 'line',
+                  x1: 0,
+                  y1: 0,
+                  x2: 515,
+                  y2: 0,
+                  lineWidth: 1,
+                  lineColor: '#cccccc',
+                },
+              ],
+              margin: [0, 12, 0, 12] as [number, number, number, number],
+            });
+            break;
+
+          case 'blockquote':
+            const quoteContent = this.processInlineElements(element);
+            content.push({
+              stack: [
+                {
+                  text: quoteContent,
+                  color: '#555555',
+                  italics: true,
+                },
+              ],
+              margin: [12, 8, 0, 8] as [number, number, number, number],
+            });
+            break;
+
+          case 'pre':
+          case 'code':
+            content.push({
+              text: element.textContent,
+              style: 'code',
+              margin: [0, 8, 0, 8] as [number, number, number, number],
+            });
+            break;
+
+          case 'br':
+            content.push({ text: '\n' });
+            break;
+
+          case 'strong':
+          case 'b':
+          case 'em':
+          case 'i':
+          case 'a':
+            // These are handled in processInlineElements
+            break;
+
+          default:
+            // Recursively process other elements
+            const children = this.processNode(element);
+            if (children.length > 0) {
+              content.push(...children);
+            }
+        }
+      }
     });
+
+    return content;
+  }
+
+  /**
+   * Process inline elements (bold, italic, links, etc.)
+   */
+  private processInlineElements(element: HTMLElement): any {
+    const result: any[] = [];
+
+    element.childNodes.forEach((child) => {
+      if (child.nodeType === Node.TEXT_NODE) {
+        const text = child.textContent || '';
+        if (text) {
+          result.push(text);
+        }
+      } else if (child.nodeType === Node.ELEMENT_NODE) {
+        const el = child as HTMLElement;
+        const tagName = el.tagName.toLowerCase();
+        const innerText = el.textContent || '';
+
+        switch (tagName) {
+          case 'strong':
+          case 'b':
+            result.push({ text: innerText, bold: true });
+            break;
+
+          case 'em':
+          case 'i':
+            result.push({ text: innerText, italics: true });
+            break;
+
+          case 'a':
+            result.push({
+              text: innerText,
+              link: el.getAttribute('href') || '',
+              style: 'link',
+              decoration: 'underline',
+            });
+            break;
+
+          case 'code':
+            result.push({
+              text: innerText,
+              style: 'code',
+            });
+            break;
+
+          case 'br':
+            result.push('\n');
+            break;
+
+          default:
+            // Recursively process nested inline elements
+            const nested = this.processInlineElements(el);
+            if (Array.isArray(nested)) {
+              result.push(...nested);
+            } else {
+              result.push(nested);
+            }
+        }
+      }
+    });
+
+    return result.length === 1 ? result[0] : result;
   }
 
   /**
