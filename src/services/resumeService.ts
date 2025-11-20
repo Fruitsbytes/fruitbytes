@@ -1,5 +1,4 @@
 import { marked } from 'marked';
-import matter from 'gray-matter';
 import { ResumeConfig, ResumeCacheEntry, ResumeMetadata, ResumeRole, ResumeLanguage } from '../interfaces/resume';
 import resumeConfig from '../data/resumes/config.json';
 
@@ -42,6 +41,34 @@ export class ResumeService {
   }
 
   /**
+   * Parse frontmatter from markdown (browser-compatible)
+   */
+  private parseFrontmatter(markdown: string): { content: string; data: any } {
+    const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
+    const match = markdown.match(frontmatterRegex);
+
+    if (!match) {
+      return { content: markdown, data: {} };
+    }
+
+    const frontmatterText = match[1];
+    const content = match[2];
+    const data: any = {};
+
+    // Parse YAML frontmatter (simple key: value pairs)
+    frontmatterText.split('\n').forEach((line) => {
+      const colonIndex = line.indexOf(':');
+      if (colonIndex > 0) {
+        const key = line.substring(0, colonIndex).trim();
+        const value = line.substring(colonIndex + 1).trim();
+        data[key] = value;
+      }
+    });
+
+    return { content, data };
+  }
+
+  /**
    * Get resume by role and language
    */
   public async getResume(roleId: string, languageCode: string): Promise<ResumeCacheEntry> {
@@ -56,7 +83,7 @@ export class ResumeService {
 
     // Fetch and parse resume
     const markdown = await this.fetchResumeMarkdown(roleId, languageCode);
-    const { content, data } = matter(markdown);
+    const { content, data } = this.parseFrontmatter(markdown);
     const html = await marked(content);
 
     const metadata: ResumeMetadata = {
