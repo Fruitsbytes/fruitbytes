@@ -37,7 +37,7 @@ export class AppRoot {
   @State() player: Nullable<Player>;
   @State() menuOpened: boolean = true;
   @State() loading: boolean = true;
-  @State() activeRoute: string = location.pathname;
+  @State() activeRoute: string = getPathWithoutLanguage(location.pathname);
   @State() hash: string = location.hash;
   @State() routeLoading: boolean = false;
   @State() volumeMuted: boolean = !!localStorage.getItem('muted') && localStorage.getItem('muted') === '1';
