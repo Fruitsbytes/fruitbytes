@@ -1,6 +1,8 @@
-import { Component, Host, h, Prop, Event, EventEmitter, Element } from '@stencil/core';
+import { Component, Host, h, Prop, Event, EventEmitter, Element, State, Listen } from '@stencil/core';
 import { Nullable } from '../../interfaces/geneneral-types';
 import { Player } from '../../facade/character';
+import { Language } from '../../interfaces/translation';
+import { t, getCurrentLanguage } from '../../services/i18n';
 
 @Component({
   tag: 'loading-modal',
@@ -15,6 +17,12 @@ export class LoadingModal {
   @Prop() player?: Nullable<Player>;
   @Element() el!: HTMLElement;
   @Event({ eventName: 'toggle.volume' }) ToggleVolume!: EventEmitter<void>;
+  @State() currentLanguage: Language = getCurrentLanguage();
+
+  @Listen('language.changed', { target: 'document' })
+  handleLanguageChange(event: CustomEvent<Language>) {
+    this.currentLanguage = event.detail;
+  }
 
   _toggleVolume = () => {
     this.ToggleVolume.emit();
@@ -55,30 +63,28 @@ export class LoadingModal {
                               d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
                               clip-rule="evenodd"></path>
                       </svg>
-                      <h3 class="text-lg font-medium text-gray-50 ">Hi, I am Jeffrey N. Carré</h3>
+                      <h3 class="text-lg font-medium text-gray-50 ">{t('loading.greeting')}</h3>
                     </div>
                     <div class="mt-2 text-sm text-gray-200">
                       <div>
                           <span
-                            class="bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded">Senior Software Developer</span>
+                            class="bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded">{t('loading.roles.seniorDev')}</span>
                         <span
-                          class="bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded">FullStack</span>
+                          class="bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded">{t('loading.roles.fullstack')}</span>
                         <span
-                          class="bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded">Gamer</span>
+                          class="bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded">{t('loading.roles.gamer')}</span>
                         <span
-                          class="bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded">Haitian</span>
+                          class="bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded">{t('loading.roles.haitian')}</span>
                         <span
-                          class="bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded">Wireless Network Tech/Trainer</span>
+                          class="bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded">{t('loading.roles.wirelessTech')}</span>
 
                         <span
-                          class="bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded">Graphic Designer</span>
+                          class="bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded">{t('loading.roles.designer')}</span>
                         <span
-                          class="bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded">Freelancer</span>
+                          class="bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded">{t('loading.roles.freelancer')}</span>
 
                       </div>
-                      <p class="text-justify mt-3 mb-1">Welcome to my personal website. Here I showcase my projects,
-                        passions,
-                        hobbies and everything that motivates me in life. Enjoy!</p>
+                      <p class="text-justify mt-3 mb-1">{t('loading.welcomeMessage')}</p>
                     </div>
                     <social-links class="text-gray-100"></social-links>
                     <div class="flex justify-center w-full mt-3 items-center volume">
@@ -117,7 +123,7 @@ export class LoadingModal {
                                   xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round"
                                                                            stroke-linejoin="round" stroke-width="2"
                                                                            d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path></svg>
-                          <i class="mr-4">Sound <b>ON</b></i>
+                          <i class="mr-4">{t('loading.soundOn')}</i>
                         </span>
                         ) : null
                       }

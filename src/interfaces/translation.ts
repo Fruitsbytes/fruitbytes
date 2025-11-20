@@ -11,7 +11,7 @@ export interface TranslationKeys {
     cancel: string;
   };
   nav: {
-    home: string;
+    welcome: string;
     console: string;
     about: string;
     contact: string;
@@ -65,6 +65,20 @@ export interface TranslationKeys {
     ht: string;
     es: string;
     fr: string;
+  };
+  loading: {
+    greeting: string;
+    roles: {
+      seniorDev: string;
+      fullstack: string;
+      gamer: string;
+      haitian: string;
+      wirelessTech: string;
+      designer: string;
+      freelancer: string;
+    };
+    welcomeMessage: string;
+    soundOn: string;
   };
 }
 

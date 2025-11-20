@@ -63,5 +63,19 @@
     "ht": "Kreyòl Ayisyen",
     "es": "Panyòl",
     "fr": "Franse"
+  },
+  "loading": {
+    "greeting": "Bonjou, mwen se Jeffrey N. Carré",
+    "roles": {
+      "seniorDev": "Devlopè Lojisyèl Senior",
+      "fullstack": "FullStack",
+      "gamer": "Jouè",
+      "haitian": "Ayisyen",
+      "wirelessTech": "Teknik/Enstriktè Rezo San Fil",
+      "designer": "Deseynatè Grafik",
+      "freelancer": "Travayè Endepandan"
+    },
+    "welcomeMessage": "Byenveni sou sit pèsonèl mwen. Isit la m ap montre pwojè m yo, pasyon m yo, lwaziwa m yo ak tout sa ki bay m fòs nan lavi. Jwi l!",
+    "soundOn": "Son AKTIF"
   }
 }

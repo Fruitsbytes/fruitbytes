@@ -63,5 +63,19 @@
     "ht": "Criollo Haitiano",
     "es": "Español",
     "fr": "Francés"
+  },
+  "loading": {
+    "greeting": "Hola, soy Jeffrey N. Carré",
+    "roles": {
+      "seniorDev": "Desarrollador de Software Senior",
+      "fullstack": "FullStack",
+      "gamer": "Jugador",
+      "haitian": "Haitiano",
+      "wirelessTech": "Técnico/Instructor de Redes Inalámbricas",
+      "designer": "Diseñador Gráfico",
+      "freelancer": "Freelancer"
+    },
+    "welcomeMessage": "Bienvenido a mi sitio web personal. Aquí muestro mis proyectos, pasiones, pasatiempos y todo lo que me motiva en la vida. ¡Disfruta!",
+    "soundOn": "Sonido ACTIVADO"
   }
 }

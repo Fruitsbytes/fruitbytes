@@ -63,5 +63,19 @@
     "ht": "Haitian Creole",
     "es": "Spanish",
     "fr": "French"
+  },
+  "loading": {
+    "greeting": "Hi, I am Jeffrey N. Carré",
+    "roles": {
+      "seniorDev": "Senior Software Developer",
+      "fullstack": "FullStack",
+      "gamer": "Gamer",
+      "haitian": "Haitian",
+      "wirelessTech": "Wireless Network Tech/Trainer",
+      "designer": "Graphic Designer",
+      "freelancer": "Freelancer"
+    },
+    "welcomeMessage": "Welcome to my personal website. Here I showcase my projects, passions, hobbies and everything that motivates me in life. Enjoy!",
+    "soundOn": "Sound ON"
   }
 }

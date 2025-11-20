@@ -63,5 +63,19 @@
     "ht": "Créole Haïtien",
     "es": "Espagnol",
     "fr": "Français"
+  },
+  "loading": {
+    "greeting": "Bonjour, je suis Jeffrey N. Carré",
+    "roles": {
+      "seniorDev": "Développeur Logiciel Senior",
+      "fullstack": "FullStack",
+      "gamer": "Joueur",
+      "haitian": "Haïtien",
+      "wirelessTech": "Technicien/Formateur Réseau Sans Fil",
+      "designer": "Designer Graphique",
+      "freelancer": "Freelance"
+    },
+    "welcomeMessage": "Bienvenue sur mon site personnel. Ici je présente mes projets, passions, loisirs et tout ce qui me motive dans la vie. Profitez-en !",
+    "soundOn": "Son ACTIVÉ"
   }
 }
