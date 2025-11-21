@@ -19,7 +19,12 @@
   "welcome": {
     "title": "Welcome to FruitsBytes",
     "subtitle": "Developer Portfolio",
-    "description": "Explore my projects, read my blog, and get in touch"
+    "description": "Explore my projects, read my blog, and get in touch",
+    "greeting": "Howdy! I'm {{name}}, a {{flavor}} {{type}}.",
+    "intro1": "I'm a passionate developer who loves building interactive web experiences. Like a perfectly ripened fruit, every project is crafted with care and attention to detail.",
+    "intro2": "When I'm not coding, you'll find me exploring the latest web technologies, contributing to open source, or mentoring aspiring developers.",
+    "coding1": "My development philosophy is simple: write clean code, embrace best practices, and never stop learning. Each line of code is an opportunity to create something amazing.",
+    "coding2": "From WebGL graphics to responsive design, from backend APIs to frontend frameworks - I bring ideas to life through code."
   },
   "about": {
     "title": "About Me",

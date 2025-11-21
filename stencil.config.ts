@@ -38,9 +38,10 @@ export const config: Config = {
       copy: [
         { src: 'robots.txt' },
         { src: 'sitemap.xml' },
-        // Only copy essential assets (exclude unused sounds, logos, fonts)
+        // Copy essential assets
         { src: 'assets/icon', dest: 'assets/icon' },
         { src: 'assets/images', dest: 'assets/images' },
+        { src: 'assets/sounds', dest: 'assets/sounds' },
         { src: 'assets/models', dest: 'assets/models' },
         { src: 'assets/texture', dest: 'assets/texture' },
         { src: 'assets/vendors', dest: 'assets/vendors' },

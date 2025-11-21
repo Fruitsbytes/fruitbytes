@@ -20,8 +20,8 @@ export class SoundLibraryService {
     for (const soundName of SOUND_NAMES) {
       this._sounds[soundName] = new Howl({
         src: [
-          `./assets/sounds/${soundName}.webm`,
-          `./assets/sounds/${soundName}.mp3`,
+          `/assets/sounds/${soundName}.webm`,
+          `/assets/sounds/${soundName}.mp3`,
         ],
         preload: false,
       });
@@ -50,11 +50,11 @@ export class SoundLibraryService {
           this._loading[name].next(true);
           this._loaded.push(name);
         });
-        this._sounds[name].once('loaderror', (id, error) => {
+        this._sounds[name].once('loaderror', (_id, error) => {
           console.error(`❌ Failed to load sound: ${name}`, error);
           console.error(`Tried paths:`, [
-            `./assets/sounds/${name}.webm`,
-            `./assets/sounds/${name}.mp3`
+            `/assets/sounds/${name}.webm`,
+            `/assets/sounds/${name}.mp3`
           ]);
           this._loading[name].next(true); // the show must go on! it  will retry on play
           this._loaded.push(name);
