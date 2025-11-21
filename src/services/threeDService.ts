@@ -425,7 +425,7 @@ export class ThreeDService {
     if (this._smokeParticles.length === 0) {
       const l = new TextureLoader();
       const smokeTexture = await l.loadAsync('/assets/texture/smoke2.png');
-      const smokeTexture2 = await l.loadAsync('./assets/texture/smoke.png');
+      const smokeTexture2 = await l.loadAsync('/assets/texture/smoke.png');
       const smokeGeometry = new PlaneGeometry(45, 45);
       for (let i = 0; i < 120; i++) {
         const smokeMaterial = new MeshLambertMaterial({
