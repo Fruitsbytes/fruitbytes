@@ -167,3 +167,61 @@ h1, h2, h2 {
     margin-bottom: 12px;
   }
 }
+
+/* ========================================
+   Mobile Responsive Styles
+   ======================================== */
+@media (max-width: 768px) {
+  :host {
+    padding-bottom: var(--mobile-drawer-collapsed);
+  }
+
+  h1 {
+    font-size: 28pt;
+  }
+
+  h2 {
+    font-size: 22pt;
+  }
+
+  h3 {
+    font-size: 18pt;
+  }
+
+  h4 {
+    font-size: 16pt;
+  }
+
+  .avatar {
+    width: 120px;
+    height: 120px;
+
+    &::before, &::after {
+      width: 120px;
+      height: 120px;
+    }
+  }
+
+  .paper-holder {
+    position: static;
+    left: auto;
+    margin-left: 0;
+    top: auto;
+    padding: var(--mobile-padding-medium);
+    padding-top: calc(var(--mobile-header-height) + var(--mobile-padding-medium));
+    padding-bottom: calc(var(--mobile-drawer-collapsed) + var(--mobile-padding-xlarge));
+  }
+
+  .paper {
+    width: 100%;
+    height: auto;
+    min-height: auto;
+    padding: var(--mobile-padding-large);
+    font-size: 12pt;
+    border-radius: 12px;
+
+    &:first-child {
+      padding-top: var(--mobile-padding-large);
+    }
+  }
+}

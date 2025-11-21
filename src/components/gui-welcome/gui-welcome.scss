@@ -121,6 +121,89 @@ button, a {
   cursor: url('../../assets/images/cursor.webp'), auto;
 }
 
+/* ========================================
+   Mobile Responsive Styles
+   ======================================== */
+@media (max-width: 768px) {
+  :host {
+    height: calc(100vh - var(--mobile-header-height) - var(--mobile-drawer-collapsed));
+    align-items: flex-start;
+    padding-top: calc(var(--mobile-header-height) + 12px);
+  }
+
+  .menu {
+    border-radius: 12px;
+    margin: 0 var(--mobile-padding-medium);
+    padding: var(--mobile-padding-medium);
+    width: calc(100vw - 2 * var(--mobile-padding-medium));
+    max-width: 100%;
+
+    .me {
+      .avatar {
+        position: static;
+        max-width: 200px;
+        max-height: 200px;
+        left: auto;
+        bottom: auto;
+        margin: 0 auto var(--mobile-padding-medium);
+      }
+
+      #text {
+        padding-left: 0;
+        padding-right: var(--mobile-padding-small);
+        max-height: 40vh;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+    }
+
+    .links {
+      position: static;
+      grid-template-columns: 1fr;
+      margin-top: var(--mobile-padding-medium);
+      border-radius: 12px;
+      width: 100%;
+      right: auto;
+      top: auto;
+    }
+
+    .special-link {
+      width: 100%;
+      margin: 0 0 var(--mobile-padding-small) 0;
+      font-size: 16px;
+
+      &::before {
+        width: calc(100% + 17px);
+      }
+    }
+  }
+
+  .accolades {
+    position: static;
+    max-width: 100%;
+    margin-top: var(--mobile-padding-medium);
+    left: auto;
+    height: 80px;
+
+    .gr {
+      grid-template-columns: repeat(8, 1fr);
+      height: 80px;
+      padding: 6px 6px 24px;
+    }
+
+    .holder {
+      max-width: 24px;
+      max-height: 24px;
+      margin: 4px 2px;
+    }
+  }
+
+  /* Disable custom cursor on mobile */
+  button, a, .holder img {
+    cursor: pointer;
+  }
+}
+
 
 .accolades {
 

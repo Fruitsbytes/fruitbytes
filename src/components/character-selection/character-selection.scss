@@ -74,3 +74,29 @@
   -o-animation: flickerAnimation 1s infinite;
   animation: flickerAnimation 1s infinite;
 }
+
+/* ========================================
+   Mobile Responsive Styles
+   ======================================== */
+@media (max-width: 768px) {
+  .forest {
+    width: 120px;
+    top: -60px;
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  }
+
+  .fruits-avatar {
+    transform: scale(3);
+  }
+
+  .numnum {
+    bottom: -60px;
+    height: 55px;
+    padding: 8px 4px;
+    font-size: 0.45rem;
+  }
+}
