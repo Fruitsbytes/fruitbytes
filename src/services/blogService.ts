@@ -72,20 +72,40 @@ export class BlogService {
 
   /**
    * Get all blog posts for current language, sorted by date (newest first)
+   * Falls back to English posts if no posts available for current language
    */
   getAllPosts(language?: Language): BlogPost[] {
     const lang = language || getCurrentLanguage();
-    return [...blogPosts]
+    let posts = [...blogPosts]
       .filter(post => post.metadata.language === lang)
       .sort((a, b) => new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime());
+
+    // Fallback to English if no posts found for current language
+    if (posts.length === 0 && lang !== 'en') {
+      console.log(`ℹ️ No blog posts found for language: ${lang}, falling back to English`);
+      posts = [...blogPosts]
+        .filter(post => post.metadata.language === 'en')
+        .sort((a, b) => new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime());
+    }
+
+    return posts;
   }
 
   /**
    * Get a single blog post by ID and language
+   * Falls back to English version if not available in current language
    */
   getPostById(id: string, language?: Language): BlogPost | undefined {
     const lang = language || getCurrentLanguage();
-    return blogPosts.find(post => post.id === id && post.metadata.language === lang);
+    let post = blogPosts.find(post => post.id === id && post.metadata.language === lang);
+
+    // Fallback to English if not found for current language
+    if (!post && lang !== 'en') {
+      console.log(`ℹ️ Blog post '${id}' not found for language: ${lang}, falling back to English`);
+      post = blogPosts.find(post => post.id === id && post.metadata.language === 'en');
+    }
+
+    return post;
   }
 
   /**
