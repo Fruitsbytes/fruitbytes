@@ -112,12 +112,6 @@ export class ThreeDService {
               console.error('Error initializing 3D scene:', errorMsg);
               reject(errorMsg);
             }
-          }, (progressEvent: ProgressEvent) => {
-            // Handle loading progress (optional)
-            if (progressEvent.lengthComputable) {
-              const percent = (progressEvent.loaded / progressEvent.total) * 100;
-              console.log(`Loading physics engine: ${percent.toFixed(0)}%`);
-            }
           });
         } catch (error) {
           const errorMsg = error instanceof Event
