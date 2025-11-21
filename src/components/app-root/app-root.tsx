@@ -100,7 +100,7 @@ export class AppRoot {
 
   }
 
-  componentDidLoad() {
+  componentWillLoad() {
     // Handle URL language prefix
     const urlLang = getLanguageFromURL();
     const pathWithoutLang = getPathWithoutLanguage();
@@ -123,12 +123,14 @@ export class AppRoot {
         // TODO show 404
       }
     }
+  }
 
+  componentDidLoad() {
     this.muteVolume(this.volumeMuted);
     this.rightP = this.el.shadowRoot?.querySelector('#rightP');
 
-    // Initialize meta tags
-    this.updateMetaTags();
+    // Initialize meta tags after translations are loaded
+    setTimeout(() => this.updateMetaTags(), 100);
 
     setTimeout(this.init);
   }

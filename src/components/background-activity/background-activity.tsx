@@ -73,13 +73,14 @@ export class BackgroundActivity {
 
   loadWorld = async () => {
     console.log('starting...');
-    await this.my3d?.init(
-      {
-        debug: false,
-        controls: false,
-        container: this.el.shadowRoot?.host as HTMLElement,
-        animation: (scene, _c, _t, _d) => {
-          const newArray: ExtendedObject3D[] = [];
+    try {
+      await this.my3d?.init(
+        {
+          debug: false,
+          controls: false,
+          container: this.el.shadowRoot?.host as HTMLElement,
+          animation: (scene, _c, _t, _d) => {
+            const newArray: ExtendedObject3D[] = [];
 
           if (this.dataArray) {
             this.analyser?.getByteFrequencyData(this.dataArray as any);
@@ -133,12 +134,17 @@ export class BackgroundActivity {
           this.balls = newArray;
         },
       });
-    if (this.my3d) {
-      this.el.shadowRoot?.appendChild(this.my3d.renderer.domElement);
-      await this.addBox();
-      this.my3d.start();
-      this.ready = true;
-    } // TODO replace by RXJS/Observer
+      if (this.my3d) {
+        this.el.shadowRoot?.appendChild(this.my3d.renderer.domElement);
+        await this.addBox();
+        this.my3d.start();
+        this.ready = true;
+      } // TODO replace by RXJS/Observer
+    } catch (error) {
+      console.error('Failed to initialize 3D background:', error);
+      // Gracefully handle failure - background is optional visual enhancement
+      this.ready = false;
+    }
   };
 
   addBox = async () => {

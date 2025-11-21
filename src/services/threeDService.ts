@@ -106,13 +106,25 @@ export class ThreeDService {
               await this._init(config);
               resolve(this._scene);
             } catch (error) {
-              console.error('Error initializing 3D scene:', error);
-              reject(error);
+              const errorMsg = error instanceof Event
+                ? `Physics initialization failed: ${error.type || 'Unknown error'}`
+                : error;
+              console.error('Error initializing 3D scene:', errorMsg);
+              reject(errorMsg);
+            }
+          }, (progressEvent: ProgressEvent) => {
+            // Handle loading progress (optional)
+            if (progressEvent.lengthComputable) {
+              const percent = (progressEvent.loaded / progressEvent.total) * 100;
+              console.log(`Loading physics engine: ${percent.toFixed(0)}%`);
             }
           });
         } catch (error) {
-          console.error('Error loading physics engine:', error);
-          reject(error);
+          const errorMsg = error instanceof Event
+            ? `Failed to load physics engine from /assets/vendors/ammo: ${error.type || 'Network or CORS error'}`
+            : error;
+          console.error('Error loading physics engine:', errorMsg);
+          reject(errorMsg);
         }
       });
 
