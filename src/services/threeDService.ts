@@ -96,14 +96,24 @@ export class ThreeDService {
 
   public init = async (config: InitConfig = {}) => {
 
-    return new Promise((resolve, _reject) => {
+    return new Promise((resolve, reject) => {
       this._cleaning.pipe(
         first(value => !value),
       ).subscribe(() => {
-        PhysicsLoader('/assets/vendors/ammo', async () => {
-          await this._init(config);
-          resolve(this._scene);
-        });
+        try {
+          PhysicsLoader('/assets/vendors/ammo', async () => {
+            try {
+              await this._init(config);
+              resolve(this._scene);
+            } catch (error) {
+              console.error('Error initializing 3D scene:', error);
+              reject(error);
+            }
+          });
+        } catch (error) {
+          console.error('Error loading physics engine:', error);
+          reject(error);
+        }
       });
 
     });
