@@ -9,6 +9,9 @@ import { Howl } from 'howler';
 
 import { animateCSS } from '../../utils';
 import { Nullable } from '../../interfaces/geneneral-types';
+import { Language } from '../../interfaces/translation';
+import i18nService, { getCurrentLanguage, loadTranslations, getLanguageFromURL, getPathWithoutLanguage, buildURLWithLanguage, t } from '../../services/i18n';
+import metaTagsService from '../../services/metaTagsService';
 
 devTools();
 
@@ -34,15 +37,17 @@ export class AppRoot {
   @State() player: Nullable<Player>;
   @State() menuOpened: boolean = true;
   @State() loading: boolean = true;
-  @State() activeRoute: string = location.pathname;
+  @State() activeRoute: string = getPathWithoutLanguage(location.pathname);
   @State() hash: string = location.hash;
   @State() routeLoading: boolean = false;
   @State() volumeMuted: boolean = !!localStorage.getItem('muted') && localStorage.getItem('muted') === '1';
   @State() menuWidth: number = parseInt(localStorage.getItem('menu-width') || '') || DEFAULT_MENU_WIDTH;
+  @State() currentLanguage: Language = getCurrentLanguage();
   @Element() el!: HTMLElement;
   @Event({ eventName: 'state.pushed' }) StatePushed!: EventEmitter<{ state: any; title: string; url?: string | URL | null; }>;
   @Event({ eventName: 'console.logged' }) log!: EventEmitter<Log>;
   @Event({ eventName: 'redraw.screen' }) Redraw!: EventEmitter<boolean>;
+  @Event({ eventName: 'language.changed' }) LanguageChanged!: EventEmitter<Language>;
 
   soundLib: SoundLibraryService = SoundLibraryService.instance();
   progress: number = 0;
@@ -58,6 +63,29 @@ export class AppRoot {
   connectedCallback() {
     this.loading = true;
     this.audioLib = this.soundLib.sounds;
+
+    // Initialize i18n and load current language translations
+    loadTranslations(this.currentLanguage).catch(err => {
+      console.error('Failed to load translations:', err);
+    });
+
+    // Subscribe to language changes
+    i18nService.subscribe((language) => {
+      this.currentLanguage = language;
+      this.LanguageChanged?.emit(language);
+
+      // Update meta tags when language changes
+      metaTagsService.updateLanguage(language);
+      this.updateMetaTags();
+
+      this.log?.emit({
+        message: `🌐 <b>Language</b> changed to ${language.toUpperCase()}`,
+        file: 'app-root.tsx',
+        time: new Date(),
+        line: 67,
+      });
+    });
+
     AuthService.instance().player$.pipe().subscribe(_p => {
       this.player = _p ? new Player(_p) : null;
 
@@ -73,17 +101,34 @@ export class AppRoot {
   }
 
   componentDidLoad() {
+    // Handle URL language prefix
+    const urlLang = getLanguageFromURL();
+    const pathWithoutLang = getPathWithoutLanguage();
 
-    if (!location.pathname || location.pathname === '/') {
-      history.replaceState({}, 'Welcome', '/welcome');
-      this.StatePushed?.emit({ state: {}, url: '/welcome', title: 'Welcome' });
-    } else if (!AVAILABLE_PATHS.includes(location.pathname)) {
-      // TODO show 404
+    // If no language in URL, redirect to include language
+    if (!urlLang) {
+      const targetPath = pathWithoutLang === '/' || pathWithoutLang === '' ? '/welcome' : pathWithoutLang;
+      const newURL = buildURLWithLanguage(targetPath);
+      history.replaceState({}, '', newURL);
+      this.StatePushed?.emit({ state: {}, url: newURL, title: '' });
+    }
+    // If URL has language, check if page path is valid
+    else {
+      const pagePath = pathWithoutLang || '/welcome';
+      if (pagePath === '/' || pagePath === '') {
+        const newURL = buildURLWithLanguage('/welcome');
+        history.replaceState({}, 'Welcome', newURL);
+        this.StatePushed?.emit({ state: {}, url: newURL, title: 'Welcome' });
+      } else if (!AVAILABLE_PATHS.includes(pagePath)) {
+        // TODO show 404
+      }
     }
 
     this.muteVolume(this.volumeMuted);
     this.rightP = this.el.shadowRoot?.querySelector('#rightP');
 
+    // Initialize meta tags
+    this.updateMetaTags();
 
     setTimeout(this.init);
   }
@@ -232,6 +277,63 @@ export class AppRoot {
     });
   }
 
+  /**
+   * Update meta tags based on current route
+   */
+  updateMetaTags() {
+    const pathWithoutLang = getPathWithoutLanguage();
+    const baseTitle = 'FruitsBytes';
+
+    // Route-specific meta tags
+    const routeMetaTags: Record<string, { title: string; description: string; type: 'website' | 'article' | 'profile' }> = {
+      '/welcome': {
+        title: `${t('welcome.title')} | ${baseTitle}`,
+        description: t('welcome.description'),
+        type: 'website',
+      },
+      '/about-me': {
+        title: `${t('about.title')} | ${baseTitle}`,
+        description: t('about.description'),
+        type: 'profile',
+      },
+      '/contact-me': {
+        title: `${t('contact.title')} | ${baseTitle}`,
+        description: t('contact.description'),
+        type: 'website',
+      },
+      '/my-blog': {
+        title: `${t('blog.title')} | ${baseTitle}`,
+        description: t('blog.description'),
+        type: 'website',
+      },
+      '/my-projects': {
+        title: `${t('projects.title')} | ${baseTitle}`,
+        description: t('projects.description'),
+        type: 'website',
+      },
+      '/console-log': {
+        title: `${t('console.title')} | ${baseTitle}`,
+        description: t('console.description'),
+        type: 'website',
+      },
+    };
+
+    const currentMeta = routeMetaTags[pathWithoutLang] || {
+      title: baseTitle,
+      description: 'Developer Portfolio & Blog',
+      type: 'website' as const,
+    };
+
+    metaTagsService.setMetaTags({
+      title: currentMeta.title,
+      description: currentMeta.description,
+      type: currentMeta.type,
+      locale: this.currentLanguage,
+      url: window.location.href,
+      siteName: baseTitle,
+    });
+  }
+
   @Listen('menu.resizing', { target: 'document', capture: true })
   handleMenuResized(e: CustomEvent<[string, number]>) {
     const [menuName, width] = e.detail;
@@ -245,7 +347,13 @@ export class AppRoot {
   @Listen('state.pushed', { target: 'document' })
   handleRouteChange(_e: CustomEvent<{ state: any; title: string; url?: string | URL | null; }>) {
     const previousRoute = this.activeRoute;
-    const newRoute = location.pathname;
+    const newRoute = getPathWithoutLanguage(); // Extract path without language prefix
+
+    // Update language if URL language changed
+    const urlLang = getLanguageFromURL();
+    if (urlLang && urlLang !== this.currentLanguage) {
+      i18nService.setLanguage(urlLang, false); // Don't update URL since it's already correct
+    }
 
     // Only show loading skeleton if the route actually changed (not just hash)
     if (previousRoute !== newRoute) {
@@ -257,6 +365,9 @@ export class AppRoot {
       this.activeRoute = newRoute;
       this.hash = location.hash;
       this.soundLib.sounds.ping.play();
+
+      // Update meta tags for new route
+      this.updateMetaTags();
 
       // Hide skeleton after content loads
       if (this.routeLoading) {
@@ -270,6 +381,10 @@ export class AppRoot {
   @Listen('popstate', { target: 'window', capture: true })
   onNavigate(_e: PopStateEvent) {
     this.hash = location.hash;
+    const urlLang = getLanguageFromURL();
+    if (urlLang && urlLang !== this.currentLanguage) {
+      i18nService.setLanguage(urlLang, false); // Sync language from URL
+    }
     this.StatePushed?.emit({ state: {}, title: '', url: location.pathname + location.hash });
   }
 

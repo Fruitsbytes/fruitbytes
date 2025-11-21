@@ -4,6 +4,8 @@ import { ABOUT_SECTION } from '../../config';
 import { ResumeService } from '../../services/resumeService';
 import { PDFService } from '../../services/pdfService';
 import { Log } from '../../interfaces/log';
+import { t, getCurrentLanguage } from '../../services/i18n';
+import { Language } from '../../interfaces/translation';
 
 
 function generateMenu(menuItems: MenuItem2[]): string {
@@ -50,10 +52,16 @@ export class ConsoleAbout {
   @State() selectedLanguage: string = 'en';
   @State() isDownloading: boolean = false;
   @State() errorMessage: string = '';
+  @State() currentLanguage: Language = getCurrentLanguage();
   @Event({ eventName: 'console.logged' }) log!: EventEmitter<Log>;
 
   private resumeService: ResumeService = ResumeService.instance();
   private pdfService: PDFService = PDFService.instance();
+
+  @Listen('language.changed', { target: 'document' })
+  handleUILanguageChange(event: CustomEvent<Language>) {
+    this.currentLanguage = event.detail;
+  }
 
   componentDidLoad() {
     this.selectMenuItem();
@@ -154,7 +162,7 @@ export class ConsoleAbout {
       });
     } catch (error) {
       console.error('Error downloading CV:', error);
-      this.errorMessage = 'Failed to generate CV. Please try again.';
+      this.errorMessage = t('resume.errorMessage');
 
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       this.log?.emit({
@@ -209,33 +217,34 @@ export class ConsoleAbout {
         <div class='cvs mt-auto px-3 mb-24'>
 
           <div class='rounded border p-2 my-3 bb relative'>
-            <h1 class='font-medium text-lg flex justify-between py-1'>Download CV <pre
-              class='text-sm text-orange-400 font-mono'>v1.0.1</pre></h1>
+            <h1 class='font-medium text-lg flex justify-between py-1'>{t('resume.downloadCV')} <pre
+              class='text-sm text-orange-400 font-mono'>{t('resume.versionLabel')}</pre></h1>
 
             <div class='grid grid-cols-5'>
               <div class='py-2 mr-2 col-span-3'>
-                <label htmlFor='speciality' class='block mb-2 text-sm font-medium  text-gray-400'>Target</label>
+                <label htmlFor='speciality' class='block mb-2 text-sm font-medium  text-gray-400'>{t('resume.targetLabel')}</label>
                 <select
                   id='speciality'
                   onInput={this.handleRoleChange}
                   disabled={this.isDownloading}
                   class='bb border text-sm rounded-lg bg-opacity-0 block w-full p-2.5 bg-gray-900 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'>
-                  <option value='frontend' selected={this.selectedRole === 'frontend'}>Frontend Software Developer</option>
-                  <option value='fullStack' selected={this.selectedRole === 'fullStack'}>FullStack Software Developer</option>
-                  <option value='wireless' selected={this.selectedRole === 'wireless'}>Wireless Network Engineer/Instructor</option>
+                  <option value='frontend' selected={this.selectedRole === 'frontend'}>{t('resume.roles.frontend')}</option>
+                  <option value='fullStack' selected={this.selectedRole === 'fullStack'}>{t('resume.roles.fullStack')}</option>
+                  <option value='wireless' selected={this.selectedRole === 'wireless'}>{t('resume.roles.wireless')}</option>
                 </select>
               </div>
 
               <div class='py-2  col-span-2'>
-                <label htmlFor='lang' class='block mb-2 text-sm font-medium  text-gray-400'>Language</label>
+                <label htmlFor='lang' class='block mb-2 text-sm font-medium  text-gray-400'>{t('resume.languageLabel')}</label>
                 <select
                   id='lang'
                   onInput={this.handleLanguageChange}
                   disabled={this.isDownloading}
                   class='bb border text-sm rounded-lg block bg-opacity-0 w-full p-2.5 bg-gray-900 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'>
-                  <option value='en' selected={this.selectedLanguage === 'en'}>English</option>
-                  <option value='fr' selected={this.selectedLanguage === 'fr'}>Français</option>
-                  <option value='es' selected={this.selectedLanguage === 'es'}>Español</option>
+                  <option value='en' selected={this.selectedLanguage === 'en'}>{t('language.en')}</option>
+                  <option value='ht' selected={this.selectedLanguage === 'ht'}>{t('language.ht')}</option>
+                  <option value='fr' selected={this.selectedLanguage === 'fr'}>{t('language.fr')}</option>
+                  <option value='es' selected={this.selectedLanguage === 'es'}>{t('language.es')}</option>
                 </select>
               </div>
 
@@ -267,7 +276,7 @@ export class ConsoleAbout {
                             d='M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'></path>
                     </svg>
                   )}
-                  {this.isDownloading ? 'Generating...' : 'Download'}
+                  {this.isDownloading ? t('resume.generatingButton') : t('resume.downloadButton')}
                 </button>
                 <button
                   type='button'
@@ -275,7 +284,7 @@ export class ConsoleAbout {
                   disabled={this.isDownloading}
                   class='ml-2 flex items-center justify-center hover:text-white border hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 text-center border-blue-500 text-blue-500 hover:bg-blue-600 focus:ring-blue-800 disabled:opacity-50 disabled:cursor-not-allowed'>
                   <span class='material-symbols-rounded'>content_copy</span>
-                  <span>Copy Link</span>
+                  <span>{t('resume.copyLinkButton')}</span>
                 </button>
               </div>
 

@@ -1,0 +1,164 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "close": "Close",
+    "open": "Open",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "nav": {
+    "welcome": "Home",
+    "console": "Console",
+    "about": "About",
+    "contact": "Contact",
+    "blog": "Blog",
+    "projects": "Projects"
+  },
+  "welcome": {
+    "title": "Welcome to FruitsBytes",
+    "subtitle": "Developer Portfolio",
+    "description": "Explore my projects, read my blog, and get in touch"
+  },
+  "about": {
+    "title": "About Me",
+    "description": "Learn more about my background and experience"
+  },
+  "contact": {
+    "title": "Contact Me",
+    "description": "Get in touch for collaborations or inquiries"
+  },
+  "blog": {
+    "title": "My Blog",
+    "description": "Thoughts, tutorials, and insights",
+    "readMore": "Read more",
+    "postedOn": "Posted on"
+  },
+  "projects": {
+    "title": "My Projects",
+    "description": "Showcase of my work",
+    "viewProject": "View Project",
+    "sourceCode": "Source Code"
+  },
+  "console": {
+    "title": "Console Log",
+    "description": "System logs and messages",
+    "clear": "Clear",
+    "level": {
+      "info": "Info",
+      "warning": "Warning",
+      "error": "Error",
+      "default": "Log"
+    }
+  },
+  "errors": {
+    "404": "Page Not Found",
+    "404Description": "The page you are looking for does not exist",
+    "goHome": "Go to Home"
+  },
+  "notFound": {
+    "title": "404",
+    "subtitle": ":not(.fruit)",
+    "message": "I am sorry, there is a universe where this content is available but not this one.",
+    "hint": "Try restarting your computer and make the Konami code",
+    "consoleError": "Error: Sorry, the path you are trying to reach is not available: {path}. Please verify the link and try again.",
+    "backButton": "Back",
+    "homeButton": "Home"
+  },
+  "language": {
+    "select": "Select Language",
+    "en": "English",
+    "ht": "Haitian Creole",
+    "es": "Spanish",
+    "fr": "French"
+  },
+  "loading": {
+    "greeting": "Hi, I am Jeffrey N. Carré",
+    "roles": {
+      "seniorDev": "Senior Software Developer",
+      "fullstack": "FullStack",
+      "gamer": "Gamer",
+      "haitian": "Haitian",
+      "wirelessTech": "Wireless Network Tech/Trainer",
+      "designer": "Graphic Designer",
+      "freelancer": "Freelancer"
+    },
+    "welcomeMessage": "Welcome to my personal website. Here I showcase my projects, passions, hobbies and everything that motivates me in life. Enjoy!",
+    "soundOn": "Sound ON"
+  },
+  "character": {
+    "question1": "Which one would it be,",
+    "question2": "if you could be a",
+    "fruitWord": "Fruit",
+    "buildCharacter": "(Build your character)",
+    "nameLabel": "Name",
+    "namePlaceholder": "John",
+    "typeLabel": "Type + Variety",
+    "selectFruit": "Select a fruit",
+    "flavorLabel": "Flavor",
+    "selectFlavor": "Select a flavor",
+    "randomizeButton": "GMO",
+    "pluckButton": "Pluck"
+  },
+  "resume": {
+    "downloadCV": "Download CV",
+    "targetLabel": "Target",
+    "languageLabel": "Language",
+    "roles": {
+      "frontend": "Frontend Software Developer",
+      "fullStack": "FullStack Software Developer",
+      "wireless": "Wireless Network Engineer/Instructor"
+    },
+    "downloadButton": "Download",
+    "generatingButton": "Generating...",
+    "copyLinkButton": "Copy Link",
+    "errorMessage": "Failed to generate CV. Please try again.",
+    "versionLabel": "v1.0.1"
+  },
+  "welcome": {
+    "greeting": "Hi, {name} you decided to be known as the {flavor} {type}. Great choice!",
+    "intro1": "I am currently exploring video game programing and this website is my playground. It is a work in progress, always evolving",
+    "intro2": "For the first time in a long time, I get to finally put my Civil Engineer Math/Physic classes to good use. My interest for video games started at 5 years old, when I received my first NES. Little did I know that the grim artifacts loaded by the corrupted cartridges would bring the same despair 14 years later, while compiling C++ on Borland.",
+    "coding1": "My first real coding experience stated circa 1998, when we finally upgraded to SNES. It was the year of the famous football match, Brasil vs France : 0 - 3. My cousin got a VTech and I was able to code using Basic. Growing up, I was introduced to Visual Basic and Ti-Basic on my graphing calculator during my last years in college. I always dreamed of the day when I would be able to help port StarCraft on the Ti-89.",
+    "coding2": "The team working on that task made a lot of progress. I wonder what type of version control they were using at the time. Video games were always my passion, my first username was Bleuscyther (Blue + Scyther), my favorate color and my favorite pokemon.",
+    "current": "Now after 14 years of building softwares and websites professionally, I try to spend my free time on learning how to produce video games if i am not playing a Paradox game on ironman. My goal is to have enough skills to do a X-Com III preview, Tyranny II (by Obsidian) or even The Movies - Remastered (by LionHead) HD 😅",
+    "cta": "In the meantime if you need a software developer or consulting service on your software project hit me up.",
+    "thanks": "Thank you for reading this far,",
+    "treat": "have a treat:",
+    "button": "Frosted fruit candies",
+    "links": {
+      "moreAbout": "More about me",
+      "myProjects": "My projects",
+      "contactMe": "Contact me",
+      "checkBlog": "Check out my Blog"
+    }
+  },
+  "projectsPage": {
+    "title": "My Projects",
+    "subtitle": "A showcase of selected work spanning web development, mobile apps, 3D graphics, fintech, and wireless networks",
+    "keyHighlights": "Key Highlights:",
+    "technologies": "Technologies:",
+    "viewProject": "View Project",
+    "cta": {
+      "title": "Interested in collaborating?",
+      "subtitle": "I'm always open to discussing new projects and opportunities.",
+      "button": "Get in Touch"
+    }
+  },
+  "blogPage": {
+    "readArticle": "Read article",
+    "minRead": "min read",
+    "by": "By"
+  },
+  "aboutPage": {
+    "title": "About Me",
+    "bio": "Bio",
+    "employmentHistory": "Employment History",
+    "education": "Education",
+    "skills": "Skills",
+    "info": "Info",
+    "location": "Location",
+    "email": "Email"
+  }
+}

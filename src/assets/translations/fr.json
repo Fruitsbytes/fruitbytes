@@ -1,0 +1,164 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "close": "Fermer",
+    "open": "Ouvrir",
+    "save": "Enregistrer",
+    "cancel": "Annuler"
+  },
+  "nav": {
+    "welcome": "Accueil",
+    "console": "Console",
+    "about": "À propos",
+    "contact": "Contact",
+    "blog": "Blog",
+    "projects": "Projets"
+  },
+  "welcome": {
+    "title": "Bienvenue sur FruitsBytes",
+    "subtitle": "Portfolio de Développeur",
+    "description": "Explorez mes projets, lisez mon blog et contactez-moi"
+  },
+  "about": {
+    "title": "À Propos de Moi",
+    "description": "Découvrez mon parcours et mon expérience"
+  },
+  "contact": {
+    "title": "Me Contacter",
+    "description": "Contactez-moi pour des collaborations ou des questions"
+  },
+  "blog": {
+    "title": "Mon Blog",
+    "description": "Réflexions, tutoriels et idées",
+    "readMore": "Lire plus",
+    "postedOn": "Publié le"
+  },
+  "projects": {
+    "title": "Mes Projets",
+    "description": "Présentation de mon travail",
+    "viewProject": "Voir le Projet",
+    "sourceCode": "Code Source"
+  },
+  "console": {
+    "title": "Journal de Console",
+    "description": "Journaux et messages du système",
+    "clear": "Effacer",
+    "level": {
+      "info": "Info",
+      "warning": "Avertissement",
+      "error": "Erreur",
+      "default": "Journal"
+    }
+  },
+  "errors": {
+    "404": "Page Non Trouvée",
+    "404Description": "La page que vous recherchez n'existe pas",
+    "goHome": "Aller à l'Accueil"
+  },
+  "notFound": {
+    "title": "404",
+    "subtitle": ":not(.fruit)",
+    "message": "Je suis désolé, il existe un univers où ce contenu est disponible, mais pas celui-ci.",
+    "hint": "Essayez de redémarrer votre ordinateur et faites le code Konami",
+    "consoleError": "Erreur : Désolé, le chemin que vous essayez d'atteindre n'est pas disponible : {path}. Veuillez vérifier le lien et réessayer.",
+    "backButton": "Retour",
+    "homeButton": "Accueil"
+  },
+  "language": {
+    "select": "Sélectionner la Langue",
+    "en": "Anglais",
+    "ht": "Créole Haïtien",
+    "es": "Espagnol",
+    "fr": "Français"
+  },
+  "loading": {
+    "greeting": "Bonjour, je suis Jeffrey N. Carré",
+    "roles": {
+      "seniorDev": "Développeur Logiciel Senior",
+      "fullstack": "FullStack",
+      "gamer": "Joueur",
+      "haitian": "Haïtien",
+      "wirelessTech": "Technicien/Formateur Réseau Sans Fil",
+      "designer": "Designer Graphique",
+      "freelancer": "Freelance"
+    },
+    "welcomeMessage": "Bienvenue sur mon site personnel. Ici je présente mes projets, passions, loisirs et tout ce qui me motive dans la vie. Profitez-en !",
+    "soundOn": "Son ACTIVÉ"
+  },
+  "character": {
+    "question1": "Lequel serait-ce,",
+    "question2": "si vous pouviez être un",
+    "fruitWord": "Fruit",
+    "buildCharacter": "(Créez votre personnage)",
+    "nameLabel": "Nom",
+    "namePlaceholder": "Jean",
+    "typeLabel": "Type + Variété",
+    "selectFruit": "Sélectionnez un fruit",
+    "flavorLabel": "Saveur",
+    "selectFlavor": "Sélectionnez une saveur",
+    "randomizeButton": "OGM",
+    "pluckButton": "Cueillir"
+  },
+  "resume": {
+    "downloadCV": "Télécharger CV",
+    "targetLabel": "Cible",
+    "languageLabel": "Langue",
+    "roles": {
+      "frontend": "Développeur Logiciel Frontend",
+      "fullStack": "Développeur Logiciel FullStack",
+      "wireless": "Ingénieur/Formateur Réseau Sans Fil"
+    },
+    "downloadButton": "Télécharger",
+    "generatingButton": "Génération...",
+    "copyLinkButton": "Copier le Lien",
+    "errorMessage": "Échec de la génération du CV. Veuillez réessayer.",
+    "versionLabel": "v1.0.1"
+  },
+  "welcome": {
+    "greeting": "Bonjour, {name} vous avez décidé d'être connu comme le {flavor} {type}. Excellent choix!",
+    "intro1": "J'explore actuellement la programmation de jeux vidéo et ce site web est mon terrain de jeu. C'est un travail en cours, toujours en évolution",
+    "intro2": "Pour la première fois depuis longtemps, je peux enfin mettre à profit mes cours de mathématiques/physique d'ingénierie civile. Mon intérêt pour les jeux vidéo a commencé à 5 ans, lorsque j'ai reçu ma première NES. Je ne savais pas que les terribles artefacts chargés par les cartouches corrompues apporteraient le même désespoir 14 ans plus tard, lors de la compilation de C++ sur Borland.",
+    "coding1": "Ma première véritable expérience de codage a commencé vers 1998, lorsque nous avons finalement mis à niveau vers la SNES. C'était l'année du célèbre match de football, Brésil contre France : 0 - 3. Mon cousin a obtenu un VTech et j'ai pu coder en utilisant Basic. En grandissant, on m'a initié à Visual Basic et Ti-Basic sur ma calculatrice graphique pendant mes dernières années de collège. J'ai toujours rêvé du jour où je pourrais aider à porter StarCraft sur la Ti-89.",
+    "coding2": "L'équipe travaillant sur cette tâche a fait beaucoup de progrès. Je me demande quel type de contrôle de version ils utilisaient à l'époque. Les jeux vidéo ont toujours été ma passion, mon premier nom d'utilisateur était Bleuscyther (Bleu + Scyther), ma couleur préférée et mon pokemon préféré.",
+    "current": "Maintenant, après 14 ans à construire des logiciels et des sites web professionnellement, j'essaie de passer mon temps libre à apprendre à produire des jeux vidéo si je ne joue pas à un jeu Paradox en ironman. Mon objectif est d'avoir suffisamment de compétences pour faire un aperçu de X-Com III, Tyranny II (par Obsidian) ou même The Movies - Remastered (par LionHead) HD 😅",
+    "cta": "En attendant, si vous avez besoin d'un développeur de logiciels ou de services de conseil sur votre projet logiciel, contactez-moi.",
+    "thanks": "Merci d'avoir lu jusqu'ici,",
+    "treat": "voici une récompense:",
+    "button": "Bonbons aux fruits givrés",
+    "links": {
+      "moreAbout": "Plus sur moi",
+      "myProjects": "Mes projets",
+      "contactMe": "Contactez-moi",
+      "checkBlog": "Consultez mon Blog"
+    }
+  },
+  "projectsPage": {
+    "title": "Mes Projets",
+    "subtitle": "Une vitrine de travaux sélectionnés couvrant le développement web, les applications mobiles, les graphiques 3D, la fintech et les réseaux sans fil",
+    "keyHighlights": "Points Clés:",
+    "technologies": "Technologies:",
+    "viewProject": "Voir le Projet",
+    "cta": {
+      "title": "Intéressé par une collaboration?",
+      "subtitle": "Je suis toujours ouvert à discuter de nouveaux projets et opportunités.",
+      "button": "Contactez-moi"
+    }
+  },
+  "blogPage": {
+    "readArticle": "Lire l'article",
+    "minRead": "min de lecture",
+    "by": "Par"
+  },
+  "aboutPage": {
+    "title": "À Propos de Moi",
+    "bio": "Biographie",
+    "employmentHistory": "Historique d'Emploi",
+    "education": "Éducation",
+    "skills": "Compétences",
+    "info": "Informations",
+    "location": "Localisation",
+    "email": "Courriel"
+  }
+}

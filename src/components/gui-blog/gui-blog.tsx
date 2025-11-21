@@ -1,6 +1,8 @@
-import { Component, Host, h, Prop, State, Watch } from '@stencil/core';
+import { Component, Host, h, Prop, State, Watch, Listen } from '@stencil/core';
 import { BlogPost } from '../../interfaces/blog';
 import { BlogService } from '../../services/blogService';
+import { t, getCurrentLanguage } from '../../services/i18n';
+import { Language } from '../../interfaces/translation';
 
 @Component({
   tag: 'gui-blog',
@@ -15,8 +17,14 @@ export class GuiBlog {
   @State() posts: BlogPost[] = [];
   @State() viewMode: 'list' | 'single' = 'list';
   @State() currentPost: BlogPost | null = null;
+  @State() currentLanguage: Language = getCurrentLanguage();
 
   private blogService = BlogService.getInstance();
+
+  @Listen('language.changed', { target: 'document' })
+  handleLanguageChange(event: CustomEvent<Language>) {
+    this.currentLanguage = event.detail;
+  }
 
   componentWillLoad() {
     this.posts = this.blogService.getAllPosts();
@@ -72,7 +80,7 @@ export class GuiBlog {
           <div class='blog-card-meta'>
             <time dateTime={post.metadata.date}>{this.formatDate(post.metadata.date)}</time>
             <span class='separator'>•</span>
-            <span>{post.metadata.readTime} min read</span>
+            <span>{post.metadata.readTime} {t('blogPage.minRead')}</span>
           </div>
 
           <p class='blog-card-excerpt'>{post.metadata.description}</p>
@@ -86,10 +94,10 @@ export class GuiBlog {
           </div>
 
           <div class='blog-card-footer'>
-            <span class='author'>By {post.metadata.author}</span>
-            <simple-link link={`/my-blog#${post.id}`} label='Read article'>
+            <span class='author'>{t('blogPage.by')} {post.metadata.author}</span>
+            <simple-link link={`/my-blog#${post.id}`} label={t('blogPage.readArticle')}>
               <span class='read-more'>
-                Read article
+                {t('blogPage.readArticle')}
                 <span class='material-symbols-sharp'>arrow_forward</span>
               </span>
             </simple-link>
@@ -124,11 +132,11 @@ export class GuiBlog {
             <h1 class='post-title'>{post.metadata.title}</h1>
 
             <div class='post-meta'>
-              <span class='post-author'>By {post.metadata.author}</span>
+              <span class='post-author'>{t('blogPage.by')} {post.metadata.author}</span>
               <span class='separator'>•</span>
               <time dateTime={post.metadata.date}>{this.formatDate(post.metadata.date)}</time>
               <span class='separator'>•</span>
-              <span>{post.metadata.readTime} min read</span>
+              <span>{post.metadata.readTime} {t('blogPage.minRead')}</span>
             </div>
 
             <div class='post-tags'>

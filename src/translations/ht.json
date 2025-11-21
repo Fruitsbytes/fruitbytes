@@ -1,0 +1,67 @@
+{
+  "common": {
+    "loading": "Chajman...",
+    "error": "Erè",
+    "success": "Siksè",
+    "close": "Fèmen",
+    "open": "Louvri",
+    "save": "Anrejistre",
+    "cancel": "Anile"
+  },
+  "nav": {
+    "welcome": "Akèy",
+    "console": "Konsòl",
+    "about": "Konsènan",
+    "contact": "Kontak",
+    "blog": "Blog",
+    "projects": "Pwojè"
+  },
+  "welcome": {
+    "title": "Byenveni nan FruitsBytes",
+    "subtitle": "Pòtfòy Devlopè",
+    "description": "Eksplore pwojè m yo, li blog mwen, epi kontakte m"
+  },
+  "about": {
+    "title": "Konsènan Mwen",
+    "description": "Aprann plis sou antecedent ak eksperyans mwen"
+  },
+  "contact": {
+    "title": "Kontakte M",
+    "description": "Kontakte m pou kolaborasyon oswa kesyon"
+  },
+  "blog": {
+    "title": "Blog Mwen",
+    "description": "Panse, tityorial, ak enfòmasyon",
+    "readMore": "Li plis",
+    "postedOn": "Pibliye nan"
+  },
+  "projects": {
+    "title": "Pwojè Mwen Yo",
+    "description": "Ekspozisyon travay mwen",
+    "viewProject": "Gade Pwojè",
+    "sourceCode": "Kòd Sous"
+  },
+  "console": {
+    "title": "Jounal Konsòl",
+    "description": "Jounal sistèm ak mesaj",
+    "clear": "Efase",
+    "level": {
+      "info": "Enfò",
+      "warning": "Avètisman",
+      "error": "Erè",
+      "default": "Jounal"
+    }
+  },
+  "errors": {
+    "404": "Paj Pa Jwenn",
+    "404Description": "Paj ou ap chèche a pa egziste",
+    "goHome": "Ale nan Akèy"
+  },
+  "language": {
+    "select": "Chwazi Lang",
+    "en": "Anglè",
+    "ht": "Kreyòl Ayisyen",
+    "es": "Panyòl",
+    "fr": "Franse"
+  }
+}

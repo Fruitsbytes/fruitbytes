@@ -1,0 +1,67 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "close": "Close",
+    "open": "Open",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "nav": {
+    "welcome": "Home",
+    "console": "Console",
+    "about": "About",
+    "contact": "Contact",
+    "blog": "Blog",
+    "projects": "Projects"
+  },
+  "welcome": {
+    "title": "Welcome to FruitsBytes",
+    "subtitle": "Developer Portfolio",
+    "description": "Explore my projects, read my blog, and get in touch"
+  },
+  "about": {
+    "title": "About Me",
+    "description": "Learn more about my background and experience"
+  },
+  "contact": {
+    "title": "Contact Me",
+    "description": "Get in touch for collaborations or inquiries"
+  },
+  "blog": {
+    "title": "My Blog",
+    "description": "Thoughts, tutorials, and insights",
+    "readMore": "Read more",
+    "postedOn": "Posted on"
+  },
+  "projects": {
+    "title": "My Projects",
+    "description": "Showcase of my work",
+    "viewProject": "View Project",
+    "sourceCode": "Source Code"
+  },
+  "console": {
+    "title": "Console Log",
+    "description": "System logs and messages",
+    "clear": "Clear",
+    "level": {
+      "info": "Info",
+      "warning": "Warning",
+      "error": "Error",
+      "default": "Log"
+    }
+  },
+  "errors": {
+    "404": "Page Not Found",
+    "404Description": "The page you are looking for does not exist",
+    "goHome": "Go to Home"
+  },
+  "language": {
+    "select": "Select Language",
+    "en": "English",
+    "ht": "Haitian Creole",
+    "es": "Spanish",
+    "fr": "French"
+  }
+}

@@ -44,6 +44,7 @@ export const config: Config = {
         { src: 'assets/models', dest: 'assets/models' },
         { src: 'assets/texture', dest: 'assets/texture' },
         { src: 'assets/vendors', dest: 'assets/vendors' },
+        { src: 'assets/translations', dest: 'assets/translations' },
         // Copy resume markdown files
         { src: 'data/resumes', dest: 'assets/resumes' }
       ]
