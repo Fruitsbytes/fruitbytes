@@ -1,4 +1,4 @@
-import { Component, Event, EventEmitter, h, Host, Prop, Element, State } from '@stencil/core';
+import { Component, Event, EventEmitter, h, Host, Prop, Element, State, Listen } from '@stencil/core';
 import { Nullable } from '../../interfaces/geneneral-types';
 import { Player } from '../../facade/character';
 import { SoundLibraryService } from '../../services/soundLibraryService';
@@ -125,13 +125,11 @@ export class GuiWelcome {
                 <img src='../../assets/images/megaman.gif' alt='megaman' class='sims' title='Megaman' />
               </div>
 
-              <p dangerouslySetInnerHTML={{
-                __html: t('welcome.greeting', {
-                  name: `<code><b class='text-yellow-100'>${this.player?.name || 'Jon Doe'}</b></code>`,
-                  flavor: `<b class='text-blue-200'>${this.player?.characterType.flavor || 'Fresh'}</b>`,
-                  type: `<b class='text-red-200'>${this.player?.characterType.type || 'Apple - Red Delicious'}</b>`
-                })
-              }}></p>
+              <p innerHTML={t('welcome.greeting', {
+                name: `<code><b class='text-yellow-100'>${this.player?.name || 'Jon Doe'}</b></code>`,
+                flavor: `<b class='text-blue-200'>${this.player?.characterType.flavor || 'Fresh'}</b>`,
+                type: `<b class='text-red-200'>${this.player?.characterType.type || 'Apple - Red Delicious'}</b>`
+              })}></p>
               <p>{t('welcome.intro1')}</p>
               <br />
               <p>{t('welcome.intro2')}</p>
