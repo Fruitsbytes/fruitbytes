@@ -22,6 +22,22 @@ export interface TranslationKeys {
     title: string;
     subtitle: string;
     description: string;
+    greeting: string;
+    intro1: string;
+    intro2: string;
+    coding1: string;
+    coding2: string;
+    current: string;
+    cta: string;
+    thanks: string;
+    treat: string;
+    button: string;
+    links: {
+      moreAbout: string;
+      myProjects: string;
+      contactMe: string;
+      checkBlog: string;
+    };
   };
   about: {
     title: string;
@@ -93,6 +109,38 @@ export interface TranslationKeys {
     selectFlavor: string;
     randomizeButton: string;
     pluckButton: string;
+  };
+  resume: {
+    downloadCV: string;
+    targetLabel: string;
+    languageLabel: string;
+    roles: {
+      frontend: string;
+      fullStack: string;
+      wireless: string;
+    };
+    downloadButton: string;
+    generatingButton: string;
+    copyLinkButton: string;
+    errorMessage: string;
+    versionLabel: string;
+  };
+  projectsPage: {
+    title: string;
+    subtitle: string;
+    keyHighlights: string;
+    technologies: string;
+    viewProject: string;
+    cta: {
+      title: string;
+      subtitle: string;
+      button: string;
+    };
+  };
+  blogPage: {
+    readArticle: string;
+    minRead: string;
+    by: string;
   };
 }
 

@@ -5,6 +5,8 @@ import { SoundLibraryService } from '../../services/soundLibraryService';
 import { Log } from '../../interfaces/log';
 import tools from './tools.json';
 import { interval, repeat, Subscription, take } from 'rxjs';
+import { t, getCurrentLanguage } from '../../services/i18n';
+import { Language } from '../../interfaces/translation';
 
 @Component({
   tag: 'gui-welcome',
@@ -15,7 +17,8 @@ export class GuiWelcome {
   @Prop() menuOpened!: boolean;
   @Prop() menuWidth!: number;
   @Prop() player!: Nullable<Player>;
-  @State()selected: number[] = [];
+  @State() selected: number[] = [];
+  @State() currentLanguage: Language = getCurrentLanguage();
   @Event({ eventName: 'pull.box.up' }) PullBoxUp!: EventEmitter<boolean>;
   @Event({ eventName: 'console.logged' }) Log!: EventEmitter<Log>;
   @Element() el!: HTMLElement;
@@ -35,6 +38,11 @@ export class GuiWelcome {
 
     setTimeout(this.wave);
 
+  }
+
+  @Listen('language.changed', { target: 'document' })
+  handleLanguageChange(event: CustomEvent<Language>) {
+    this.currentLanguage = event.detail;
   }
 
   wave = (point= 0, count = 3) => {
@@ -117,18 +125,16 @@ export class GuiWelcome {
                 <img src='../../assets/images/megaman.gif' alt='megaman' class='sims' title='Megaman' />
               </div>
 
-              <p>Hi, <code><b class='text-yellow-100'>{this.player?.name || 'Jon Doe'}</b></code> you decided to be
-                known as
-                the <b class='text-blue-200'>{this.player?.characterType.flavor || 'Fresh'}</b> <b
-                  class='text-red-200'>{this.player?.characterType.type || 'Apple - Red Delicious'}</b>. Great choice!
-              </p>
-              <p>I am currently exploring video game programing and this website is my playground. It is a work in
-                progress, always evolving</p>
+              <p dangerouslySetInnerHTML={{
+                __html: t('welcome.greeting', {
+                  name: `<code><b class='text-yellow-100'>${this.player?.name || 'Jon Doe'}</b></code>`,
+                  flavor: `<b class='text-blue-200'>${this.player?.characterType.flavor || 'Fresh'}</b>`,
+                  type: `<b class='text-red-200'>${this.player?.characterType.type || 'Apple - Red Delicious'}</b>`
+                })
+              }}></p>
+              <p>{t('welcome.intro1')}</p>
               <br />
-              <p>For the first time in a long time, I get to finally put my Civil Engineer Math/Physic classes to good
-                use. My interest for video games started at 5 years old, when I received my first NES. Little did I know
-                that the grim artifacts loaded by the corrupted cartridges would bring the same despair 14 years later,
-                while compiling C++ on Borland. </p>
+              <p>{t('welcome.intro2')}</p>
               <br />
 
               <div class='flex justify-center items-center'>
@@ -139,14 +145,8 @@ export class GuiWelcome {
                      title='Whololo Monk  - Age of Empire - PC' />
               </div>
 
-              <p>My first real coding experience stated circa 1998, when we finally upgraded to SNES. It was the year of
-                the famous football match, Brasil vs France : 0 - 3. My cousin got a VTech and I was able to code using
-                Basic. Growing up, I was introduced to Visual Basic and Ti-Basic on my graphing calculator during my
-                last years in college. I always dreamed of the day when I would be able to help port StarCraft on the
-                Ti-89.</p>
-              <p>The team working on that task made a lot of progress. I wonder what type of version control they were
-                using at the time. Video games were always my passion, my first username was <b
-                  class='text-blue-700'>Bleuscyther</b> (Blue + Scyther), my favorate color and my favorite pokemon.</p>
+              <p>{t('welcome.coding1')}</p>
+              <p>{t('welcome.coding2')}</p>
               <br />
 
               <div class='flex justify-center items-center'>
@@ -155,11 +155,7 @@ export class GuiWelcome {
                      title='StarCaft Protos' />
               </div>
 
-              <p>Now after 14 years of building softwares and websites professionally, I try to spend my free time on
-                learning how to produce video games if i am not playing a Paradox game on ironman. My goal is to have
-                enough
-                skills to do a X-Com III preview , Tyranny II (by Obsidian) or even The Movies - Remastered (by
-                LionHead) HD 😅</p>
+              <p>{t('welcome.current')}</p>
 
               <br />
 
@@ -168,13 +164,12 @@ export class GuiWelcome {
                      title='Super Mario Mario BROS NES' />
               </div>
 
-              <p>In the meantime if you need a software developer or consulting service on your software project hit me
-                up.</p>
+              <p>{t('welcome.cta')}</p>
 
-              <p class='text-center'>Thank you for reading this far, <br /> have a treat: </p>
+              <p class='text-center'>{t('welcome.thanks')} <br /> {t('welcome.treat')} </p>
               <button type='button' onClick={this.buba}
                       class='mx-auto block text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900'>
-                Frosted fruit candies
+                {t('welcome.button')}
               </button>
               <div class='flex justify-center items-center'>
                 <img src='../../assets/images/civilization.png' alt='civilization' class='sims'
@@ -184,16 +179,16 @@ export class GuiWelcome {
 
             <div class='links'>
               <simple-link link={'/about-me'}>
-                <div class='special-link'>More about me</div>
+                <div class='special-link'>{t('welcome.links.moreAbout')}</div>
               </simple-link>
               <simple-link link={'/my-projects'}>
-                <div class='special-link'>My projects</div>
+                <div class='special-link'>{t('welcome.links.myProjects')}</div>
               </simple-link>
               <simple-link link={'/contact-me'}>
-                <div class='special-link'>Contact me</div>
+                <div class='special-link'>{t('welcome.links.contactMe')}</div>
               </simple-link>
               <simple-link link={'/my-blog'}>
-                <div class='special-link'>Check out my Blog</div>
+                <div class='special-link'>{t('welcome.links.checkBlog')}</div>
               </simple-link>
             </div>
           </div>
