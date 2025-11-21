@@ -57,7 +57,10 @@ export class BackgroundActivity {
       this.isWebGL2Available = false;
     }
     if (this.isWebGL2Available) {
-      await this.loadWorld();
+      // Delay 3D initialization to allow assets to load during dev
+      setTimeout(async () => {
+        await this.loadWorld();
+      }, 500);
     } else {
       console.log('unavailable', true);
     }
@@ -72,7 +75,7 @@ export class BackgroundActivity {
   }
 
   loadWorld = async () => {
-    console.log('starting...');
+    console.log('Initializing 3D background...');
     try {
       await this.my3d?.init(
         {
@@ -141,7 +144,7 @@ export class BackgroundActivity {
         this.ready = true;
       } // TODO replace by RXJS/Observer
     } catch (error) {
-      console.error('Failed to initialize 3D background:', error);
+      console.warn('3D background unavailable - continuing without it. This is normal during development.', error instanceof Error ? error.message : error);
       // Gracefully handle failure - background is optional visual enhancement
       this.ready = false;
     }

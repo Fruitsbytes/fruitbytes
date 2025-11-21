@@ -110,20 +110,15 @@ export class ThreeDService {
 
               if (error instanceof Event) {
                 errorMsg = `Physics initialization failed - Event type: ${error.type}`;
-                console.error('Event details:', {
-                  type: error.type,
-                  target: error.target,
-                  eventPhase: error.eventPhase,
-                  timeStamp: error.timeStamp
-                });
+                if (error.target instanceof HTMLImageElement) {
+                  errorMsg += ` (Failed to load image: ${error.target.src})`;
+                }
               } else if (error instanceof Error) {
                 errorMsg = `Physics initialization failed: ${error.message}`;
-                console.error('Error stack:', error.stack);
               } else {
                 errorMsg = `Physics initialization failed: ${String(error)}`;
               }
 
-              console.error('Error initializing 3D scene:', errorMsg);
               reject(new Error(errorMsg));
             }
           });
@@ -132,18 +127,17 @@ export class ThreeDService {
 
           if (error instanceof Event) {
             errorMsg = `Failed to load physics engine - Event type: ${error.type}`;
-            console.error('Event details:', {
-              type: error.type,
-              target: error.target,
-              timeStamp: error.timeStamp
-            });
+            if (error.target instanceof HTMLImageElement) {
+              errorMsg += ` (Image load error: ${error.target.src})`;
+            } else if (error.target instanceof HTMLScriptElement) {
+              errorMsg += ` (Script load error: ${error.target.src})`;
+            }
           } else if (error instanceof Error) {
             errorMsg = `Failed to load physics engine: ${error.message}`;
           } else {
             errorMsg = `Failed to load physics engine: ${String(error)}`;
           }
 
-          console.error('Error loading physics engine from /assets/vendors/ammo:', errorMsg);
           reject(new Error(errorMsg));
         }
       });
