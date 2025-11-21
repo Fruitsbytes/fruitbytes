@@ -3,6 +3,7 @@ import { BlogPost } from '../../interfaces/blog';
 import { BlogService } from '../../services/blogService';
 import { t, getCurrentLanguage } from '../../services/i18n';
 import { Language } from '../../interfaces/translation';
+import { seoService } from '../../services/seoService';
 
 @Component({
   tag: 'gui-blog',
@@ -39,14 +40,57 @@ export class GuiBlog {
       if (post) {
         this.currentPost = post;
         this.viewMode = 'single';
+
+        // Update SEO meta tags for blog post
+        seoService.updateMetaTags({
+          title: post.metadata.title,
+          description: post.metadata.description,
+          type: 'article',
+          image: post.metadata.image,
+          url: `https://fruitsbytes.com/my-blog#${post.id}`,
+          publishedTime: post.metadata.date,
+          section: post.metadata.category,
+          tags: post.metadata.tags,
+          keywords: post.metadata.tags,
+          author: post.metadata.author
+        });
+
+        // Add blog post structured data
+        seoService.addStructuredData(seoService.getBlogPostSchema({
+          title: post.metadata.title,
+          description: post.metadata.description,
+          type: 'article',
+          image: post.metadata.image,
+          url: `https://fruitsbytes.com/my-blog#${post.id}`,
+          publishedTime: post.metadata.date,
+          section: post.metadata.category,
+          tags: post.metadata.tags,
+          author: post.metadata.author
+        }));
       } else {
         this.viewMode = 'list';
         this.currentPost = null;
+
+        // Update to blog listing page SEO
+        this.updateBlogListingSEO();
       }
     } else {
       this.viewMode = 'list';
       this.currentPost = null;
+
+      // Update to blog listing page SEO
+      this.updateBlogListingSEO();
     }
+  }
+
+  private updateBlogListingSEO() {
+    seoService.updateMetaTags({
+      title: 'Blog - Tech Insights & Tutorials',
+      description: 'Explore articles on web development, AI, Angular, React, Three.js, and modern software engineering practices.',
+      type: 'website',
+      url: 'https://fruitsbytes.com/my-blog',
+      keywords: ['web development', 'software engineering', 'tutorials', 'tech blog', 'Angular', 'React', 'Three.js', 'AI', 'machine learning']
+    });
   }
 
   private formatDate(dateString: string): string {

@@ -1,6 +1,7 @@
 import { Component, Host, h, Prop, Watch, Element, State, Listen } from '@stencil/core';
 import { t, getCurrentLanguage } from '../../services/i18n';
 import { Language } from '../../interfaces/translation';
+import { seoService } from '../../services/seoService';
 
 @Component({
   tag: 'gui-about',
@@ -21,6 +22,27 @@ export class GuiAbout {
   }
 
   componentDidLoad() {
+    // Update SEO for About/Resume page
+    seoService.updateMetaTags({
+      title: 'About Me - Resume & CV',
+      description: 'Senior Software Developer with 10+ years of experience in Angular, React, Three.js, and enterprise applications. View my full resume and professional experience.',
+      keywords: ['resume', 'cv', 'senior software developer', 'angular developer', 'react developer', 'three.js', 'montreal developer', 'full-stack developer'],
+      type: 'profile',
+      url: 'https://fruitsbytes.com/about-me'
+    });
+
+    // Add ProfilePage structured data
+    const schemas = [
+      seoService.getProfilePageSchema(),
+      seoService.getWebPageSchema({
+        title: 'About Me - Resume & CV',
+        description: 'Professional resume and CV of Jeffrey Nicholson Carré, Senior Software Developer specializing in Angular, React, and Three.js',
+        url: 'https://fruitsbytes.com/about-me'
+      })
+    ];
+
+    seoService.addMultipleStructuredData(schemas);
+
     // Scroll to hash on an initial load if present (with longer delay for rendering)
     if (this.hash) {
       setTimeout(() => {
@@ -463,6 +485,17 @@ export class GuiAbout {
                     <li>Motion Graphics</li>
                   </ul>
                 </div>
+              </div>
+            </section>
+
+            <div class='page'>4</div>
+          </div>
+
+          <div class='paper shadow-lg text-gray-900 bg-gray-50'>
+            <section id='skills-continued'>
+              <h2>Skills (continued)</h2>
+
+              <div class='content grid grid-cols-1 divide-y divide-gray-200 rounded-md p-2 border border-gray-200'>
 
                 <div class='content pb-4' id='wireless'>
                   <h3 class='mt-2 mb-3'>
@@ -497,7 +530,7 @@ export class GuiAbout {
               </div>
             </section>
 
-            <div class='page'>4</div>
+            <div class='page'>5</div>
           </div>
 
           <div class='paper shadow-lg text-gray-900 bg-gray-50'>
@@ -559,7 +592,7 @@ export class GuiAbout {
               </div>
             </section>
 
-            <div class='page'>5</div>
+            <div class='page'>6</div>
           </div>
         </div>
 

@@ -40,9 +40,19 @@
   <!-- Canonical URL -->
   <link rel='canonical' href='https://fruitsbytes.com/'>
 
+  <!-- RSS Feed -->
+  <link rel='alternate' type='application/rss+xml' title='FruitsBytes Blog RSS Feed' href='https://fruitsbytes.com/rss.xml'>
+
   <!-- Preconnect for Performance -->
   <link rel='preconnect' href='https://fonts.googleapis.com'>
   <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+  <link rel='dns-prefetch' href='https://fonts.googleapis.com'>
+  <link rel='dns-prefetch' href='https://emoji-css.afeld.me'>
+
+  <!-- Preload Critical Resources -->
+  <link rel='preload' href='/build/app.css' as='style'>
+  <link rel='preload' href='/build/app.esm.js' as='script' crossorigin>
+  <link rel='modulepreload' href='/build/app.esm.js'>
 
   <!-- Fonts -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100;8..144,200;8..144,300;8..144,400;8..144,500;8..144,600;8..144,700;8..144,800;8..144,900;8..144,1000&display=swap" />
@@ -64,8 +74,8 @@
   <link rel='icon' type='image/x-icon' href='/assets/icon/favicon.ico'>
   <link rel='manifest' href='/manifest.json'>
 
-  <!-- JSON-LD Structured Data -->
-  <script type='application/ld+json'>
+  <!-- JSON-LD Structured Data - Person & Organization -->
+  <script type='application/ld+json' data-permanent>
   {
     "@context": "https://schema.org/",
     "@type": "Person",
@@ -73,6 +83,7 @@
     "url": "https://fruitsbytes.com",
     "image": "https://fruitsbytes.com/assets/icon/icon.png",
     "jobTitle": "Senior Software Developer",
+    "description": "Senior Software Developer specializing in Angular, React, Three.js, and enterprise application development with 10+ years of experience in fintech, 3D graphics, and wireless networks.",
     "worksFor": {
       "@type": "Organization",
       "name": "CGI Inc.",
@@ -85,10 +96,13 @@
       "addressCountry": "CA"
     },
     "email": "jeffrey.carre@anbapyezanman.com",
-    "alumniOf": {
-      "@type": "CollegeOrUniversity",
-      "name": "Faculté des Sciences de l'Université d'État d'Haïti"
-    },
+    "alumniOf": [
+      {
+        "@type": "EducationalOrganization",
+        "name": "Faculté des Sciences de l'Université d'État d'Haïti",
+        "location": "Port-au-Prince, Haiti"
+      }
+    ],
     "knowsAbout": [
       "Angular",
       "React",
@@ -102,7 +116,36 @@
       "Frontend Development",
       "Full-stack Development",
       "3D Graphics",
-      "WebGL"
+      "WebGL",
+      "Mobile Development",
+      "Wireless Networks",
+      "Fintech",
+      "NgRx",
+      "RxJS",
+      "Laravel",
+      "MySQL"
+    ],
+    "knowsLanguage": [
+      {
+        "@type": "Language",
+        "name": "English",
+        "alternateName": "en"
+      },
+      {
+        "@type": "Language",
+        "name": "French",
+        "alternateName": "fr"
+      },
+      {
+        "@type": "Language",
+        "name": "Haitian Creole",
+        "alternateName": "ht"
+      },
+      {
+        "@type": "Language",
+        "name": "Spanish",
+        "alternateName": "es"
+      }
     ],
     "hasOccupation": {
       "@type": "Occupation",
@@ -111,7 +154,21 @@
         "@type": "City",
         "name": "Montréal"
       },
-      "skills": "Angular, React, Three.js, TypeScript, Node.js, PHP, StencilJS"
+      "skills": "Angular, React, Three.js, TypeScript, Node.js, PHP, StencilJS, Mobile Development, 3D Graphics, WebGL",
+      "educationRequirements": "Bachelor's Degree in Computer Science"
+    },
+    "sameAs": [
+      "https://github.com/fruitsbytes",
+      "https://linkedin.com/in/jeffrey-carre"
+    ],
+    "award": [
+      "Ubiquiti French-speaking trainer in Caribbean and Americas",
+      "Lead Developer for enterprise fintech platforms"
+    ],
+    "performerIn": {
+      "@type": "Event",
+      "name": "Technical Training Sessions",
+      "description": "Conducted wireless network technical training across multiple countries"
     }
   }
   </script>
