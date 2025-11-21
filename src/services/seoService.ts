@@ -109,7 +109,7 @@ export class SEOService {
       '@type': 'Person',
       name: 'Jeffrey Nicholson Carré',
       jobTitle: 'Senior Software Developer',
-      description: 'Full-stack developer specializing in frontend development, 3D graphics, and video game creation',
+      description: 'Senior Software Developer specializing in Angular, React, Three.js, and enterprise application development with 10+ years of experience in fintech, 3D graphics, and wireless networks',
       url: `${this.baseUrl}/about-me`,
       image: `${this.baseUrl}/assets/icon/icon-512x512.png`,
       email: 'jeffrey.carre@anbapyezanman.com',
@@ -129,12 +129,36 @@ export class SEOService {
       knowsAbout: [
         'Angular', 'React', 'TypeScript', 'JavaScript',
         'Three.js', 'WebGL', 'StencilJS', 'PHP', 'Laravel',
-        'Node.js', 'Mobile Development', 'Wireless Networks'
+        'Node.js', 'Mobile Development', 'Wireless Networks',
+        'Fintech', 'NgRx', 'RxJS', '3D Graphics'
+      ],
+      knowsLanguage: [
+        { '@type': 'Language', name: 'English', alternateName: 'en' },
+        { '@type': 'Language', name: 'French', alternateName: 'fr' },
+        { '@type': 'Language', name: 'Haitian Creole', alternateName: 'ht' },
+        { '@type': 'Language', name: 'Spanish', alternateName: 'es' }
       ],
       sameAs: [
         'https://github.com/fruitsbytes',
-        'https://linkedin.com/in/jeffrey-carre',
-        'https://twitter.com/fruitsbytes'
+        'https://linkedin.com/in/jeffrey-carre'
+      ],
+      worksFor: {
+        '@type': 'Organization',
+        name: 'CGI Inc.',
+        url: 'https://www.cgi.com'
+      },
+      hasOccupation: {
+        '@type': 'Occupation',
+        name: 'Senior Software Developer',
+        occupationLocation: {
+          '@type': 'City',
+          name: 'Montréal'
+        },
+        skills: 'Angular, React, Three.js, TypeScript, Node.js, PHP, StencilJS, Mobile Development, 3D Graphics'
+      },
+      award: [
+        'Ubiquiti French-speaking trainer in Caribbean and Americas',
+        'Lead Developer for enterprise fintech platforms'
       ]
     };
   }
@@ -193,6 +217,129 @@ export class SEOService {
         'query-input': 'required name=search_term_string'
       }
     };
+  }
+
+  /**
+   * Generate BreadcrumbList schema for navigation
+   */
+  getBreadcrumbSchema(items: Array<{ name: string; url: string }>): any {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: items.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: item.name,
+        item: this.getFullUrl(item.url)
+      }))
+    };
+  }
+
+  /**
+   * Generate ItemList schema for projects/portfolio
+   */
+  getItemListSchema(items: Array<any>, listName: string): any {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: listName,
+      numberOfItems: items.length,
+      itemListElement: items.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: item.url || `${this.baseUrl}/my-projects#${item.id}`,
+        name: item.title,
+        description: item.description,
+        image: item.image
+      }))
+    };
+  }
+
+  /**
+   * Generate CreativeWork schema for individual projects
+   */
+  getCreativeWorkSchema(project: any): any {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'CreativeWork',
+      name: project.title,
+      description: project.description,
+      creator: {
+        '@type': 'Person',
+        name: this.author,
+        url: `${this.baseUrl}/about-me`
+      },
+      dateCreated: project.year,
+      keywords: project.technologies?.join(', '),
+      url: project.link || `${this.baseUrl}/my-projects#${project.id}`,
+      about: project.highlights
+    };
+  }
+
+  /**
+   * Generate ProfilePage schema for About page
+   */
+  getProfilePageSchema(): any {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'ProfilePage',
+      mainEntity: this.getPersonSchema(),
+      dateCreated: '2024-01-01',
+      dateModified: new Date().toISOString().split('T')[0],
+      breadcrumb: this.getBreadcrumbSchema([
+        { name: 'Home', url: '/welcome' },
+        { name: 'About Me', url: '/about-me' }
+      ])
+    };
+  }
+
+  /**
+   * Generate WebPage schema for general pages
+   */
+  getWebPageSchema(metadata: SEOMetadata): any {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: metadata.title,
+      description: metadata.description,
+      url: metadata.url || window.location.href,
+      inLanguage: 'en',
+      isPartOf: {
+        '@type': 'WebSite',
+        name: this.siteName,
+        url: this.baseUrl
+      },
+      author: {
+        '@type': 'Person',
+        name: this.author,
+        url: `${this.baseUrl}/about-me`
+      },
+      publisher: {
+        '@type': 'Person',
+        name: this.author
+      }
+    };
+  }
+
+  /**
+   * Add multiple structured data schemas (for complex pages)
+   */
+  addMultipleStructuredData(dataArray: any[]): void {
+    // Remove existing structured data
+    const existingScripts = document.querySelectorAll('script[type="application/ld+json"]');
+    existingScripts.forEach(script => {
+      if (!script.hasAttribute('data-permanent')) {
+        script.remove();
+      }
+    });
+
+    // Add each structured data item
+    dataArray.forEach(data => {
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.text = JSON.stringify(data);
+      document.head.appendChild(script);
+    });
   }
 
   /**

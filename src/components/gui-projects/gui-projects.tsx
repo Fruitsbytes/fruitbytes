@@ -1,6 +1,7 @@
 import { Component, Host, h, Prop, State, Listen } from '@stencil/core';
 import { t, getCurrentLanguage } from '../../services/i18n';
 import { Language } from '../../interfaces/translation';
+import { seoService } from '../../services/seoService';
 
 interface Project {
   id: string;
@@ -27,6 +28,38 @@ export class GuiProjects {
   @Listen('language.changed', { target: 'document' })
   handleLanguageChange(event: CustomEvent<Language>) {
     this.currentLanguage = event.detail;
+  }
+
+  componentWillLoad() {
+    // Update SEO meta tags for Projects page
+    seoService.updateMetaTags({
+      title: 'Projects & Portfolio',
+      description: 'Explore my portfolio of web applications, mobile apps, 3D graphics projects, fintech platforms, and wireless network solutions.',
+      keywords: ['portfolio', 'web development', 'mobile apps', '3D graphics', 'fintech', 'projects', 'Angular', 'React', 'Three.js'],
+      type: 'website',
+      url: 'https://fruitsbytes.com/my-projects'
+    });
+
+    // Add structured data for projects listing
+    const schemas = [
+      // ItemList schema for all projects
+      seoService.getItemListSchema(this.projects, 'Software Development Projects'),
+
+      // WebPage schema
+      seoService.getWebPageSchema({
+        title: 'Projects & Portfolio',
+        description: 'Portfolio showcasing web development, mobile applications, 3D graphics, and fintech projects',
+        url: 'https://fruitsbytes.com/my-projects'
+      }),
+
+      // Breadcrumb schema
+      seoService.getBreadcrumbSchema([
+        { name: 'Home', url: '/welcome' },
+        { name: 'Projects', url: '/my-projects' }
+      ])
+    ];
+
+    seoService.addMultipleStructuredData(schemas);
   }
 
   private projects: Project[] = [

@@ -231,6 +231,69 @@ Monitor your SEO performance:
 3. **Bing Webmaster Tools** - Track Bing visibility
 4. **Social Media Analytics** - Track shares and engagement
 
+## Recent Enhancements (2025-11-21)
+
+### New Rich Snippet Support ✅
+
+**1. BreadcrumbList Schema**
+- Shows navigation breadcrumbs in Google search results
+- Implemented on About and Projects pages
+- Improves click-through rates by showing page hierarchy
+
+**2. ItemList Schema for Projects**
+- Displays portfolio projects as rich list in search results
+- Shows project titles and descriptions directly in Google
+- Increases visibility for individual projects
+
+**3. ProfilePage Schema**
+- Enhanced About page with ProfilePage structured data
+- Better chance of appearing in Google Knowledge Graph
+- Links Person schema with page content
+
+**4. Enhanced Person Schema**
+- Added multilingual capabilities (en, fr, ht, es)
+- Added awards and achievements
+- Added worksFor organization data
+- Enhanced knowsAbout with more technologies
+- Marked as permanent to prevent removal during dynamic updates
+
+**5. WebPage Schema**
+- Added to all major pages for better page-level SEO
+- Improves Google's understanding of page purpose
+- Better indexing and categorization
+
+**6. CreativeWork Schema**
+- For individual project showcase
+- Highlights creator, technologies, and project details
+
+### Performance Optimizations ✅
+
+**1. Resource Hints**
+- DNS prefetch for external resources (fonts, emoji CDN)
+- Preconnect for critical third-party domains
+- Preload for critical CSS and JavaScript
+- Module preload for faster ES module loading
+
+**2. Improved Core Web Vitals**
+- Faster First Contentful Paint (FCP) via preloading
+- Better Largest Contentful Paint (LCP) with resource hints
+- Reduced Cumulative Layout Shift (CLS) with font optimization
+
+### Schema.org Coverage
+
+Current structured data types implemented:
+
+| Schema Type | Page | Purpose | Rich Result |
+|-------------|------|---------|-------------|
+| Person | All pages (index.html) | Identity & credentials | Knowledge Graph |
+| ProfilePage | About page | Professional profile | Rich profile cards |
+| BlogPosting | Blog posts | Article metadata | Article rich snippets |
+| WebSite | Root | Site structure | Sitelinks search box |
+| ItemList | Projects page | Portfolio listing | Rich list in search |
+| BreadcrumbList | About, Projects | Navigation path | Breadcrumb trail |
+| WebPage | All pages | Page metadata | Better indexing |
+| CreativeWork | Individual projects | Project details | Work showcase |
+
 ## Future Enhancements
 
 Potential additions:
@@ -239,9 +302,13 @@ Potential additions:
 - [ ] JSON feed support (in addition to RSS)
 - [ ] Image sitemaps for better image search
 - [ ] Video sitemaps for video content
-- [ ] Multi-language sitemap support
+- [ ] Multi-language sitemap support (hreflang tags)
 - [ ] Automated meta image generation
 - [ ] SEO audit on each build
+- [ ] FAQ Schema for FAQ sections
+- [ ] HowTo Schema for tutorials
+- [ ] Review/Rating Schema if applicable
+- [ ] Event Schema for talks/presentations
 
 ## Resources
 
