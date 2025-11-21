@@ -463,6 +463,17 @@ export class GuiAbout {
                     <li>Motion Graphics</li>
                   </ul>
                 </div>
+              </div>
+            </section>
+
+            <div class='page'>4</div>
+          </div>
+
+          <div class='paper shadow-lg text-gray-900 bg-gray-50'>
+            <section id='skills-continued'>
+              <h2>Skills (continued)</h2>
+
+              <div class='content grid grid-cols-1 divide-y divide-gray-200 rounded-md p-2 border border-gray-200'>
 
                 <div class='content pb-4' id='wireless'>
                   <h3 class='mt-2 mb-3'>
@@ -497,7 +508,7 @@ export class GuiAbout {
               </div>
             </section>
 
-            <div class='page'>4</div>
+            <div class='page'>5</div>
           </div>
 
           <div class='paper shadow-lg text-gray-900 bg-gray-50'>
@@ -559,7 +570,7 @@ export class GuiAbout {
               </div>
             </section>
 
-            <div class='page'>5</div>
+            <div class='page'>6</div>
           </div>
         </div>
 

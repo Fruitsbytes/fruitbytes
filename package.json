@@ -4,8 +4,9 @@
   "version": "2.0.0",
   "description": "FruitsBytes",
   "scripts": {
-    "build": "stencil build --prod && npm run build:cleanup",
+    "build": "stencil build --prod && npm run build:cleanup && npm run build:seo",
     "build:cleanup": "rm -rf www/assets/sounds www/assets/logos www/assets/fonts",
+    "build:seo": "node scripts/generate-sitemap.js && node scripts/generate-rss.js",
     "build:dev": "stencil build --dev",
     "start": "stencil build --dev --watch --serve",
     "dev": "stencil build --dev --watch --serve",
