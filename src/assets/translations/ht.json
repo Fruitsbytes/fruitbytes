@@ -106,5 +106,40 @@
     "copyLinkButton": "Kopye Lyen",
     "errorMessage": "Echèk nan jenere CV. Tanpri eseye ankò.",
     "versionLabel": "v1.0.1"
+  },
+  "welcome": {
+    "greeting": "Bonjou, {name} ou deside pou yo rekonèt ou kòm {flavor} {type}. Bon chwa!",
+    "intro1": "Mwen ap eksplore pwogramasyon jwèt videyo kounye a epi sit entènèt sa a se teren jwèt mwen. Se yon travay k ap kontinye, toujou ap evolye",
+    "intro2": "Pou premye fwa nan yon bon tan, mwen rive itilize kou matematik/fizik Enjenyè Sivil mwen yo finalman. Enterè m pou jwèt videyo te kòmanse lè mwen te gen 5 lane, lè mwen te resevwa premye NES mwen. Mwen pa t konnen atifak tèrib yo ki te chaje pa katwòch gate yo t ap pote menm malè 14 lane pita, pandan m ap konpile C++ sou Borland.",
+    "coding1": "Premye reyèl eksperyans kodaj mwen te kòmanse anviwon 1998, lè nou te finalman monte vèsyon a SNES. Se te ane match foutbòl fèmen an, Brezil kont Lafrans: 0 - 3. Kouzen m te gen yon VTech epi mwen te kapab kode ak Basic. Lè m t ap grandi, yo te prezante m ak Visual Basic ak Ti-Basic sou kalkilatris grafik mwen pandan dènye ane kolèj mwen. Mwen toujou reve jou lè mwen t ap kapab ede pòte StarCraft sou Ti-89.",
+    "coding2": "Ekip ki t ap travay sou travay sa a te fè anpil pwogrè. Mwen mande m ki kalite kontwòl vèsyon yo t ap itilize nan tan sa a. Jwèt videyo se te toujou pasyon m, premye non itilizatè m se te Bleuscyther (Ble + Scyther), koulè prefere m ak pokemon prefere m.",
+    "current": "Kounye a apre 14 lane nan konstwi lojisyèl ak sit wèb pwofesyonèlman, mwen eseye pase tan lib mwen ap aprann kijan pou pwodwi jwèt videyo si m pa ap jwe yon jwèt Paradox sou ironman. Objektif mwen se gen ase konpetans pou fè yon previzyon X-Com III, Tyranny II (pa Obsidian) oswa menm The Movies - Remastered (pa LionHead) HD 😅",
+    "cta": "Pandan tan sa a, si w bezwen yon devlopè lojisyèl oswa sèvis konsiltan sou pwojè lojisyèl ou a kontakte m.",
+    "thanks": "Mèsi pou w li jiska la a,",
+    "treat": "pran yon ti kado:",
+    "button": "Bonbon fwi glasé",
+    "links": {
+      "moreAbout": "Plis enfòmasyon sou mwen",
+      "myProjects": "Pwojè mwen yo",
+      "contactMe": "Kontakte m",
+      "checkBlog": "Gade blog mwen"
+    }
+  },
+  "projectsPage": {
+    "title": "Pwojè Mwen Yo",
+    "subtitle": "Yon ekspozisyon travay seleksyone ki gen ladan devlopman wèb, aplikasyon mobil, grafik 3D, fintech, ak rezo san fil",
+    "keyHighlights": "Pwen Enpòtan:",
+    "technologies": "Teknoloji:",
+    "viewProject": "Gade Pwojè",
+    "cta": {
+      "title": "Enterese nan kolabore?",
+      "subtitle": "Mwen toujou louvri pou diskite nouvo pwojè ak opòtinite.",
+      "button": "Kontakte M"
+    }
+  },
+  "blogPage": {
+    "readArticle": "Li atik la",
+    "minRead": "min lekti",
+    "by": "Pa"
   }
 }
