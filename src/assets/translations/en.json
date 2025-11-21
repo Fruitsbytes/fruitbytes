@@ -57,6 +57,15 @@
     "404Description": "The page you are looking for does not exist",
     "goHome": "Go to Home"
   },
+  "notFound": {
+    "title": "404",
+    "subtitle": ":not(.fruit)",
+    "message": "I am sorry, there is a universe where this content is available but not this one.",
+    "hint": "Try restarting your computer and make the Konami code",
+    "consoleError": "Error: Sorry, the path you are trying to reach is not available: {path}. Please verify the link and try again.",
+    "backButton": "Back",
+    "homeButton": "Home"
+  },
   "language": {
     "select": "Select Language",
     "en": "English",

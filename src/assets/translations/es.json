@@ -57,6 +57,15 @@
     "404Description": "La página que buscas no existe",
     "goHome": "Ir a Inicio"
   },
+  "notFound": {
+    "title": "404",
+    "subtitle": ":not(.fruit)",
+    "message": "Lo siento, hay un universo donde este contenido está disponible, pero no este.",
+    "hint": "Intenta reiniciar tu computadora y hacer el código Konami",
+    "consoleError": "Error: Lo siento, la ruta que intentas alcanzar no está disponible: {path}. Por favor, verifica el enlace e inténtalo de nuevo.",
+    "backButton": "Atrás",
+    "homeButton": "Inicio"
+  },
   "language": {
     "select": "Seleccionar Idioma",
     "en": "Inglés",

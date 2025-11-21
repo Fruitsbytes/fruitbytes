@@ -75,6 +75,15 @@ export interface TranslationKeys {
     '404Description': string;
     goHome: string;
   };
+  notFound: {
+    title: string;
+    subtitle: string;
+    message: string;
+    hint: string;
+    consoleError: string;
+    backButton: string;
+    homeButton: string;
+  };
   language: {
     select: string;
     en: string;

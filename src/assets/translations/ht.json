@@ -57,6 +57,15 @@
     "404Description": "Paj ou ap chèche a pa egziste",
     "goHome": "Ale nan Akèy"
   },
+  "notFound": {
+    "title": "404",
+    "subtitle": ":not(.fruit)",
+    "message": "Mwen regrèt, gen yon linivè kote kontni sa a disponib men pa sa a.",
+    "hint": "Eseye redémarre òdinatè w epi fè kòd Konami an",
+    "consoleError": "Erè: Dezole, chemen w ap eseye jwenn lan pa disponib: {path}. Tanpri verifye lyen an epi eseye ankò.",
+    "backButton": "Retounen",
+    "homeButton": "Akèy"
+  },
   "language": {
     "select": "Chwazi Lang",
     "en": "Anglè",
