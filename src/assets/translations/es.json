@@ -150,5 +150,15 @@
     "readArticle": "Leer artículo",
     "minRead": "min de lectura",
     "by": "Por"
+  },
+  "aboutPage": {
+    "title": "Acerca de Mí",
+    "bio": "Biografía",
+    "employmentHistory": "Historial Laboral",
+    "education": "Educación",
+    "skills": "Habilidades",
+    "info": "Información",
+    "location": "Ubicación",
+    "email": "Correo Electrónico"
   }
 }

@@ -150,5 +150,15 @@
     "readArticle": "Li atik la",
     "minRead": "min lekti",
     "by": "Pa"
+  },
+  "aboutPage": {
+    "title": "Konsènan Mwen",
+    "bio": "Biyografi",
+    "employmentHistory": "Istwa Travay",
+    "education": "Edikasyon",
+    "skills": "Konpetans",
+    "info": "Enfòmasyon",
+    "location": "Kote",
+    "email": "Imèl"
   }
 }

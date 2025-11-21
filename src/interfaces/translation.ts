@@ -151,6 +151,16 @@ export interface TranslationKeys {
     minRead: string;
     by: string;
   };
+  aboutPage: {
+    title: string;
+    bio: string;
+    employmentHistory: string;
+    education: string;
+    skills: string;
+    info: string;
+    location: string;
+    email: string;
+  };
 }
 
 export interface LanguageInfo {
