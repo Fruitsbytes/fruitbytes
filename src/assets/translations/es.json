@@ -106,5 +106,40 @@
     "copyLinkButton": "Copiar Enlace",
     "errorMessage": "Error al generar CV. Por favor, inténtalo de nuevo.",
     "versionLabel": "v1.0.1"
+  },
+  "welcome": {
+    "greeting": "Hola, {name} decidiste ser conocido como el {flavor} {type}. ¡Gran elección!",
+    "intro1": "Actualmente estoy explorando la programación de videojuegos y este sitio web es mi campo de juego. Es un trabajo en progreso, siempre evolucionando",
+    "intro2": "Por primera vez en mucho tiempo, finalmente puedo poner en práctica mis clases de Matemáticas/Física de Ingeniería Civil. Mi interés por los videojuegos comenzó a los 5 años, cuando recibí mi primer NES. Poco sabía que los terribles artefactos cargados por los cartuchos corruptos traerían la misma desesperación 14 años después, mientras compilaba C++ en Borland.",
+    "coding1": "Mi primera experiencia real de codificación comenzó alrededor de 1998, cuando finalmente actualizamos a SNES. Fue el año del famoso partido de fútbol, Brasil vs Francia: 0 - 3. Mi primo consiguió un VTech y pude programar usando Basic. Al crecer, me introdujeron a Visual Basic y Ti-Basic en mi calculadora gráfica durante mis últimos años de universidad. Siempre soñé con el día en que podría ayudar a portar StarCraft en la Ti-89.",
+    "coding2": "El equipo que trabajaba en esa tarea hizo mucho progreso. Me pregunto qué tipo de control de versiones estaban usando en ese momento. Los videojuegos siempre fueron mi pasión, mi primer nombre de usuario fue Bleuscyther (Blue + Scyther), mi color favorito y mi pokemon favorito.",
+    "current": "Ahora, después de 14 años construyendo software y sitios web profesionalmente, trato de dedicar mi tiempo libre a aprender cómo producir videojuegos si no estoy jugando un juego de Paradox en ironman. Mi objetivo es tener suficientes habilidades para hacer una vista previa de X-Com III, Tyranny II (por Obsidian) o incluso The Movies - Remastered (por LionHead) HD 😅",
+    "cta": "Mientras tanto, si necesitas un desarrollador de software o servicios de consultoría en tu proyecto de software, contáctame.",
+    "thanks": "Gracias por leer hasta aquí,",
+    "treat": "toma un premio:",
+    "button": "Dulces de frutas glaseadas",
+    "links": {
+      "moreAbout": "Más sobre mí",
+      "myProjects": "Mis proyectos",
+      "contactMe": "Contáctame",
+      "checkBlog": "Echa un vistazo a mi Blog"
+    }
+  },
+  "projectsPage": {
+    "title": "Mis Proyectos",
+    "subtitle": "Una muestra de trabajos seleccionados que abarcan desarrollo web, aplicaciones móviles, gráficos 3D, fintech y redes inalámbricas",
+    "keyHighlights": "Aspectos Clave:",
+    "technologies": "Tecnologías:",
+    "viewProject": "Ver Proyecto",
+    "cta": {
+      "title": "¿Interesado en colaborar?",
+      "subtitle": "Siempre estoy abierto a discutir nuevos proyectos y oportunidades.",
+      "button": "Ponte en Contacto"
+    }
+  },
+  "blogPage": {
+    "readArticle": "Leer artículo",
+    "minRead": "min de lectura",
+    "by": "Por"
   }
 }
