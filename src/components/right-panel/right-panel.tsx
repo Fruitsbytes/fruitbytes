@@ -32,19 +32,24 @@ export class RightPanel {
 
   isResizing: boolean = false;
   consoleNeedsScoll: boolean = false;
+  private welcomeMessageAdded: boolean = false;
 
   private handle: Nullable<HTMLElement>;
   private crunchingMenu: Nullable<HTMLElement>;
   private blogService = BlogService.getInstance();
 
   connectedCallback() {
-    this.logs.push({
-      payload: '<logo-text></logo-text>',
-      line: 1,
-      time: new Date(),
-      file: 'logo.txt',
-      message: '<b class="green" style="margin-bottom: 6px; display: inline-block; margin-right: 12px">FruitsBytes</b><span>Welcome!</span>',
-    });
+    // Only add welcome message once per component instance
+    if (!this.welcomeMessageAdded) {
+      this.logs.push({
+        payload: '<logo-text></logo-text>',
+        line: 1,
+        time: new Date(),
+        file: 'logo.txt',
+        message: '<b class="green" style="margin-bottom: 6px; display: inline-block; margin-right: 12px">FruitsBytes</b><span>Welcome!</span>',
+      });
+      this.welcomeMessageAdded = true;
+    }
 
     const width = localStorage.getItem('menu-width');
     this.width = width ? parseInt(width) : DEFAULT_MENU_WIDTH;

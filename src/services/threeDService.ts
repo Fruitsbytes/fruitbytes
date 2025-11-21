@@ -96,14 +96,50 @@ export class ThreeDService {
 
   public init = async (config: InitConfig = {}) => {
 
-    return new Promise((resolve, _reject) => {
+    return new Promise((resolve, reject) => {
       this._cleaning.pipe(
         first(value => !value),
       ).subscribe(() => {
-        PhysicsLoader('/assets/vendors/ammo', async () => {
-          await this._init(config);
-          resolve(this._scene);
-        });
+        try {
+          PhysicsLoader('/assets/vendors/ammo', async () => {
+            try {
+              await this._init(config);
+              resolve(this._scene);
+            } catch (error) {
+              let errorMsg = 'Unknown initialization error';
+
+              if (error instanceof Event) {
+                errorMsg = `Physics initialization failed - Event type: ${error.type}`;
+                if (error.target instanceof HTMLImageElement) {
+                  errorMsg += ` (Failed to load image: ${error.target.src})`;
+                }
+              } else if (error instanceof Error) {
+                errorMsg = `Physics initialization failed: ${error.message}`;
+              } else {
+                errorMsg = `Physics initialization failed: ${String(error)}`;
+              }
+
+              reject(new Error(errorMsg));
+            }
+          });
+        } catch (error) {
+          let errorMsg = 'Unknown loading error';
+
+          if (error instanceof Event) {
+            errorMsg = `Failed to load physics engine - Event type: ${error.type}`;
+            if (error.target instanceof HTMLImageElement) {
+              errorMsg += ` (Image load error: ${error.target.src})`;
+            } else if (error.target instanceof HTMLScriptElement) {
+              errorMsg += ` (Script load error: ${error.target.src})`;
+            }
+          } else if (error instanceof Error) {
+            errorMsg = `Failed to load physics engine: ${error.message}`;
+          } else {
+            errorMsg = `Failed to load physics engine: ${String(error)}`;
+          }
+
+          reject(new Error(errorMsg));
+        }
       });
 
     });
@@ -389,7 +425,7 @@ export class ThreeDService {
     if (this._smokeParticles.length === 0) {
       const l = new TextureLoader();
       const smokeTexture = await l.loadAsync('/assets/texture/smoke2.png');
-      const smokeTexture2 = await l.loadAsync('./assets/texture/smoke.png');
+      const smokeTexture2 = await l.loadAsync('/assets/texture/smoke.png');
       const smokeGeometry = new PlaneGeometry(45, 45);
       for (let i = 0; i < 120; i++) {
         const smokeMaterial = new MeshLambertMaterial({
