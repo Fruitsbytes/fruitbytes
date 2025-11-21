@@ -106,19 +106,45 @@ export class ThreeDService {
               await this._init(config);
               resolve(this._scene);
             } catch (error) {
-              const errorMsg = error instanceof Event
-                ? `Physics initialization failed: ${error.type || 'Unknown error'}`
-                : error;
+              let errorMsg = 'Unknown initialization error';
+
+              if (error instanceof Event) {
+                errorMsg = `Physics initialization failed - Event type: ${error.type}`;
+                console.error('Event details:', {
+                  type: error.type,
+                  target: error.target,
+                  eventPhase: error.eventPhase,
+                  timeStamp: error.timeStamp
+                });
+              } else if (error instanceof Error) {
+                errorMsg = `Physics initialization failed: ${error.message}`;
+                console.error('Error stack:', error.stack);
+              } else {
+                errorMsg = `Physics initialization failed: ${String(error)}`;
+              }
+
               console.error('Error initializing 3D scene:', errorMsg);
-              reject(errorMsg);
+              reject(new Error(errorMsg));
             }
           });
         } catch (error) {
-          const errorMsg = error instanceof Event
-            ? `Failed to load physics engine from /assets/vendors/ammo: ${error.type || 'Network or CORS error'}`
-            : error;
-          console.error('Error loading physics engine:', errorMsg);
-          reject(errorMsg);
+          let errorMsg = 'Unknown loading error';
+
+          if (error instanceof Event) {
+            errorMsg = `Failed to load physics engine - Event type: ${error.type}`;
+            console.error('Event details:', {
+              type: error.type,
+              target: error.target,
+              timeStamp: error.timeStamp
+            });
+          } else if (error instanceof Error) {
+            errorMsg = `Failed to load physics engine: ${error.message}`;
+          } else {
+            errorMsg = `Failed to load physics engine: ${String(error)}`;
+          }
+
+          console.error('Error loading physics engine from /assets/vendors/ammo:', errorMsg);
+          reject(new Error(errorMsg));
         }
       });
 

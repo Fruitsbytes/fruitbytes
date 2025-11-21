@@ -60,14 +60,17 @@ export class AppRoot {
     content?: string
   };
 
-  connectedCallback() {
+  async connectedCallback() {
     this.loading = true;
     this.audioLib = this.soundLib.sounds;
 
     // Initialize i18n and load current language translations
-    loadTranslations(this.currentLanguage).catch(err => {
+    try {
+      await loadTranslations(this.currentLanguage);
+      console.log('✅ Translations loaded for:', this.currentLanguage);
+    } catch (err) {
       console.error('Failed to load translations:', err);
-    });
+    }
 
     // Subscribe to language changes
     i18nService.subscribe((language) => {
@@ -76,7 +79,13 @@ export class AppRoot {
 
       // Update meta tags when language changes
       metaTagsService.updateLanguage(language);
-      this.updateMetaTags();
+
+      // Wait for translations to load before updating meta tags
+      loadTranslations(language).then(() => {
+        this.updateMetaTags();
+      }).catch(err => {
+        console.error('Failed to update meta tags after language change:', err);
+      });
 
       this.log?.emit({
         message: `🌐 <b>Language</b> changed to ${language.toUpperCase()}`,
@@ -129,8 +138,8 @@ export class AppRoot {
     this.muteVolume(this.volumeMuted);
     this.rightP = this.el.shadowRoot?.querySelector('#rightP');
 
-    // Initialize meta tags after translations are loaded
-    setTimeout(() => this.updateMetaTags(), 100);
+    // Initialize meta tags (translations already loaded in connectedCallback)
+    this.updateMetaTags();
 
     setTimeout(this.init);
   }

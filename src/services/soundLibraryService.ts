@@ -46,10 +46,16 @@ export class SoundLibraryService {
 
       if (!this._loaded.includes(name)) {
         this._sounds[name].once('load', () => {
+          console.log(`🎵 Sound loaded: ${name}`);
           this._loading[name].next(true);
           this._loaded.push(name);
         });
-        this._sounds[name].once('loaderror', () => {
+        this._sounds[name].once('loaderror', (id, error) => {
+          console.error(`❌ Failed to load sound: ${name}`, error);
+          console.error(`Tried paths:`, [
+            `./assets/sounds/${name}.webm`,
+            `./assets/sounds/${name}.mp3`
+          ]);
           this._loading[name].next(true); // the show must go on! it  will retry on play
           this._loaded.push(name);
         });
