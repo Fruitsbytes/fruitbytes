@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^29.0.0",
-    "@stencil/core": "^4.38.3",
+    "@stencil/core": "^4.39.0",
     "@stencil/helmet": "^0.3.3",
     "@stencil/sass": "^3.2.3",
     "@tsconfig/node16": "^16.1.7",
