@@ -1,4 +1,7 @@
-import { Component, Host, h, Prop } from '@stencil/core';
+import { Component, Host, h, Prop, State, Listen } from '@stencil/core';
+import { t, getCurrentLanguage } from '../../services/i18n';
+import { Language } from '../../interfaces/translation';
+import { seoService } from '../../services/seoService';
 
 interface Project {
   id: string;
@@ -20,6 +23,44 @@ export class GuiProjects {
   @Prop() hash!: string;
   @Prop() menuOpened: boolean = true;
   @Prop() menuWidth!: number;
+  @State() currentLanguage: Language = getCurrentLanguage();
+
+  @Listen('language.changed', { target: 'document' })
+  handleLanguageChange(event: CustomEvent<Language>) {
+    this.currentLanguage = event.detail;
+  }
+
+  componentWillLoad() {
+    // Update SEO meta tags for Projects page
+    seoService.updateMetaTags({
+      title: 'Projects & Portfolio',
+      description: 'Explore my portfolio of web applications, mobile apps, 3D graphics projects, fintech platforms, and wireless network solutions.',
+      keywords: ['portfolio', 'web development', 'mobile apps', '3D graphics', 'fintech', 'projects', 'Angular', 'React', 'Three.js'],
+      type: 'website',
+      url: 'https://fruitsbytes.com/my-projects'
+    });
+
+    // Add structured data for projects listing
+    const schemas = [
+      // ItemList schema for all projects
+      seoService.getItemListSchema(this.projects, 'Software Development Projects'),
+
+      // WebPage schema
+      seoService.getWebPageSchema({
+        title: 'Projects & Portfolio',
+        description: 'Portfolio showcasing web development, mobile applications, 3D graphics, and fintech projects',
+        url: 'https://fruitsbytes.com/my-projects'
+      }),
+
+      // Breadcrumb schema
+      seoService.getBreadcrumbSchema([
+        { name: 'Home', url: '/welcome' },
+        { name: 'Projects', url: '/my-projects' }
+      ])
+    ];
+
+    seoService.addMultipleStructuredData(schemas);
+  }
 
   private projects: Project[] = [
     {
@@ -143,9 +184,9 @@ export class GuiProjects {
       >
         <div class='container max-w-6xl mx-auto my-48 px-6 py-8'>
           <header class='text-center mb-12'>
-            <h1 class='text-5xl font-bold mb-4 gradient-text'>My Projects</h1>
+            <h1 class='text-5xl font-bold mb-4 gradient-text'>{t('projectsPage.title')}</h1>
             <p class='text-xl text-gray-300'>
-              A showcase of selected work spanning web development, mobile apps, 3D graphics, fintech, and wireless networks
+              {t('projectsPage.subtitle')}
             </p>
           </header>
 
@@ -167,7 +208,7 @@ export class GuiProjects {
                   <p class='text-gray-300 mb-4'>{project.description}</p>
 
                   <div class='mb-4'>
-                    <h3 class='text-sm font-semibold text-green-400 mb-2'>Key Highlights:</h3>
+                    <h3 class='text-sm font-semibold text-green-400 mb-2'>{t('projectsPage.keyHighlights')}</h3>
                     <ul class='list-disc list-inside text-gray-300 text-sm space-y-1'>
                       {project.highlights.map((highlight) => (
                         <li>{highlight}</li>
@@ -176,7 +217,7 @@ export class GuiProjects {
                   </div>
 
                   <div class='mb-4'>
-                    <h3 class='text-sm font-semibold text-green-400 mb-2'>Technologies:</h3>
+                    <h3 class='text-sm font-semibold text-green-400 mb-2'>{t('projectsPage.technologies')}</h3>
                     <div class='flex flex-wrap gap-2'>
                       {project.technologies.map((tech) => (
                         <span class='tech-tag'>{tech}</span>
@@ -186,7 +227,7 @@ export class GuiProjects {
 
                   {project.link && (
                     <a href={project.link} target='_blank' rel='noopener noreferrer' class='project-link'>
-                      <span>View Project</span>
+                      <span>{t('projectsPage.viewProject')}</span>
                       <span class='material-symbols-sharp'>arrow_forward</span>
                     </a>
                   )}
@@ -197,12 +238,12 @@ export class GuiProjects {
 
           <div class='mt-16 text-center'>
             <div class='inline-block bg-gray-800 bg-opacity-50 border border-blue-400 rounded-lg p-6'>
-              <h3 class='text-2xl font-bold mb-3 text-blue-300'>Interested in collaborating?</h3>
+              <h3 class='text-2xl font-bold mb-3 text-blue-300'>{t('projectsPage.cta.title')}</h3>
               <p class='text-gray-300 mb-4'>
-                I'm always open to discussing new projects and opportunities.
+                {t('projectsPage.cta.subtitle')}
               </p>
               <simple-link link='/contact-me' class='inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors'>
-                Get in Touch
+                {t('projectsPage.cta.button')}
               </simple-link>
             </div>
           </div>

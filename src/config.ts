@@ -1,4 +1,5 @@
 import { MenuItem, MenuItem2 } from './interfaces/menuItem';
+import { t } from './services/i18n';
 
 export const MENU_ITEMS: Array<MenuItem> = [
   {
@@ -35,6 +36,17 @@ export const MENU_ITEMS: Array<MenuItem> = [
 ];
 
 export const AVAILABLE_PATHS = MENU_ITEMS.map( i=> i.path);
+
+/**
+ * Get translated menu items
+ * Maps menu item keys to translation keys in the nav namespace
+ */
+export function getTranslatedMenuItems(): Array<MenuItem> {
+  return MENU_ITEMS.map(item => ({
+    ...item,
+    title: t(`nav.${item.key}`)
+  }));
+}
 
 export const DEFAULT_MENU_WIDTH = 600;
 

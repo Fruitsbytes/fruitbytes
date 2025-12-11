@@ -1,7 +1,9 @@
 import { BlogPost } from '../interfaces/blog';
+import { Language } from '../interfaces/translation';
+import { getCurrentLanguage } from './i18n';
 
-// This would normally fetch from your markdown files
-// For now, we'll create the blog data directly from our markdown content
+// Blog posts data - each post ID can have multiple language versions
+// In a real application, these would be loaded from markdown files
 const blogPosts: BlogPost[] = [
   {
     id: 'claude-code-ai-assistant',
@@ -14,6 +16,7 @@ const blogPosts: BlogPost[] = [
       tags: ['AI', 'Claude Code', 'Developer Tools', 'Productivity'],
       image: '/assets/images/blog/claude-code.jpg',
       readTime: 8,
+      language: 'en',
     },
     content: `<h2>What is Claude Code?</h2>
 <p>Claude Code is Anthropic's official command-line interface that brings the power of Claude AI directly into your development environment. Unlike traditional code completion tools, Claude Code understands context, can read and analyze your entire codebase, and provides intelligent suggestions that go far beyond simple autocomplete.</p>
@@ -61,6 +64,7 @@ const blogPosts: BlogPost[] = [
       tags: ['Angular', 'Signals', 'TypeScript', 'Web Development'],
       image: '/assets/images/blog/angular-signals.jpg',
       readTime: 6,
+      language: 'en',
     },
     content: `<h2>The Power of Signals</h2>
 <p>Angular's new Signals API represents a fundamental shift in how we think about state management and reactivity in Angular applications. Unlike the traditional Zone.js-based change detection, Signals provide fine-grained reactivity that only updates what actually changed.</p>
@@ -110,6 +114,7 @@ count.set(5); // Effect runs automatically</code></pre>
       tags: ['Laravel', 'PHP', 'Backend', 'Web Development'],
       image: '/assets/images/blog/laravel-11.jpg',
       readTime: 7,
+      language: 'en',
     },
     content: `<h2>What's New in Laravel 11?</h2>
 <p>Laravel has always been at the forefront of modern PHP development, and version 11 takes it even further with a focus on simplicity and developer experience.</p>
@@ -163,6 +168,7 @@ count.set(5); // Effect runs automatically</code></pre>
       tags: ['Three.js', 'WebGL', 'Performance', '3D Graphics'],
       image: '/assets/images/blog/threejs-performance.jpg',
       readTime: 5,
+      language: 'en',
     },
     content: `<h2>The Performance Challenge</h2>
 <p>Three.js makes 3D graphics accessible, but achieving smooth performance requires understanding how to optimize your scene, geometry, materials, and render loop.</p>
@@ -222,6 +228,7 @@ for (let i = 0; i < 1000; i++) {
       tags: ['StencilJS', 'Web Components', 'TypeScript', 'Frontend'],
       image: '/assets/images/blog/stenciljs.jpg',
       readTime: 6,
+      language: 'en',
     },
     content: `<h2>Why StencilJS?</h2>
 <p>StencilJS combines the best ideas from popular frameworks into a simple compiler that generates standard Web Components. The result? Components that work in any framework - or no framework at all.</p>
@@ -292,68 +299,131 @@ export class BlogService {
   }
 
   /**
-   * Get all blog posts sorted by date (newest first)
+   * Get all blog posts for current language, sorted by date (newest first)
+   * Falls back to English posts if no posts available for current language
    */
-  getAllPosts(): BlogPost[] {
-    return [...blogPosts].sort(
-      (a, b) => new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime()
-    );
+  getAllPosts(language?: Language): BlogPost[] {
+    const lang = language || getCurrentLanguage();
+    let posts = [...blogPosts]
+      .filter(post => post.metadata.language === lang)
+      .sort((a, b) => new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime());
+
+    // Fallback to English if no posts found for current language
+    if (posts.length === 0 && lang !== 'en') {
+      console.log(`ℹ️ No blog posts found for language: ${lang}, falling back to English`);
+      posts = [...blogPosts]
+        .filter(post => post.metadata.language === 'en')
+        .sort((a, b) => new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime());
+    }
+
+    return posts;
   }
 
   /**
-   * Get a single blog post by ID
+   * Get a single blog post by ID and language
+   * Falls back to English version if not available in current language
    */
-  getPostById(id: string): BlogPost | undefined {
-    return blogPosts.find(post => post.id === id);
+  getPostById(id: string, language?: Language): BlogPost | undefined {
+    const lang = language || getCurrentLanguage();
+    let post = blogPosts.find(post => post.id === id && post.metadata.language === lang);
+
+    // Fallback to English if not found for current language
+    if (!post && lang !== 'en') {
+      console.log(`ℹ️ Blog post '${id}' not found for language: ${lang}, falling back to English`);
+      post = blogPosts.find(post => post.id === id && post.metadata.language === 'en');
+    }
+
+    return post;
   }
 
   /**
-   * Get posts by category
+   * Get posts by category for current language
    */
-  getPostsByCategory(category: string): BlogPost[] {
-    return blogPosts.filter(post => post.metadata.category === category)
+  getPostsByCategory(category: string, language?: Language): BlogPost[] {
+    const lang = language || getCurrentLanguage();
+    return blogPosts
+      .filter(post => post.metadata.category === category && post.metadata.language === lang)
       .sort((a, b) => new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime());
   }
 
   /**
-   * Get posts by tag
+   * Get posts by tag for current language
    */
-  getPostsByTag(tag: string): BlogPost[] {
-    return blogPosts.filter(post => post.metadata.tags.includes(tag))
+  getPostsByTag(tag: string, language?: Language): BlogPost[] {
+    const lang = language || getCurrentLanguage();
+    return blogPosts
+      .filter(post => post.metadata.tags.includes(tag) && post.metadata.language === lang)
       .sort((a, b) => new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime());
   }
 
   /**
-   * Get all unique categories
+   * Get all unique categories for current language
    */
-  getAllCategories(): string[] {
-    const categories = blogPosts.map(post => post.metadata.category);
+  getAllCategories(language?: Language): string[] {
+    const lang = language || getCurrentLanguage();
+    const categories = blogPosts
+      .filter(post => post.metadata.language === lang)
+      .map(post => post.metadata.category);
     return Array.from(new Set(categories)).sort();
   }
 
   /**
-   * Get all unique tags
+   * Get all unique tags for current language
    */
-  getAllTags(): string[] {
-    const tags = blogPosts.flatMap(post => post.metadata.tags);
+  getAllTags(language?: Language): string[] {
+    const lang = language || getCurrentLanguage();
+    const tags = blogPosts
+      .filter(post => post.metadata.language === lang)
+      .flatMap(post => post.metadata.tags);
     return Array.from(new Set(tags)).sort();
   }
 
   /**
-   * Get recent posts (limit to N)
+   * Get recent posts (limit to N) for current language
    */
-  getRecentPosts(limit: number = 5): BlogPost[] {
-    return this.getAllPosts().slice(0, limit);
+  getRecentPosts(limit: number = 5, language?: Language): BlogPost[] {
+    return this.getAllPosts(language).slice(0, limit);
   }
 
   /**
-   * Search posts by title or description
+   * Search posts by title or description in current language
    */
-  searchPosts(query: string): BlogPost[] {
+  searchPosts(query: string, language?: Language): BlogPost[] {
+    const lang = language || getCurrentLanguage();
     const lowerQuery = query.toLowerCase();
-    return blogPosts.filter(post =>
-      post.metadata.title.toLowerCase().includes(lowerQuery) ||
-      post.metadata.description.toLowerCase().includes(lowerQuery)
+    return blogPosts.filter(
+      post =>
+        post.metadata.language === lang &&
+        (post.metadata.title.toLowerCase().includes(lowerQuery) ||
+          post.metadata.description.toLowerCase().includes(lowerQuery))
     );
+  }
+
+  /**
+   * Check if a post has translations in other languages
+   */
+  getAvailableLanguages(postId: string): Language[] {
+    return Array.from(
+      new Set(
+        blogPosts
+          .filter(post => post.id === postId)
+          .map(post => post.metadata.language)
+      )
+    );
+  }
+
+  /**
+   * Get post in a specific language or fallback to English
+   */
+  getPostWithFallback(id: string, language: Language): BlogPost | undefined {
+    // Try to get post in requested language
+    let post = this.getPostById(id, language);
+
+    // Fallback to English if not found
+    if (!post && language !== 'en') {
+      post = this.getPostById(id, 'en');
+    }
+
+    return post;
   }
 }

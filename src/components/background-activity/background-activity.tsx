@@ -57,7 +57,10 @@ export class BackgroundActivity {
       this.isWebGL2Available = false;
     }
     if (this.isWebGL2Available) {
-      await this.loadWorld();
+      // Delay 3D initialization to allow assets to load during dev
+      setTimeout(async () => {
+        await this.loadWorld();
+      }, 500);
     } else {
       console.log('unavailable', true);
     }
@@ -72,14 +75,15 @@ export class BackgroundActivity {
   }
 
   loadWorld = async () => {
-    console.log('starting...');
-    await this.my3d?.init(
-      {
-        debug: false,
-        controls: false,
-        container: this.el.shadowRoot?.host as HTMLElement,
-        animation: (scene, _c, _t, _d) => {
-          const newArray: ExtendedObject3D[] = [];
+    console.log('Initializing 3D background...');
+    try {
+      await this.my3d?.init(
+        {
+          debug: false,
+          controls: false,
+          container: this.el.shadowRoot?.host as HTMLElement,
+          animation: (scene, _c, _t, _d) => {
+            const newArray: ExtendedObject3D[] = [];
 
           if (this.dataArray) {
             this.analyser?.getByteFrequencyData(this.dataArray as any);
@@ -133,12 +137,17 @@ export class BackgroundActivity {
           this.balls = newArray;
         },
       });
-    if (this.my3d) {
-      this.el.shadowRoot?.appendChild(this.my3d.renderer.domElement);
-      await this.addBox();
-      this.my3d.start();
-      this.ready = true;
-    } // TODO replace by RXJS/Observer
+      if (this.my3d) {
+        this.el.shadowRoot?.appendChild(this.my3d.renderer.domElement);
+        await this.addBox();
+        this.my3d.start();
+        this.ready = true;
+      } // TODO replace by RXJS/Observer
+    } catch (error) {
+      console.warn('3D background unavailable - continuing without it. This is normal during development.', error instanceof Error ? error.message : error);
+      // Gracefully handle failure - background is optional visual enhancement
+      this.ready = false;
+    }
   };
 
   addBox = async () => {

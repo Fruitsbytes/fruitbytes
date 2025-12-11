@@ -1,4 +1,7 @@
-import { Component, Host, h, Prop, Watch, Element } from '@stencil/core';
+import { Component, Host, h, Prop, Watch, Element, State, Listen } from '@stencil/core';
+import { t, getCurrentLanguage } from '../../services/i18n';
+import { Language } from '../../interfaces/translation';
+import { seoService } from '../../services/seoService';
 
 @Component({
   tag: 'gui-about',
@@ -11,8 +14,35 @@ export class GuiAbout {
   @Prop() menuOpened!: boolean;
   @Prop() menuWidth!: number;
   @Prop() hash!: string | undefined;
+  @State() currentLanguage: Language = getCurrentLanguage();
+
+  @Listen('language.changed', { target: 'document' })
+  handleLanguageChange(event: CustomEvent<Language>) {
+    this.currentLanguage = event.detail;
+  }
 
   componentDidLoad() {
+    // Update SEO for About/Resume page
+    seoService.updateMetaTags({
+      title: 'About Me - Resume & CV',
+      description: 'Senior Software Developer with 10+ years of experience in Angular, React, Three.js, and enterprise applications. View my full resume and professional experience.',
+      keywords: ['resume', 'cv', 'senior software developer', 'angular developer', 'react developer', 'three.js', 'montreal developer', 'full-stack developer'],
+      type: 'profile',
+      url: 'https://fruitsbytes.com/about-me'
+    });
+
+    // Add ProfilePage structured data
+    const schemas = [
+      seoService.getProfilePageSchema(),
+      seoService.getWebPageSchema({
+        title: 'About Me - Resume & CV',
+        description: 'Professional resume and CV of Jeffrey Nicholson Carré, Senior Software Developer specializing in Angular, React, and Three.js',
+        url: 'https://fruitsbytes.com/about-me'
+      })
+    ];
+
+    seoService.addMultipleStructuredData(schemas);
+
     // Scroll to hash on an initial load if present (with longer delay for rendering)
     if (this.hash) {
       setTimeout(() => {
@@ -89,7 +119,7 @@ export class GuiAbout {
           <div class='paper shadow-lg text-gray-900 bg-gray-50'>
             <section id='about'>
 
-              <h1 class='text-gray-300 font-extralight'>About Me</h1>
+              <h1 class='text-gray-300 font-extralight'>{t('aboutPage.title')}</h1>
               <div class='avatar'></div>
               <div class='name text-center text-lg text-blue-900'>Jeffrey Nicholson Carré</div>
               <div class='mx-auto text-center' style={{ maxWidth: '400px' }}>
@@ -119,16 +149,16 @@ export class GuiAbout {
 
               <div id='info'>
                 <h3 class='mb-3'>
-                  <span class='border-b-4 border-green-500'>Info</span>
+                  <span class='border-b-4 border-green-500'>{t('aboutPage.info')}</span>
                 </h3>
 
                 <div class='content grid grid-cols-3 grid-rows-1 divide-x divide-gray-200 rounded rounded-md p-2 border border-gray-200'>
                   <div>
-                    <label htmlFor='info-location'>Location</label>
+                    <label htmlFor='info-location'>{t('aboutPage.location')}</label>
                     <p id='info-location'>Montréal, QC</p>
                   </div>
                   <div class='col-span-2 pl-2'>
-                    <label htmlFor='info-email'>Email</label>
+                    <label htmlFor='info-email'>{t('aboutPage.email')}</label>
                     <p id='info-email'>
                       <a href='mailto:jeffrey.carre@anbapyezanman.com'>jeffrey.carre@anbapyezanman.com</a>
                     </p>
@@ -138,7 +168,7 @@ export class GuiAbout {
 
               <div id='bio' class='mt-4'>
                 <h3 class='mb-3'>
-                  <span class='border-b-4 border-green-500'>Bio</span>
+                  <span class='border-b-4 border-green-500'>{t('aboutPage.bio')}</span>
                 </h3>
                 <div class='content'>
                   <p>
@@ -159,7 +189,7 @@ export class GuiAbout {
           </div>
           <div class='paper shadow-lg text-gray-900 bg-gray-50'>
             <section id='employment-history'>
-              <h2>Employment History</h2>
+              <h2>{t('aboutPage.employmentHistory')}</h2>
 
               <div
                 class='content grid grid-cols-1 divide-y divide-gray-200 rounded-md p-2 border border-gray-200'>
@@ -299,7 +329,7 @@ export class GuiAbout {
 
           <div class='paper shadow-lg text-gray-900 bg-gray-50'>
             <section id='education'>
-              <h2>Education</h2>
+              <h2>{t('aboutPage.education')}</h2>
 
               <div class='content grid grid-cols-1 divide-y divide-gray-200 rounded-md p-2 border border-gray-200'>
                 <div class='content grid grid-cols-12 pb-4' id='FDS'>
@@ -405,7 +435,7 @@ export class GuiAbout {
 
           <div class='paper shadow-lg text-gray-900 bg-gray-50'>
             <section id='skills'>
-              <h2>Skills</h2>
+              <h2>{t('aboutPage.skills')}</h2>
 
               <div class='content grid grid-cols-1 divide-y divide-gray-200 rounded-md p-2 border border-gray-200'>
                 <div class='content pb-4' id='frontend-dev'>
@@ -455,6 +485,17 @@ export class GuiAbout {
                     <li>Motion Graphics</li>
                   </ul>
                 </div>
+              </div>
+            </section>
+
+            <div class='page'>4</div>
+          </div>
+
+          <div class='paper shadow-lg text-gray-900 bg-gray-50'>
+            <section id='skills-continued'>
+              <h2>Skills (continued)</h2>
+
+              <div class='content grid grid-cols-1 divide-y divide-gray-200 rounded-md p-2 border border-gray-200'>
 
                 <div class='content pb-4' id='wireless'>
                   <h3 class='mt-2 mb-3'>
@@ -489,7 +530,7 @@ export class GuiAbout {
               </div>
             </section>
 
-            <div class='page'>4</div>
+            <div class='page'>5</div>
           </div>
 
           <div class='paper shadow-lg text-gray-900 bg-gray-50'>
@@ -551,7 +592,7 @@ export class GuiAbout {
               </div>
             </section>
 
-            <div class='page'>5</div>
+            <div class='page'>6</div>
           </div>
         </div>
 

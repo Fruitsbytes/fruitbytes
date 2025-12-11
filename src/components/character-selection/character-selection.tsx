@@ -1,7 +1,9 @@
-import { Component, Host, h, Element, State, EventEmitter, Event } from '@stencil/core';
+import { Component, Host, h, Element, State, EventEmitter, Event, Listen } from '@stencil/core';
 import { FRUIT_FLAVORS, FRUIT_TYPES } from '../../interfaces/fruits';
 import { animateCSS, capitalizeFirstLetter, dec2bin, getRandomArbitrary, getRandomInt, text2Binary } from '../../utils';
 import { SoundLibraryService } from '../../services/soundLibraryService';
+import { Language } from '../../interfaces/translation';
+import { t, getCurrentLanguage } from '../../services/i18n';
 
 const names = ['candied',
   'fleshy', 'sour', 'forbidden',
@@ -46,11 +48,17 @@ export class CharacterSelection {
   @State() selectedFruit = 0;
   @State() selectedFlavor = 0;
   @State() name = '';
+  @State() currentLanguage: Language = getCurrentLanguage();
   private selectTypeEl: Nullable<HTMLSelectElement>;
   private selectFlavorEl: Nullable<HTMLSelectElement>;
   private soundLib: SoundLibraryService = SoundLibraryService.instance();
   @State() trees: any[] = [];
   @Event({ eventName: 'close.loading' }) close!: EventEmitter<boolean>;
+
+  @Listen('language.changed', { target: 'document' })
+  handleLanguageChange(event: CustomEvent<Language>) {
+    this.currentLanguage = event.detail;
+  }
 
   connectedCallback() {
     this.soundLib.preload(['menuSelect', 'roll', 'cheerfull', 'crush']).catch();
@@ -219,10 +227,10 @@ export class CharacterSelection {
           style={{ width: '392px' }}>
 
           <div>
-            <p class='m-0   text-green-800 font-mono leading-none'><span>Which one would it be,</span></p>
-            <p class='m-0  text-green-800 font-mono leading-none'><span>if you could be a</span></p>
-            <h1 class='text-4xl m-0 font-black text-green-800 leading-noe'> Fruit ?</h1>
-            <p class='mb-6 text-gray-800 font-mono leading-none text-sm'><i>(Build your character)</i></p>
+            <p class='m-0   text-green-800 font-mono leading-none'><span>{t('character.question1')}</span></p>
+            <p class='m-0  text-green-800 font-mono leading-none'><span>{t('character.question2')}</span></p>
+            <h1 class='text-4xl m-0 font-black text-green-800 leading-noe'> {t('character.fruitWord')} ?</h1>
+            <p class='mb-6 text-gray-800 font-mono leading-none text-sm'><i>{t('character.buildCharacter')}</i></p>
           </div>
 
           <div
@@ -253,29 +261,29 @@ export class CharacterSelection {
           <div class=''>
             <div class='grid gap-6 mb-3 lg:grid-cols-1 pb-3'>
               <div>
-                <label htmlFor='username' class='block mb-2 text-sm font-medium text-gray-700'>Name</label>
+                <label htmlFor='username' class='block mb-2 text-sm font-medium text-gray-700'>{t('character.nameLabel')}</label>
                 <input type='text' id='username' value={this.name} maxlength={50}
                        onKeyUp={(e) => this.name = (e.target as any).value}
                        class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
-                       placeholder='John' required />
+                       placeholder={t('character.namePlaceholder')} required />
               </div>
             </div>
 
             <div class='grid gap-6 mb-3 lg:grid-cols-2 pb-3'>
               <div>
-                <label htmlFor='type' class='block mb-2 text-sm font-medium text-gray-700'>Type + Variety</label>
+                <label htmlFor='type' class='block mb-2 text-sm font-medium text-gray-700'>{t('character.typeLabel')}</label>
                 <select onChange={this.selectFruit}
                         class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
                         id='type'>
-                  <option value=''>Select a fruit</option>
+                  <option value=''>{t('character.selectFruit')}</option>
                 </select>
               </div>
               <div>
-                <label htmlFor='flavor' class='block mb-2 text-sm font-medium text-gray-700'>Flavor</label>
+                <label htmlFor='flavor' class='block mb-2 text-sm font-medium text-gray-700'>{t('character.flavorLabel')}</label>
                 <select onChange={this.selectFlavor}
                         class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
                         id='flavor'>
-                  <option value=''>Select a flavor</option>
+                  <option value=''>{t('character.selectFlavor')}</option>
                 </select>
               </div>
             </div>
@@ -288,7 +296,7 @@ export class CharacterSelection {
                 <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2'
                       d='M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z'></path>
               </svg>
-              GMO
+              {t('character.randomizeButton')}
             </button>
             <button type='button' onClick={this.pluck}
                     class='text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-green700 dark:focus:ring-green-800'>
@@ -297,7 +305,7 @@ export class CharacterSelection {
                 <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2'
                       d='M13 10V3L4 14h7v7l9-11h-7z'></path>
               </svg>
-              Pluck
+              {t('character.pluckButton')}
             </button>
           </div>
           <div class='text-left font-mono absolute numnum'>

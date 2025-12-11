@@ -1,3 +1,5 @@
+import { Language } from './translation';
+
 export interface BlogMetadata {
   title: string;
   description: string;
@@ -7,10 +9,11 @@ export interface BlogMetadata {
   tags: string[];
   image?: string; // Path to blog image
   readTime?: number; // Read time in minutes
+  language: Language; // Language of the blog post
 }
 
 export interface BlogPost {
-  id: string; // Slug/URL-friendly identifier
+  id: string; // Slug/URL-friendly identifier (same across languages)
   metadata: BlogMetadata;
   content: string; // HTML content (parsed from markdown)
   excerpt: string; // Short excerpt for list view
