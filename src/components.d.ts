@@ -120,6 +120,14 @@ export namespace Components {
         "menuOpened": boolean;
         "menuWidth": number;
     }
+    interface GuiContact {
+        /**
+          * @default false
+         */
+        "isMobile"?: boolean;
+        "menuOpened": boolean;
+        "menuWidth": number;
+    }
     interface GuiProjects {
         "hash": string;
         /**
@@ -391,6 +399,12 @@ declare global {
         prototype: HTMLGuiBlogElement;
         new (): HTMLGuiBlogElement;
     };
+    interface HTMLGuiContactElement extends Components.GuiContact, HTMLStencilElement {
+    }
+    var HTMLGuiContactElement: {
+        prototype: HTMLGuiContactElement;
+        new (): HTMLGuiContactElement;
+    };
     interface HTMLGuiProjectsElement extends Components.GuiProjects, HTMLStencilElement {
     }
     var HTMLGuiProjectsElement: {
@@ -568,6 +582,7 @@ declare global {
         "gui-404": HTMLGui404Element;
         "gui-about": HTMLGuiAboutElement;
         "gui-blog": HTMLGuiBlogElement;
+        "gui-contact": HTMLGuiContactElement;
         "gui-projects": HTMLGuiProjectsElement;
         "gui-welcome": HTMLGuiWelcomeElement;
         "language-selector": HTMLLanguageSelectorElement;
@@ -691,6 +706,14 @@ declare namespace LocalJSX {
           * @default true
          */
         "menuOpened"?: boolean;
+        "menuWidth": number;
+    }
+    interface GuiContact {
+        /**
+          * @default false
+         */
+        "isMobile"?: boolean;
+        "menuOpened": boolean;
         "menuWidth": number;
     }
     interface GuiProjects {
@@ -820,6 +843,7 @@ declare namespace LocalJSX {
         "gui-404": Gui404;
         "gui-about": GuiAbout;
         "gui-blog": GuiBlog;
+        "gui-contact": GuiContact;
         "gui-projects": GuiProjects;
         "gui-welcome": GuiWelcome;
         "language-selector": LanguageSelector;
@@ -863,6 +887,7 @@ declare module "@stencil/core" {
             "gui-404": LocalJSX.Gui404 & JSXBase.HTMLAttributes<HTMLGui404Element>;
             "gui-about": LocalJSX.GuiAbout & JSXBase.HTMLAttributes<HTMLGuiAboutElement>;
             "gui-blog": LocalJSX.GuiBlog & JSXBase.HTMLAttributes<HTMLGuiBlogElement>;
+            "gui-contact": LocalJSX.GuiContact & JSXBase.HTMLAttributes<HTMLGuiContactElement>;
             "gui-projects": LocalJSX.GuiProjects & JSXBase.HTMLAttributes<HTMLGuiProjectsElement>;
             "gui-welcome": LocalJSX.GuiWelcome & JSXBase.HTMLAttributes<HTMLGuiWelcomeElement>;
             "language-selector": LocalJSX.LanguageSelector & JSXBase.HTMLAttributes<HTMLLanguageSelectorElement>;
