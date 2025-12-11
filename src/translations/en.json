@@ -32,7 +32,27 @@
   },
   "contact": {
     "title": "Contact Me",
-    "description": "Get in touch for collaborations or inquiries"
+    "description": "Get in touch for collaborations or inquiries",
+    "info": {
+      "title": "Let's Connect",
+      "description": "I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision. Feel free to reach out!",
+      "location": "Location",
+      "social": "Social Media"
+    },
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "your.email@example.com",
+      "subject": "Subject",
+      "subjectPlaceholder": "What's this about?",
+      "message": "Message",
+      "messagePlaceholder": "Tell me about your project or inquiry...",
+      "send": "Send Message",
+      "sending": "Sending...",
+      "success": "Message sent successfully! I'll get back to you soon.",
+      "error": "Oops! Something went wrong. Please try again or email me directly."
+    }
   },
   "blog": {
     "title": "My Blog",

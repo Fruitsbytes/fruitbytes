@@ -501,6 +501,12 @@ export class AppRoot {
               )
           }
           {
+            this.activeRoute !== '/contact-me' || this.loading || this.routeLoading?
+              null : (
+                <gui-contact menuOpened={this.menuOpened} menuWidth={this.menuWidth} isMobile={this.isMobile}></gui-contact>
+              )
+          }
+          {
             /* Only load 3D background on welcome page (desktop only) to reduce initial bundle size */
             this.activeRoute === '/welcome' && !this.loading && !this.isMobile ? (
               <background-activity digiCode={this.player?.digiCode || ''}

@@ -27,7 +27,27 @@
   },
   "contact": {
     "title": "Contáctame",
-    "description": "Ponte en contacto para colaboraciones o consultas"
+    "description": "Ponte en contacto para colaboraciones o consultas",
+    "info": {
+      "title": "Conectémonos",
+      "description": "Siempre estoy abierto a discutir nuevos proyectos, ideas creativas u oportunidades. ¡No dudes en contactarme!",
+      "location": "Ubicación",
+      "social": "Redes Sociales"
+    },
+    "form": {
+      "name": "Nombre",
+      "namePlaceholder": "Tu nombre",
+      "email": "Correo electrónico",
+      "emailPlaceholder": "tu.email@ejemplo.com",
+      "subject": "Asunto",
+      "subjectPlaceholder": "¿De qué se trata?",
+      "message": "Mensaje",
+      "messagePlaceholder": "Cuéntame sobre tu proyecto o consulta...",
+      "send": "Enviar Mensaje",
+      "sending": "Enviando...",
+      "success": "¡Mensaje enviado con éxito! Te responderé pronto.",
+      "error": "¡Ups! Algo salió mal. Por favor, inténtalo de nuevo o envíame un correo directamente."
+    }
   },
   "blog": {
     "title": "Mi Blog",

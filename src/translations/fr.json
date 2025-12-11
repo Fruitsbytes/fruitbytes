@@ -27,7 +27,27 @@
   },
   "contact": {
     "title": "Me Contacter",
-    "description": "Contactez-moi pour des collaborations ou des questions"
+    "description": "Contactez-moi pour des collaborations ou des questions",
+    "info": {
+      "title": "Restons en Contact",
+      "description": "Je suis toujours ouvert à discuter de nouveaux projets, d'idées créatives ou d'opportunités. N'hésitez pas à me contacter!",
+      "location": "Localisation",
+      "social": "Médias Sociaux"
+    },
+    "form": {
+      "name": "Nom",
+      "namePlaceholder": "Votre nom",
+      "email": "Email",
+      "emailPlaceholder": "votre.email@exemple.com",
+      "subject": "Sujet",
+      "subjectPlaceholder": "De quoi s'agit-il?",
+      "message": "Message",
+      "messagePlaceholder": "Parlez-moi de votre projet ou de votre demande...",
+      "send": "Envoyer le Message",
+      "sending": "Envoi en cours...",
+      "success": "Message envoyé avec succès! Je vous répondrai bientôt.",
+      "error": "Oups! Quelque chose s'est mal passé. Veuillez réessayer ou m'envoyer un email directement."
+    }
   },
   "blog": {
     "title": "Mon Blog",

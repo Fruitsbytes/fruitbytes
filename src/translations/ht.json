@@ -26,8 +26,28 @@
     "description": "Aprann plis sou antecedent ak eksperyans mwen"
   },
   "contact": {
-    "title": "Kontakte M",
-    "description": "Kontakte m pou kolaborasyon oswa kesyon"
+    "title": "Kontakte Mwen",
+    "description": "Kontakte m pou kolaborasyon oswa kesyon",
+    "info": {
+      "title": "Ann Konekte",
+      "description": "Mwen toujou ouvè pou diskite sou nouvo pwojè, lide kreyatif oswa opòtinite. Pa ezite kontakte mwen!",
+      "location": "Kote",
+      "social": "Rezo Sosyal"
+    },
+    "form": {
+      "name": "Non",
+      "namePlaceholder": "Non ou",
+      "email": "Imèl",
+      "emailPlaceholder": "imèl.ou@egzanp.com",
+      "subject": "Sijè",
+      "subjectPlaceholder": "Kisa l ap pale?",
+      "message": "Mesaj",
+      "messagePlaceholder": "Di m sou pwojè w oswa kesyon w...",
+      "send": "Voye Mesaj",
+      "sending": "Ap voye...",
+      "success": "Mesaj la voye avèk siksè! Map reponn ou byento.",
+      "error": "Oops! Gen yon bagay ki pa mache. Tanpri eseye ankò oswa voye m yon imèl dirèkteman."
+    }
   },
   "blog": {
     "title": "Blog Mwen",
