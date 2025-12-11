@@ -23,7 +23,9 @@ export class RightPanel {
   @State() selectedPath?: string;
   @State() selectedCategory: string | null = null;
   @State() selectedTag: string | null = null;
+  @State() mobileDrawerState: 'collapsed' | 'expanded' | 'fullscreen' = 'collapsed';
   @Prop() isOpened?: boolean;
+  @Prop() isMobile?: boolean = false;
   @Event({ eventName: 'menu.opened' }) Opened?: EventEmitter<Partial<BackDropOptions> | undefined>;
   @Event({ eventName: 'menu.closed' }) Closed?: EventEmitter<Partial<BackDropOptions> | undefined>;
   @Event({ eventName: 'menu.resizing.start' }) ResizingStart?: EventEmitter<string>;
@@ -37,6 +39,10 @@ export class RightPanel {
   private handle: Nullable<HTMLElement>;
   private crunchingMenu: Nullable<HTMLElement>;
   private blogService = BlogService.getInstance();
+
+  // Touch gesture tracking for mobile
+  private touchStartY: number = 0;
+  private touchStartTime: number = 0;
 
   connectedCallback() {
     // Only add welcome message once per component instance
@@ -315,16 +321,104 @@ export class RightPanel {
     }
   }
 
+  // Mobile drawer controls
+  private toggleMobileDrawer = () => {
+    if (this.mobileDrawerState === 'collapsed') {
+      this.mobileDrawerState = 'expanded';
+    } else if (this.mobileDrawerState === 'expanded') {
+      this.mobileDrawerState = 'collapsed';
+    } else if (this.mobileDrawerState === 'fullscreen') {
+      this.mobileDrawerState = 'expanded';
+    }
+  };
+
+  private handleTouchStart = (e: TouchEvent) => {
+    if (!this.isMobile) return;
+
+    this.touchStartY = e.touches[0].clientY;
+    this.touchStartTime = Date.now();
+  };
+
+  private handleTouchMove = (e: TouchEvent) => {
+    if (!this.isMobile) return;
+
+    const touchCurrentY = e.touches[0].clientY;
+    const deltaY = this.touchStartY - touchCurrentY;
+
+    // Prevent default scrolling when swiping on drawer header in collapsed state
+    if (this.mobileDrawerState === 'collapsed' && deltaY > 0) {
+      e.preventDefault();
+    }
+  };
+
+  private handleTouchEnd = (e: TouchEvent) => {
+    if (!this.isMobile) return;
+
+    const touchEndY = e.changedTouches[0].clientY;
+    const deltaY = this.touchStartY - touchEndY;
+    const deltaTime = Date.now() - this.touchStartTime;
+    const velocity = Math.abs(deltaY) / deltaTime;
+
+    // Swipe threshold: 50px minimum distance or high velocity
+    const isSwipe = Math.abs(deltaY) > 50 || velocity > 0.5;
+
+    if (isSwipe) {
+      if (deltaY > 0) {
+        // Swipe up
+        if (this.mobileDrawerState === 'collapsed') {
+          this.mobileDrawerState = 'expanded';
+        } else if (this.mobileDrawerState === 'expanded') {
+          this.mobileDrawerState = 'fullscreen';
+        }
+      } else {
+        // Swipe down
+        if (this.mobileDrawerState === 'fullscreen') {
+          this.mobileDrawerState = 'expanded';
+        } else if (this.mobileDrawerState === 'expanded') {
+          this.mobileDrawerState = 'collapsed';
+        }
+      }
+    }
+  };
+
   render() {
+    const isMobileView = !!this.isMobile;
+    const hostClasses = {
+      'mobile': isMobileView,
+      'desktop': !isMobileView,
+      'drawer-collapsed': isMobileView && this.mobileDrawerState === 'collapsed',
+      'drawer-expanded': isMobileView && this.mobileDrawerState === 'expanded',
+      'drawer-fullscreen': isMobileView && this.mobileDrawerState === 'fullscreen',
+    };
+
+    const hostStyle = isMobileView
+      ? {} // Mobile styles handled by CSS
+      : {
+          width: this.width + 'px',
+          transform: `translateX(${this.isOpened ? 0 : this.width}px)`,
+        };
 
     return (
-      <Host style={{
-        width: this.width + 'px',
-        transform: `translateX(${this.isOpened ? 0 : this.width}px)`,
-      }}>
-        <div id='drag'
-             onMouseDown={this.handleOnMouseDown}
-             class='resize-line resize-left-line'></div>
+      <Host
+        class={hostClasses}
+        style={hostStyle}
+        onTouchStart={isMobileView ? this.handleTouchStart : undefined}
+        onTouchMove={isMobileView ? this.handleTouchMove : undefined}
+        onTouchEnd={isMobileView ? this.handleTouchEnd : undefined}
+      >
+        {/* Drag handle - desktop only */}
+        {!isMobileView && (
+          <div id='drag'
+               onMouseDown={this.handleOnMouseDown}
+               class='resize-line resize-left-line'></div>
+        )}
+
+        {/* Mobile drawer handle */}
+        {isMobileView && (
+          <div class='mobile-drawer-handle' onClick={this.toggleMobileDrawer}>
+            <div class='handle-bar'></div>
+          </div>
+        )}
 
         <div class='top-menu'>
           <simple-link link='/welcome' label={'Home'}>

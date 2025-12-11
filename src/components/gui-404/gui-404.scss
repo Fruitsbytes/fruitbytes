@@ -25,3 +25,32 @@
 button, a {
   cursor: url('../../assets/images/cursor.webp'),auto;
 }
+
+/* ========================================
+   Mobile Responsive Styles
+   ======================================== */
+@media (max-width: 768px) {
+  :host {
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--mobile-padding-large);
+    padding-top: calc(var(--mobile-header-height) + var(--mobile-padding-xlarge));
+    padding-bottom: calc(var(--mobile-drawer-collapsed) + var(--mobile-padding-xlarge));
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .img {
+    position: static;
+    width: 80%;
+    max-width: 300px;
+    margin: var(--mobile-padding-large) auto;
+    bottom: auto;
+    left: auto;
+  }
+
+  /* Disable custom cursor on mobile */
+  button, a {
+    cursor: pointer;
+  }
+}

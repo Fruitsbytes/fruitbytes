@@ -178,3 +178,76 @@
     cursor: url('../../assets/images/cursor.webp'), auto;
   }
 }
+
+/* ========================================
+   Mobile Responsive Styles
+   ======================================== */
+@media (max-width: 768px) {
+  :host {
+    &.mobile {
+      width: 100vw !important;
+    }
+  }
+
+  .top-menu {
+    height: var(--mobile-header-height);
+    padding: 4px 12px;
+    border-radius: 0; /* Full width on mobile, no rounded corners */
+    border-right: none;
+
+    .logo {
+      font-size: 1.5rem;
+
+      img {
+        width: var(--mobile-logo-size);
+      }
+
+      span {
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  /* Smaller buttons on mobile */
+  .toggle-button {
+    width: var(--mobile-button-size);
+    height: var(--mobile-button-size);
+    border-width: 1px;
+
+    span {
+      font-size: 28px !important;
+    }
+  }
+
+  /* Profile button adjustments */
+  #myProfile {
+    button {
+      width: var(--mobile-button-size);
+      height: var(--mobile-button-size);
+    }
+
+    .face {
+      transform: scale(0.6);
+    }
+  }
+
+  /* Profile dropdown - full width on mobile */
+  #profileDropDown {
+    width: calc(100vw - 24px) !important;
+    max-width: 400px;
+    left: 12px !important;
+    right: 12px !important;
+  }
+
+  /* Disable custom cursor on mobile */
+  .toggle-button,
+  #myProfile button,
+  #profileDropDown li {
+    cursor: pointer;
+  }
+
+  /* Adjust spacing between buttons */
+  .flex-row {
+    gap: 8px;
+  }
+}

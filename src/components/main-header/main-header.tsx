@@ -25,6 +25,7 @@ export class MainHeader {
   };
   @Prop() player?: Nullable<Player>;
   @Prop() volumeMuted!: boolean;
+  @Prop() isMobile?: boolean = false;
   @Element() el!: HTMLElement;
   @Event({ eventName: 'pull.box.up' }) PullBoxUp!: EventEmitter<boolean>;
   @Event({ eventName: 'console.logged' }) log!: EventEmitter<Log>;
@@ -103,8 +104,12 @@ export class MainHeader {
   };
 
   render() {
+    const hostStyle = this.isMobile
+      ? { width: '100vw', top: '0px' } // Full width on mobile
+      : { width: `calc(100vw - ${this.menuOpened ? this.menuWidth : 0}px)`, top: '0px' };
+
     return (
-      <Host style={{ width: `calc(100vw - ${this.menuOpened ? this.menuWidth : 0}px)`, top: '0px' }}>
+      <Host class={{ 'mobile': this.isMobile || false, 'desktop': !this.isMobile }} style={hostStyle}>
         <header
           class='top-menu absolute bg-gray-400 backdrop-filter backdrop-blur-lg bg-opacity-10  firefox:bg-opacity-90'>
           <div class='logo'>
@@ -161,14 +166,17 @@ export class MainHeader {
               </div>
             </dropdown-button>
 
-            <button class='toggle-button volume animate__animated animate__pulse animate__delay-2s'
-                    onClick={this._toggleVolume}>
-              <span class='material-symbols-rounded text-4xl'>
-                {
-                  this.volumeMuted ? 'volume_off' : 'volume_up'
-                }
-              </span>
-            </button>
+            {/* Hide volume button on mobile (audio disabled) */}
+            {!this.isMobile && (
+              <button class='toggle-button volume animate__animated animate__pulse animate__delay-2s'
+                      onClick={this._toggleVolume}>
+                <span class='material-symbols-rounded text-4xl'>
+                  {
+                    this.volumeMuted ? 'volume_off' : 'volume_up'
+                  }
+                </span>
+              </button>
+            )}
             <button class='toggle-button inspection ml-2' onClick={this._toggleMenu}>
               <span class='material-symbols-rounded text-4xl'>
                {

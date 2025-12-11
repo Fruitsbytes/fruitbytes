@@ -7,11 +7,16 @@ import { Component, Host, h, Prop } from '@stencil/core';
 })
 export class MainFooter {
   @Prop() menuOpened!: boolean;
-  @Prop()menuWidth!: number;
+  @Prop() menuWidth!: number;
+  @Prop() isMobile?: boolean = false;
 
   render() {
+    const hostStyle = this.isMobile
+      ? { width: '100vw', display: 'none' } // Hide footer on mobile to save space
+      : { width: `calc(100vw - ${this.menuOpened ? this.menuWidth : 0}px)` };
+
     return (
-      <Host style={{ width: `calc(100vw - ${this.menuOpened ? this.menuWidth : 0}px)` }}>
+      <Host class={{ 'mobile': this.isMobile || false, 'desktop': !this.isMobile }} style={hostStyle}>
         <footer
                 class='footer bg-gray-400 backdrop-filter backdrop-blur-lg bg-opacity-10  firefox:bg-opacity-90'>
           <div>

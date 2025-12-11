@@ -80,3 +80,26 @@
   }
 }
 
+/* ========================================
+   Mobile Responsive Styles
+   ======================================== */
+@media (max-width: 768px) {
+  .loadingImg {
+    width: 150px;
+  }
+
+  #alert-1 {
+    max-width: 250px;
+
+    .volume {
+      top: 210px;
+    }
+  }
+
+  .progress-text {
+    font-size: 14px;
+    padding: 0 var(--mobile-padding-medium);
+    text-align: center;
+  }
+}
+

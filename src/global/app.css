@@ -16,6 +16,36 @@
   scrollbar-color: #000C66 #050A30;
   scrollbar-width: 12px;
 
+  /* Mobile breakpoint */
+  --mobile-breakpoint: 768px;
+
+  /* Mobile drawer heights */
+  --mobile-drawer-collapsed: 60px;
+  --mobile-drawer-expanded: 65vh;
+  --mobile-drawer-fullscreen: 92vh;
+
+  /* Mobile spacing */
+  --mobile-padding-small: 8px;
+  --mobile-padding-medium: 12px;
+  --mobile-padding-large: 16px;
+  --mobile-padding-xlarge: 24px;
+
+  /* Mobile header */
+  --mobile-header-height: 56px;
+  --mobile-logo-size: 40px;
+  --mobile-button-size: 40px;
+
+  /* Mobile touch targets */
+  --mobile-min-touch-target: 44px;
+
+  /* Mobile transitions */
+  --mobile-drawer-transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --mobile-smooth-transition: all 0.2s ease-in-out;
+
+  /* Desktop header (default) */
+  --header-height: 60px;
+  --logo-size: 100px;
+  --button-size: 60px;
 }
 
 
@@ -38,4 +68,29 @@ body {
   background: #4B79A1;
   background: linear-gradient(to top, #283E51, #001228, #00050a);
   /*background: linear-gradient(to top, #283E51, #0A2342, #000d1a);*/
+}
+
+/* Mobile-specific global styles */
+@media (max-width: 768px) {
+  body {
+    /* Account for iOS Safari bottom bar and notches */
+    height: 100vh;
+    height: -webkit-fill-available;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+
+  /* Disable custom cursor on mobile/touch devices */
+  button, a, select {
+    cursor: auto;
+  }
+
+  /* Improve touch scrolling on iOS */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Prevent double-tap zoom */
+  button, a {
+    touch-action: manipulation;
+  }
 }

@@ -7,7 +7,7 @@ import { AuthService } from '../../services/authService';
 import { Player } from '../../facade/character';
 import { Howl } from 'howler';
 
-import { animateCSS } from '../../utils';
+import { animateCSS, isMobileViewport, addViewportChangeListener } from '../../utils';
 import { Nullable } from '../../interfaces/geneneral-types';
 import { Language } from '../../interfaces/translation';
 import i18nService, { getCurrentLanguage, loadTranslations, getLanguageFromURL, getPathWithoutLanguage, buildURLWithLanguage, t } from '../../services/i18n';
@@ -42,6 +42,7 @@ export class AppRoot {
   @State() routeLoading: boolean = false;
   @State() volumeMuted: boolean = !!localStorage.getItem('muted') && localStorage.getItem('muted') === '1';
   @State() menuWidth: number = parseInt(localStorage.getItem('menu-width') || '') || DEFAULT_MENU_WIDTH;
+  @State() isMobile: boolean = isMobileViewport();
   @State() currentLanguage: Language = getCurrentLanguage();
   @Element() el!: HTMLElement;
   @Event({ eventName: 'state.pushed' }) StatePushed!: EventEmitter<{ state: any; title: string; url?: string | URL | null; }>;
@@ -59,6 +60,7 @@ export class AppRoot {
     text?: string;
     content?: string
   };
+  private removeViewportListener?: () => void;
 
   async connectedCallback() {
     this.loading = true;
@@ -71,6 +73,16 @@ export class AppRoot {
     } catch (err) {
       console.error('Failed to load translations:', err);
     }
+
+    // Set up viewport change listener
+    this.removeViewportListener = addViewportChangeListener((isMobile) => {
+      this.isMobile = isMobile;
+
+      // On mobile, disable 3D and music for better performance
+      if (isMobile) {
+        this.muteVolume(true);
+      }
+    });
 
     // Subscribe to language changes
     i18nService.subscribe((language) => {
@@ -107,6 +119,13 @@ export class AppRoot {
       }
     });
 
+  }
+
+  disconnectedCallback() {
+    // Clean up viewport listener
+    if (this.removeViewportListener) {
+      this.removeViewportListener();
+    }
   }
 
   componentWillLoad() {
@@ -151,32 +170,40 @@ export class AppRoot {
     const tasks = 2;
 
     const promises: Promise<any>[] = [];
-    promises.push(this.soundLib.preload(['volumeUp', 'mute', 'open', 'ambiance', 'close', 'ping', 'crush', 'jumpSoft']).finally(() => {
 
-      this.soundLib.sounds.ping.volume(.1);
-      this.progressText = '🎵 General sound Loaded...';
+    // Skip audio loading on mobile for better performance
+    if (!this.isMobile) {
+      promises.push(this.soundLib.preload(['volumeUp', 'mute', 'open', 'ambiance', 'close', 'ping', 'crush', 'jumpSoft']).finally(() => {
 
-      this.progress += (1 / tasks) * 100;
+        this.soundLib.sounds.ping.volume(.1);
+        this.progressText = '🎵 General sound Loaded...';
 
-      this.ambiance = this.audioLib?.ambiance;
+        this.progress += (1 / tasks) * 100;
 
-      if (this.ambiance) {
-        this.ambiance_id = this.ambiance.play();
-        this.ambiance.volume(.3, this.ambiance_id);
-        this.ambiance.loop(this.ambiance_id);
-        this.ambiance.once('playerror', () => {
-          this.muteVolume(true);
-          this.ambiance?.once('unlock', () => {
-            this.muteVolume(localStorage.getItem('muted') === '1');
-            this.ambiance?.loop(this.ambiance_id);
+        this.ambiance = this.audioLib?.ambiance;
+
+        if (this.ambiance) {
+          this.ambiance_id = this.ambiance.play();
+          this.ambiance.volume(.3, this.ambiance_id);
+          this.ambiance.loop(this.ambiance_id);
+          this.ambiance.once('playerror', () => {
+            this.muteVolume(true);
+            this.ambiance?.once('unlock', () => {
+              this.muteVolume(localStorage.getItem('muted') === '1');
+              this.ambiance?.loop(this.ambiance_id);
+            }, this.ambiance_id);
           }, this.ambiance_id);
-        }, this.ambiance_id);
 
-      }
+        }
 
 
-      // TODO log to console
-    }));
+        // TODO log to console
+      }));
+    } else {
+      // On mobile, skip audio and mark progress as complete
+      this.progressText = '📱 Mobile mode - audio disabled';
+      this.progress += (1 / tasks) * 100;
+    }
 
     // TODO preload other stuffs: like Textures...
 
@@ -427,7 +454,7 @@ export class AppRoot {
         <modal-backdrop></modal-backdrop>
 
         <main-header message={this.message} menuOpened={this.menuOpened} menuWidth={this.menuWidth}
-                     volumeMuted={this.volumeMuted} player={this.player}></main-header>
+                     volumeMuted={this.volumeMuted} player={this.player} isMobile={this.isMobile}></main-header>
 
         {
           this.loading ? (
@@ -474,8 +501,8 @@ export class AppRoot {
               )
           }
           {
-            /* Only load 3D background on welcome page to reduce initial bundle size */
-            this.activeRoute === '/welcome' && !this.loading ? (
+            /* Only load 3D background on welcome page (desktop only) to reduce initial bundle size */
+            this.activeRoute === '/welcome' && !this.loading && !this.isMobile ? (
               <background-activity digiCode={this.player?.digiCode || ''}
                                    menuWidth={this.menuOpened ? this.menuWidth : 0}></background-activity>
             ) : null
@@ -485,9 +512,9 @@ export class AppRoot {
             !this.loading && !this.routeLoading && this.activeRoute && !MENU_ITEMS.map(value => value.path).includes(this.activeRoute) ? <gui-404></gui-404> : null
           }
         </main>
-        <right-panel id='rightP' isOpened={this.menuOpened} role="complementary" aria-label="Navigation menu"></right-panel>
+        <right-panel id='rightP' isOpened={this.menuOpened} isMobile={this.isMobile} role="complementary" aria-label="Navigation menu"></right-panel>
 
-        <main-footer menuOpened={this.menuOpened} menuWidth={this.menuWidth}></main-footer>
+        <main-footer menuOpened={this.menuOpened} menuWidth={this.menuWidth} isMobile={this.isMobile}></main-footer>
 
         {/* PWA Install Prompt */}
         {!this.loading && <pwa-install-prompt></pwa-install-prompt>}

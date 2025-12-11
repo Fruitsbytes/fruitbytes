@@ -170,6 +170,8 @@ simple-link {
   .container {
     padding-left: 16px;
     padding-right: 16px;
+    padding-top: calc(var(--mobile-header-height) + 24px);
+    padding-bottom: calc(var(--mobile-drawer-collapsed) + 40px);
   }
 
   .project-card {

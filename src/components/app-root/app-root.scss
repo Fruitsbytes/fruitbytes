@@ -80,5 +80,30 @@
   }
 }
 
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  :host {
+    /* Ensure full viewport height on mobile browsers */
+    height: 100vh;
+    height: -webkit-fill-available;
+  }
+
+  .route-skeleton {
+    /* Full width on mobile - no sidebar offset */
+    width: 100vw !important;
+    top: var(--mobile-header-height);
+    padding: var(--mobile-padding-large);
+    min-height: calc(100vh - var(--mobile-header-height));
+    /* Account for bottom drawer when collapsed */
+    padding-bottom: calc(var(--mobile-drawer-collapsed) + var(--mobile-padding-large));
+  }
+
+  .main {
+    /* Full width content on mobile */
+    width: 100vw !important;
+    padding-bottom: var(--mobile-drawer-collapsed);
+  }
+}
+
 
 
