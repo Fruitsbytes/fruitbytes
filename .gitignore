@@ -24,3 +24,10 @@ $RECYCLE.BIN/
 Thumbs.db
 UserInterfaceState.xcuserstate
 .env
+
+# Source design files — keep out of the repo
+*.psd
+*.ai
+*.sketch
+*.xd
+*.fig

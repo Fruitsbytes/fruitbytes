@@ -111,7 +111,7 @@ export class GuiBlog {
               src={post.metadata.image}
               alt={post.metadata.title}
               onError={(e) => {
-                (e.target as HTMLImageElement).src = '/assets/images/blog/default.png';
+                (e.target as HTMLImageElement).src = '/assets/images/blog/default.jpg';
               }}
             />
           )}
@@ -198,7 +198,7 @@ export class GuiBlog {
                 src={post.metadata.image}
                 alt={post.metadata.title}
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/assets/images/blog/default.png';
+                  (e.target as HTMLImageElement).src = '/assets/images/blog/default.jpg';
                 }}
               />
             </div>

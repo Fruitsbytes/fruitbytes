@@ -62,7 +62,7 @@ const blogPosts: BlogPost[] = [
       date: '2024-11-16',
       category: 'Frontend',
       tags: ['Angular', 'Signals', 'TypeScript', 'Web Development'],
-      image: '/assets/images/blog/angular-signals.jpg',
+      image: '/assets/images/blog/angular-signals.png',
       readTime: 6,
       language: 'en',
     },

@@ -68,7 +68,7 @@ Claude Code represents a paradigm shift in how we write and maintain code. By co
   "date": "2024-11-18",
   "category": "AI & ML",
   "tags": ["AI", "Claude Code", "Developer Tools", "Productivity"],
-  "image": "/assets/images/blog/claude-code.jpg",
+  "image": "/assets/images/blog/claude-code.webp",
   "readTime": 8
 }
 ```

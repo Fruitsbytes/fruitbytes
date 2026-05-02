@@ -20,7 +20,7 @@ export class GuiContact {
     message: '',
   };
 
-  private formRef?: HTMLFormElement;
+  formRef?: HTMLFormElement;
 
   @Listen('language.changed', { target: 'document' })
   handleLanguageChange(event: CustomEvent<Language>) {
