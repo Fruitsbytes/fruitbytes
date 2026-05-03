@@ -93,7 +93,7 @@ export default function RightPanel() {
 
   return (
     <aside
-      class="fixed top-0 right-0 h-screen z-25 bg-[var(--panel-bg)] text-[var(--panel-text)] transition-[transform,background-color] duration-200 ease-in-out flex flex-col border-l border-[var(--panel-border)]"
+      class="fixed top-0 right-0 h-screen z-40 bg-[var(--panel-bg)] text-[var(--panel-text)] transition-[transform,background-color] duration-200 ease-in-out flex flex-col border-l border-[var(--panel-border)]"
       style={`
         width:${menuWidth()}px;
         max-width:${MAX_WIDTH}px;
