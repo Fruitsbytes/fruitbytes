@@ -64,3 +64,25 @@ export const addLog = (entry: Log) => {
 export const clearLogs = () => {
   setLogs([]);
 };
+
+// Theme — DevTools light / dark
+export type Theme = 'light' | 'dark';
+
+const readTheme = (): Theme => {
+  if (typeof document === 'undefined') return 'dark';
+  const fromAttr = document.documentElement.dataset.theme;
+  if (fromAttr === 'light' || fromAttr === 'dark') return fromAttr;
+  return 'dark';
+};
+
+export const [theme, _setTheme] = createSignal<Theme>(readTheme());
+
+export const setTheme = (next: Theme) => {
+  _setTheme(next);
+  if (typeof document !== 'undefined') {
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem('theme', next);
+  }
+};
+
+export const toggleTheme = () => setTheme(theme() === 'dark' ? 'light' : 'dark');

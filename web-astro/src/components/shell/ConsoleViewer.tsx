@@ -1,13 +1,10 @@
 // PORT TARGET: console viewer section of web-stencil/src/components/right-panel/right-panel.tsx
 //
-// Replicates DevTools' Console tab:
-// - Each log entry: message (HTML allowed) + file:line on the right
-// - Level color coding: info / warning / error / default
-// - Optional payload renders below the message line
-// - Auto-scrolls to bottom when new entries arrive
-// - Clear button in sub-menu (block icon)
+// Replicates DevTools' Console tab. All colors come from CSS variables
+// defined in src/styles/global.css so the view adapts cleanly to both
+// dark and light themes.
 
-import { For, Show, createEffect, onMount } from 'solid-js';
+import { For, Show, createEffect } from 'solid-js';
 import { logs, clearLogs, menuWidth, type Log } from '../../stores/shell';
 
 export default function ConsoleViewer() {
@@ -26,26 +23,24 @@ export default function ConsoleViewer() {
   return (
     <div class="flex flex-col h-full">
       {/* Sub-menu — Clear console button */}
-      <div class="flex items-center min-h-[26px] bg-[var(--top-menu-bg)] border-b border-[var(--panel-border)] text-[var(--panel-text)]">
+      <div class="flex items-center min-h-[26px] bg-[var(--panel-toolbar)] border-b border-[var(--panel-border)] text-[var(--panel-text)]">
         <button
           type="button"
           onClick={clearLogs}
           title="Clear console."
-          class="ml-1.5 w-7 h-6 flex items-center justify-center hover:text-white"
+          class="ml-1.5 w-7 h-6 flex items-center justify-center hover:text-[var(--panel-text-strong)]"
         >
           <span class="material-symbols-rounded text-[15px] [font-variation-settings:'wght'_700]">block</span>
         </button>
       </div>
 
       <div ref={scrollerRef} id="console" class="flex-1 overflow-y-auto font-mono text-[11px] leading-[1.4]">
-        <For each={logs()}>
-          {(entry) => <ConsoleEntry log={entry} />}
-        </For>
-        <div class="flex items-center px-2 py-0.5 border-t border-[var(--panel-border)] text-[var(--panel-text)]">
-          <span class="text-[#919191] mr-1">&gt;</span>
+        <For each={logs()}>{(entry) => <ConsoleEntry log={entry} />}</For>
+        <div class="flex items-center px-2 py-0.5 border-t border-[var(--console-divider)] text-[var(--panel-text)]">
+          <span class="text-[var(--console-prompt)] mr-1">&gt;</span>
           <input
             type="text"
-            class="flex-1 bg-transparent outline-none text-[var(--panel-text)] placeholder:text-[#5a5d61]"
+            class="flex-1 bg-transparent outline-none text-[var(--panel-text-strong)] placeholder:text-[var(--panel-icon)]"
             aria-label="Console input (decorative)"
           />
         </div>
@@ -55,28 +50,28 @@ export default function ConsoleViewer() {
 }
 
 function ConsoleEntry(props: { log: Log }) {
-  const levelColor = () => {
+  const variantClass = () => {
     switch (props.log.level) {
       case 'error':
-        return 'text-[#ff8080] border-l-2 border-l-[#ff4040] bg-[#3a1c1c]';
+        return 'border-l-2 border-l-[var(--console-error-text)] bg-[var(--console-error-bg)] text-[var(--console-error-text)]';
       case 'warning':
-        return 'text-[#ffd866] border-l-2 border-l-[#ffaa00] bg-[#3a311a]';
+        return 'border-l-2 border-l-[var(--console-warning-text)] bg-[var(--console-warning-bg)] text-[var(--console-warning-text)]';
       default:
-        return '';
+        return 'text-[var(--panel-text-strong)]';
     }
   };
 
   return (
-    <div class={`px-2 py-1 border-b border-[#2a2b2e] ${levelColor()}`}>
+    <div class={`px-2 py-1 border-b border-[var(--console-divider)] ${variantClass()}`}>
       <div class="flex justify-between gap-3">
         <span class="message" innerHTML={props.log.message} />
-        <span class="text-[#5a8dee] hover:underline whitespace-nowrap text-[10px] mt-0.5">
+        <span class="text-[var(--console-file-link)] hover:underline whitespace-nowrap text-[10px] mt-0.5">
           {props.log.file}:{props.log.line}
         </span>
       </div>
       <Show when={props.log.payload}>
         <div
-          class="payload mt-1 text-[#9aa0a6] overflow-hidden"
+          class="payload mt-1 text-[var(--console-payload-text)] overflow-hidden"
           style={`max-width: ${menuWidth() - 20}px;`}
           innerHTML={props.log.payload}
         />

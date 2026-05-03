@@ -1,23 +1,21 @@
 // PORT TARGET: web-stencil/src/components/right-panel/right-panel.tsx (625 lines)
 //
-// Faithful port of the Chrome DevTools dark theme clone.
+// Faithful port of the Chrome DevTools dark-theme clone, now with full
+// dark + light theme support driven by CSS variables in global.css.
+// Theme is set on <html data-theme="light|dark"> by an inline boot script
+// in Layout.astro, then mirrored into the `theme` signal on hydration.
 //
-// Design intent (per project_design_intent memory):
-// - Dark theme palette matching DevTools (#202124 panel, #292a2d toolbar, #494c50 borders)
-// - Top toolbar (26px) with menu items styled as DevTools tabs
-// - Active tab has black background to mirror DevTools' selected tab
-// - Resize handle on left edge with col-resize cursor (Stencil used custom cursor.webp;
-//   not yet copied to web-astro/public — defer)
-// - Right side has settings / more / close icons
-// - Per-route content section below the toolbar (currently console viewer for /console-log;
-//   other route-specific sections like console-welcome, console-about, blog-nav defer)
+// Active tab uses the same CSS variables, so the visual matches DevTools
+// in both modes:
+//   dark  → tab black-ish (#000) over toolbar #292a2d
+//   light → tab white over toolbar #f3f3f4
 //
-// Not yet ported (intentional):
-// - Adaptive menu crunching (measures item widths, hides overflow into a "more" dropdown)
-// - Mobile drawer with three states + touch gestures
-// - Custom cursor image
-// - Language selector, settings dropdown
-// - Per-route content sections beyond /console-log
+// Future polish:
+// - Adaptive menu crunching with overflow chevron + dropdown
+// - Mobile drawer (3 states + touch gestures)
+// - Custom cursor.webp
+// - Language selector inside the toolbar
+// - Settings dropdown can host more options (font size, dock position, etc.)
 
 import { For, Show, createSignal, createEffect, onMount, onCleanup } from 'solid-js';
 import {
@@ -26,6 +24,8 @@ import {
   menuWidth,
   persistMenuWidth,
   isMobile,
+  theme,
+  toggleTheme,
 } from '../../stores/shell';
 import ConsoleViewer from './ConsoleViewer';
 
@@ -44,6 +44,7 @@ const MENU_ITEMS = [
 export default function RightPanel() {
   const [dragging, setDragging] = createSignal(false);
   const [activePath, setActivePath] = createSignal('/welcome');
+  const [settingsOpen, setSettingsOpen] = createSignal(false);
 
   // Read pathname on mount and on Astro navigation events
   onMount(() => {
@@ -51,6 +52,15 @@ export default function RightPanel() {
     updatePath();
     window.addEventListener('astro:after-swap', updatePath);
     onCleanup(() => window.removeEventListener('astro:after-swap', updatePath));
+
+    // Close settings on outside click
+    const onDocClick = (e: MouseEvent) => {
+      if (!(e.target as Element)?.closest?.('[data-settings-popup]')) {
+        setSettingsOpen(false);
+      }
+    };
+    document.addEventListener('click', onDocClick, true);
+    onCleanup(() => document.removeEventListener('click', onDocClick, true));
   });
 
   // Sync effective menu width to a CSS custom property on <html>
@@ -83,17 +93,12 @@ export default function RightPanel() {
 
   return (
     <aside
-      class="fixed top-0 right-0 h-screen z-25 bg-[var(--panel-bg)] text-[var(--panel-text)] transition-transform duration-200 ease-in-out flex flex-col"
+      class="fixed top-0 right-0 h-screen z-25 bg-[var(--panel-bg)] text-[var(--panel-text)] transition-[transform,background-color] duration-200 ease-in-out flex flex-col border-l border-[var(--panel-border)]"
       style={`
         width:${menuWidth()}px;
         max-width:${MAX_WIDTH}px;
         min-width:${MIN_WIDTH}px;
         transform:translateX(${menuOpened() && !isMobile() ? 0 : menuWidth()}px);
-        --panel-bg:#202124;
-        --top-menu-bg:#292a2d;
-        --panel-border:#494c50;
-        --panel-text:#9aa0a6;
-        --panel-icon:#919191;
       `}
       role="complementary"
       aria-label="DevTools-style navigation panel"
@@ -102,7 +107,7 @@ export default function RightPanel() {
       {/* Resize handle on left edge */}
       <Show when={!isMobile()}>
         <div
-          class={`absolute left-0 top-0 h-full w-2 cursor-ew-resize z-10 border-l border-[var(--panel-border)] transition-colors ${
+          class={`absolute left-0 top-0 h-full w-2 cursor-ew-resize z-10 transition-colors ${
             dragging() ? 'bg-blue-500/40' : 'hover:bg-white/5'
           }`}
           onPointerDown={onPointerDown}
@@ -113,21 +118,24 @@ export default function RightPanel() {
       </Show>
 
       {/* Top toolbar — DevTools tab bar */}
-      <div class="flex items-center min-h-[26px] bg-[var(--top-menu-bg)] border-b border-[var(--panel-border)] pl-2 select-none">
+      <div class="flex items-center min-h-[26px] bg-[var(--panel-toolbar)] border-b border-[var(--panel-border)] pl-2 select-none">
         {/* Home + Devices icons */}
         <a
           href="/welcome"
-          class="w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-white"
+          class="w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-[var(--panel-text-strong)]"
           aria-label="Home"
         >
           <span class="material-symbols-rounded text-[20px]">home</span>
         </a>
-        <span class="w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-white">
-          <span class="material-symbols-rounded filled text-[20px]">devices</span>
+        <span
+          class="w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-[var(--panel-text-strong)]"
+          aria-hidden="true"
+        >
+          <span class="material-symbols-rounded text-[20px] [font-variation-settings:'FILL'_1]">devices</span>
         </span>
 
         {/* Vertical divider */}
-        <div class="mx-1.5 my-1 w-px h-4 bg-[var(--panel-icon)] opacity-50" />
+        <div class="mx-1.5 my-1 w-px h-4 bg-[var(--panel-divider)] opacity-50" />
 
         {/* Tab buttons */}
         <div class="flex flex-1 overflow-hidden" id="crunching-menu">
@@ -140,8 +148,8 @@ export default function RightPanel() {
                   data-key={item.key}
                   class={`h-[26px] px-3 flex items-center text-[12px] leading-4 whitespace-nowrap border-l-2 border-r-2 border-transparent transition-colors ${
                     active()
-                      ? 'text-[#eaeaea] bg-black'
-                      : 'text-[var(--panel-text)] hover:text-[#e8eaed] hover:bg-[#35363a]'
+                      ? 'text-[var(--panel-tab-selected-text)] bg-[var(--panel-tab-selected-bg)]'
+                      : 'hover:text-[var(--panel-text-strong)] hover:bg-[var(--panel-tab-hover-bg)]'
                   }`}
                 >
                   {item.title}
@@ -152,29 +160,62 @@ export default function RightPanel() {
         </div>
 
         {/* Right-side icons */}
-        <div class="flex ml-auto">
+        <div class="flex ml-auto relative" data-settings-popup>
           <button
             type="button"
-            class="w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-white"
+            class="w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-[var(--panel-text-strong)]"
             aria-label="Settings"
+            aria-expanded={settingsOpen()}
+            onClick={(e) => {
+              e.stopPropagation();
+              setSettingsOpen(!settingsOpen());
+            }}
           >
-            <span class="material-symbols-rounded filled text-[18px]">settings</span>
+            <span class="material-symbols-rounded text-[18px] [font-variation-settings:'FILL'_1]">settings</span>
           </button>
           <button
             type="button"
-            class="w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-white"
+            class="w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-[var(--panel-text-strong)]"
             aria-label="More options"
           >
             <span class="material-symbols-rounded text-[18px] [font-variation-settings:'wght'_700]">more_vert</span>
           </button>
           <button
             type="button"
-            class="w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-white"
+            class="w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-[var(--panel-text-strong)]"
             aria-label="Close panel"
             onClick={() => setMenuOpened(false)}
           >
             <span class="material-symbols-rounded text-[16px] [font-variation-settings:'wght'_700] mt-1">close</span>
           </button>
+
+          {/* Settings dropdown */}
+          <Show when={settingsOpen()}>
+            <div
+              class="absolute top-7 right-0 w-56 bg-[var(--panel-bg)] border border-[var(--panel-border)] rounded shadow-lg text-[12px] py-1 z-20"
+              role="menu"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div class="px-3 py-1.5 text-[10px] uppercase tracking-wider text-[var(--panel-text)] opacity-70">
+                Appearance
+              </div>
+              <button
+                type="button"
+                class="w-full px-3 py-1.5 flex items-center justify-between text-[var(--panel-text-strong)] hover:bg-[var(--panel-tab-hover-bg)]"
+                onClick={() => {
+                  toggleTheme();
+                  setSettingsOpen(false);
+                }}
+              >
+                <span class="flex items-center gap-2">
+                  <span class="material-symbols-rounded text-[16px]">
+                    {theme() === 'dark' ? 'light_mode' : 'dark_mode'}
+                  </span>
+                  Switch to {theme() === 'dark' ? 'light' : 'dark'} theme
+                </span>
+              </button>
+            </div>
+          </Show>
         </div>
       </div>
 
@@ -191,10 +232,10 @@ export default function RightPanel() {
 function RoutePlaceholder(props: { path: string }) {
   return (
     <div class="px-3 py-2 text-[11px] text-[var(--panel-text)] font-mono">
-      <p class="opacity-50">
+      <p class="opacity-70">
         Inspector content for <code>{props.path}</code> not yet ported.
       </p>
-      <p class="opacity-30 mt-1">
+      <p class="opacity-40 mt-1">
         Console pane (<code>/console-log</code>) is the only fully-ported section so far.
       </p>
     </div>

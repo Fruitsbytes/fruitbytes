@@ -8,6 +8,98 @@
   --font-mono: 'Roboto Mono', ui-monospace, monospace;
 }
 
+/*
+  Theme variables — Chrome DevTools dark + light.
+  Default: dark theme.
+  System preference (prefers-color-scheme: light) flips to light unless
+  the user explicitly forces dark via data-theme="dark".
+  Forced override: <html data-theme="light"> or <html data-theme="dark">.
+*/
+:root {
+  /* DevTools dark theme */
+  --panel-bg: #202124;
+  --panel-toolbar: #292a2d;
+  --panel-border: #494c50;
+  --panel-text: #9aa0a6;
+  --panel-text-strong: #e8eaed;
+  --panel-icon: #919191;
+  --panel-tab-hover-bg: #35363a;
+  --panel-tab-selected-bg: #000000;
+  --panel-tab-selected-text: #eaeaea;
+  --panel-divider: #494c50;
+  --panel-input-bg: #292a2d;
+
+  --console-payload-text: #9aa0a6;
+  --console-file-link: #5a8dee;
+  --console-prompt: #919191;
+  --console-divider: #2a2b2e;
+  --console-error-bg: #3a1c1c;
+  --console-error-text: #ff8080;
+  --console-warning-bg: #3a311a;
+  --console-warning-text: #ffd866;
+  --console-success-text: #5aff5f;
+
+  --body-bg: #16161d;
+  --body-text: #e8eaed;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    /* DevTools light theme */
+    --panel-bg: #ffffff;
+    --panel-toolbar: #f3f3f4;
+    --panel-border: #d4d4d4;
+    --panel-text: #5a6068;
+    --panel-text-strong: #202124;
+    --panel-icon: #6b6f77;
+    --panel-tab-hover-bg: #e8e8e8;
+    --panel-tab-selected-bg: #ffffff;
+    --panel-tab-selected-text: #202124;
+    --panel-divider: #d4d4d4;
+    --panel-input-bg: #f3f3f4;
+
+    --console-payload-text: #5a6068;
+    --console-file-link: #1a73e8;
+    --console-prompt: #6b6f77;
+    --console-divider: #ebebeb;
+    --console-error-bg: #fce8e8;
+    --console-error-text: #c5221f;
+    --console-warning-bg: #fef7e0;
+    --console-warning-text: #b06000;
+    --console-success-text: #137333;
+
+    --body-bg: #ffffff;
+    --body-text: #202124;
+  }
+}
+
+:root[data-theme="light"] {
+  --panel-bg: #ffffff;
+  --panel-toolbar: #f3f3f4;
+  --panel-border: #d4d4d4;
+  --panel-text: #5a6068;
+  --panel-text-strong: #202124;
+  --panel-icon: #6b6f77;
+  --panel-tab-hover-bg: #e8e8e8;
+  --panel-tab-selected-bg: #ffffff;
+  --panel-tab-selected-text: #202124;
+  --panel-divider: #d4d4d4;
+  --panel-input-bg: #f3f3f4;
+
+  --console-payload-text: #5a6068;
+  --console-file-link: #1a73e8;
+  --console-prompt: #6b6f77;
+  --console-divider: #ebebeb;
+  --console-error-bg: #fce8e8;
+  --console-error-text: #c5221f;
+  --console-warning-bg: #fef7e0;
+  --console-warning-text: #b06000;
+  --console-success-text: #137333;
+
+  --body-bg: #ffffff;
+  --body-text: #202124;
+}
+
 @keyframes slide-down {
   from {
     opacity: 0;

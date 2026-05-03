@@ -47,9 +47,23 @@ const ICON_NAMES_SHARP = 'account_balance,arrow_back,arrow_forward,article,book,
       href={`https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=${ICON_NAMES_SHARP}`}
     />
 
+    {/* Set theme before hydration to avoid flash */}
+    <script is:inline>
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme');
+          var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+          var theme = stored === 'light' || stored === 'dark' ? stored : prefersLight ? 'light' : 'dark';
+          document.documentElement.dataset.theme = theme;
+        } catch (_e) {
+          document.documentElement.dataset.theme = 'dark';
+        }
+      })();
+    </script>
+
     <ClientRouter />
   </head>
-  <body class="bg-[#16161d] text-[#e8eaed] font-[Roboto_Flex]">
+  <body class="bg-[var(--body-bg)] text-[var(--body-text)] font-[Roboto_Flex] transition-colors">
     {/*
       Persistent islands keep state across navigations: sounds keep playing,
       3D scene keeps rendering, mouse-tracking eyes keep tracking, right-
