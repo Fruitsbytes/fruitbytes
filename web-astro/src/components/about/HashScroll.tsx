@@ -14,9 +14,19 @@ export default function HashScroll() {
       setTimeout(() => {
         const el = document.getElementById(id);
         if (!el) return;
-        const offset = 80;
-        const top = el.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo({ top, behavior: 'smooth' });
+        // <main> now owns the scroll (body is overflow:hidden), so target it
+        // directly. scrollIntoView would also work but explicit math gives
+        // us a tunable header offset.
+        const main = document.getElementById('main-content');
+        const offset = 24;
+        if (main) {
+          const elRect = el.getBoundingClientRect();
+          const mainRect = main.getBoundingClientRect();
+          const top = elRect.top - mainRect.top + main.scrollTop - offset;
+          main.scrollTo({ top, behavior: 'smooth' });
+        } else {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       }, 100);
     };
 
@@ -24,7 +34,14 @@ export default function HashScroll() {
 
     const onHash = () => scrollToHash(window.location.hash);
     window.addEventListener('hashchange', onHash);
-    onCleanup(() => window.removeEventListener('hashchange', onHash));
+    const onAfterSwap = () => {
+      if (window.location.hash) scrollToHash(window.location.hash);
+    };
+    document.addEventListener('astro:after-swap', onAfterSwap);
+    onCleanup(() => {
+      window.removeEventListener('hashchange', onHash);
+      document.removeEventListener('astro:after-swap', onAfterSwap);
+    });
   });
 
   return null;

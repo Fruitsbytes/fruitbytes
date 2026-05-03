@@ -41,6 +41,26 @@
 
   --body-bg: #16161d;
   --body-text: #e8eaed;
+
+  /* Resume / "paper" cards on /about-me — dark variant */
+  --paper-bg: #25262a;
+  --paper-text: #e8eaed;
+  --paper-muted: #9aa0a6;
+  --paper-border: #3c3d40;
+  --paper-divider: #3c3d40;
+  --paper-link: #8db4ff;
+  --paper-section-rule: #5aff5f;
+  --paper-job-title: #5aff5f;
+  --paper-date: #ff9f5a;
+  --paper-tag-bg: #1f2024;
+  --paper-tag-text: #d3d6db;
+
+  /* Custom scrollbar */
+  --scroll-thumb: #494c50;
+  --scroll-thumb-hover: #6b6f77;
+
+  /* Inverts dark monochrome SVGs (social icons) to white on dark themes */
+  --icon-invert: invert(1) brightness(1.5);
 }
 
 @media (prefers-color-scheme: light) {
@@ -70,6 +90,23 @@
 
     --body-bg: #ffffff;
     --body-text: #202124;
+
+    --paper-bg: #fafafa;
+    --paper-text: #1f2937;
+    --paper-muted: #6b7280;
+    --paper-border: #e5e7eb;
+    --paper-divider: #e5e7eb;
+    --paper-link: #1a73e8;
+    --paper-section-rule: #16a34a;
+    --paper-job-title: #15803d;
+    --paper-date: #c2410c;
+    --paper-tag-bg: #f3f4f6;
+    --paper-tag-text: #1f2937;
+
+    --scroll-thumb: #d4d4d4;
+    --scroll-thumb-hover: #9ca3af;
+
+    --icon-invert: none;
   }
 }
 
@@ -98,6 +135,61 @@
 
   --body-bg: #ffffff;
   --body-text: #202124;
+
+  --paper-bg: #fafafa;
+  --paper-text: #1f2937;
+  --paper-muted: #6b7280;
+  --paper-border: #e5e7eb;
+  --paper-divider: #e5e7eb;
+  --paper-link: #1a73e8;
+  --paper-section-rule: #16a34a;
+  --paper-job-title: #15803d;
+  --paper-date: #c2410c;
+  --paper-tag-bg: #f3f4f6;
+  --paper-tag-text: #1f2937;
+
+  --scroll-thumb: #d4d4d4;
+  --scroll-thumb-hover: #9ca3af;
+
+  --icon-invert: none;
+}
+
+/* Apply the theme-aware invert filter to monochrome social icons */
+.social-icon {
+  filter: var(--icon-invert, none);
+  transition: filter 0.2s;
+}
+
+/*
+  Modern, theme-aware scrollbar.
+  WebKit (Chrome/Safari/Edge) + Firefox. Thin, transparent track, color
+  follows the active theme via --scroll-thumb. Auto-hides on idle thanks
+  to overlay-style sizing.
+*/
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-thumb);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scroll-thumb-hover);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb) transparent;
 }
 
 /*

@@ -19,12 +19,12 @@ const dateFmt = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric'
 <Layout title={`${post.data.title} — FruitsBytes`} description={post.data.description}>
   <article class="@container max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12 animate-fade-in-up">
 
-    <a href="/my-blog" class="inline-flex items-center gap-1.5 text-sm text-blue-400 hover:text-blue-300 mb-6">
+    <a href="/my-blog" class="inline-flex items-center gap-1.5 text-sm text-[var(--console-file-link)] hover:underline mb-6">
       <span class="material-symbols-sharp text-[16px]">arrow_back</span>
       <span>Back to blog</span>
     </a>
 
-    <span class="inline-flex items-center px-2 py-0.5 rounded bg-blue-500/15 border border-blue-500/30 text-blue-300 text-xs font-medium mb-3">
+    <span class="inline-flex items-center px-2 py-0.5 rounded bg-[var(--console-file-link)]/15 border border-[var(--console-file-link)]/40 text-[var(--console-file-link)] text-xs font-medium mb-3">
       {post.data.category}
     </span>
 

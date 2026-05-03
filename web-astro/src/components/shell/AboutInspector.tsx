@@ -11,13 +11,20 @@ export default function AboutInspector() {
 
   onMount(() => {
     if (typeof window === 'undefined') return;
-    const update = () => setActiveHash(window.location.hash);
+    const update = () => {
+      const hash = window.location.hash;
+      if (hash !== activeHash()) setActiveHash(hash);
+    };
     update();
     window.addEventListener('hashchange', update);
-    window.addEventListener('astro:after-swap', update);
+    document.addEventListener('astro:after-swap', update);
+    document.addEventListener('astro:page-load', update);
+    const pollId = window.setInterval(update, 200);
     onCleanup(() => {
       window.removeEventListener('hashchange', update);
-      window.removeEventListener('astro:after-swap', update);
+      document.removeEventListener('astro:after-swap', update);
+      document.removeEventListener('astro:page-load', update);
+      clearInterval(pollId);
     });
   });
 

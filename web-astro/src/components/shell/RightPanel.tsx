@@ -32,13 +32,16 @@ import {
   isMobile,
   theme,
   toggleTheme,
+  addLog,
 } from '../../stores/shell';
 import ConsoleViewer from './ConsoleViewer';
 import ConsoleWelcome from './ConsoleWelcome';
 import AboutInspector from './AboutInspector';
 import BlogInspector, { type BlogPostMeta } from './BlogInspector';
+import ContactInspector from './ContactInspector';
 
 interface Props {
+  initialPath?: string;
   blogPosts?: BlogPostMeta[];
 }
 
@@ -56,24 +59,94 @@ const MENU_ITEMS = [
 
 export default function RightPanel(props: Props) {
   const [dragging, setDragging] = createSignal(false);
-  const [activePath, setActivePath] = createSignal('/welcome');
+  // SSR and client must agree on initial activePath, otherwise the wrong
+  // inspector is rendered server-side and hydration fails. Passed in by
+  // Layout.astro from Astro.url.pathname.
+  const [activePath, setActivePath] = createSignal(props.initialPath ?? '/welcome');
   const [settingsOpen, setSettingsOpen] = createSignal(false);
+  const [overflowOpen, setOverflowOpen] = createSignal(false);
+  const [overflowedKeys, setOverflowedKeys] = createSignal<Set<string>>(new Set());
+  const hasOverflow = () => overflowedKeys().size > 0;
 
-  // Read pathname on mount and on Astro navigation events
+  let tabsRef: HTMLDivElement | undefined;
+
+  // Read pathname on mount and on every navigation. We listen to multiple
+  // signals because transition:persist + the various Astro lifecycle events
+  // can be subtle: astro:after-swap and astro:page-load are both dispatched
+  // on `document`, but timing differs. popstate handles back/forward. A
+  // 200ms interval is the belt-and-suspenders fallback so we never miss a
+  // navigation regardless of which signal lands first.
   onMount(() => {
-    const updatePath = () => setActivePath(window.location.pathname);
-    updatePath();
-    window.addEventListener('astro:after-swap', updatePath);
-    onCleanup(() => window.removeEventListener('astro:after-swap', updatePath));
-
-    // Close settings on outside click
-    const onDocClick = (e: MouseEvent) => {
-      if (!(e.target as Element)?.closest?.('[data-settings-popup]')) {
-        setSettingsOpen(false);
+    let firstLoad = true;
+    const updatePath = () => {
+      const path = window.location.pathname;
+      if (path !== activePath()) {
+        const previous = activePath();
+        setActivePath(path);
+        setOverflowOpen(false);
+        if (!firstLoad) {
+          addLog({
+            message: `🧭 <b>Navigated</b> from <code style="color:#9aa0a6">${previous}</code> → <code style="color:#5a8dee">${path}</code>`,
+            file: 'router.ts',
+            time: new Date(),
+            line: 1,
+          });
+        }
       }
+      firstLoad = false;
+    };
+    updatePath();
+
+    document.addEventListener('astro:after-swap', updatePath);
+    document.addEventListener('astro:page-load', updatePath);
+    window.addEventListener('popstate', updatePath);
+
+    const pollId = window.setInterval(updatePath, 200);
+
+    onCleanup(() => {
+      document.removeEventListener('astro:after-swap', updatePath);
+      document.removeEventListener('astro:page-load', updatePath);
+      window.removeEventListener('popstate', updatePath);
+      clearInterval(pollId);
+    });
+
+    // Close popups on outside click
+    const onDocClick = (e: MouseEvent) => {
+      const target = e.target as Element | null;
+      if (!target?.closest?.('[data-settings-popup]')) setSettingsOpen(false);
+      if (!target?.closest?.('[data-overflow-popup]')) setOverflowOpen(false);
     };
     document.addEventListener('click', onDocClick, true);
     onCleanup(() => document.removeEventListener('click', onDocClick, true));
+
+    // Detect which tabs overflow via ResizeObserver. We measure each tab's
+    // right edge against the container; the ones past clientWidth are the
+    // overflow set displayed in the chevron dropdown (DevTools behavior:
+    // dropdown shows only what doesn't fit, not the full list).
+    if (tabsRef) {
+      const checkOverflow = () => {
+        if (!tabsRef) return;
+        const limit = tabsRef.clientWidth;
+        const next = new Set<string>();
+        const tabs = tabsRef.querySelectorAll<HTMLAnchorElement>('a[data-key]');
+        tabs.forEach((tab) => {
+          if (tab.offsetLeft + tab.offsetWidth > limit + 1) {
+            const key = tab.dataset.key;
+            if (key) next.add(key);
+          }
+        });
+        // Only update signal if changed (avoids unnecessary re-renders)
+        const prev = overflowedKeys();
+        if (prev.size !== next.size || ![...next].every((k) => prev.has(k))) {
+          setOverflowedKeys(next);
+        }
+      };
+      const ro = new ResizeObserver(checkOverflow);
+      ro.observe(tabsRef);
+      // Initial measurement after layout
+      requestAnimationFrame(checkOverflow);
+      onCleanup(() => ro.disconnect());
+    }
   });
 
   // Sync effective menu width to a CSS custom property on <html>
@@ -152,15 +225,19 @@ export default function RightPanel(props: Props) {
         <div class="mx-1.5 w-px h-4 bg-[var(--panel-divider)] opacity-60" />
 
         {/* Tab buttons */}
-        <div class="flex flex-1 overflow-hidden" id="crunching-menu">
+        <div ref={tabsRef} class="flex flex-1 overflow-hidden min-w-0" id="crunching-menu">
           <For each={MENU_ITEMS}>
             {(item) => {
-              const active = () => activePath() === item.path;
+              const active = () => {
+                if (item.path === '/welcome') return activePath() === '/welcome' || activePath() === '/';
+                if (item.path === '/my-blog') return activePath().startsWith('/my-blog');
+                return activePath() === item.path;
+              };
               return (
                 <a
                   href={item.path}
                   data-key={item.key}
-                  class={`h-[26px] px-3 flex items-center text-[12px] leading-4 whitespace-nowrap border-l-2 border-r-2 border-transparent transition-colors ${
+                  class={`h-[26px] px-3 flex items-center text-[12px] leading-4 whitespace-nowrap border-l-2 border-r-2 border-transparent transition-colors flex-shrink-0 ${
                     active()
                       ? 'text-[var(--panel-tab-selected-text)] bg-[var(--panel-tab-selected-bg)]'
                       : 'hover:text-[var(--panel-text-strong)] hover:bg-[var(--panel-tab-hover-bg)]'
@@ -172,6 +249,48 @@ export default function RightPanel(props: Props) {
             }}
           </For>
         </div>
+
+        {/* Overflow chevron — appears when tabs don't fit */}
+        <Show when={hasOverflow()}>
+          <div class="relative flex-shrink-0" data-overflow-popup>
+            <button
+              type="button"
+              class="w-6 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-[var(--panel-text-strong)] hover:bg-[var(--panel-tab-hover-bg)] transition-colors"
+              aria-label="Show all tabs"
+              aria-expanded={overflowOpen()}
+              onClick={(e) => {
+                e.stopPropagation();
+                setOverflowOpen(!overflowOpen());
+              }}
+            >
+              <span class="material-symbols-rounded thick text-[16px]">keyboard_double_arrow_right</span>
+            </button>
+            <Show when={overflowOpen()}>
+              <div
+                class="absolute top-7 right-0 min-w-40 bg-[var(--panel-bg)] border border-[var(--panel-border)] rounded shadow-lg text-[12px] py-1 z-30"
+                role="menu"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <For each={MENU_ITEMS.filter((m) => overflowedKeys().has(m.key))}>
+                  {(item) => {
+                    const active = () => activePath() === item.path;
+                    return (
+                      <a
+                        href={item.path}
+                        class={`block px-3 py-1.5 hover:bg-[var(--panel-tab-hover-bg)] hover:text-[var(--panel-text-strong)] transition-colors ${
+                          active() ? 'text-[#0078d7] font-medium' : 'text-[var(--panel-text-strong)]'
+                        }`}
+                        onClick={() => setOverflowOpen(false)}
+                      >
+                        {item.title}
+                      </a>
+                    );
+                  }}
+                </For>
+              </div>
+            </Show>
+          </div>
+        </Show>
 
         {/* Right-side icons */}
         <div class="flex ml-auto relative" data-settings-popup>
@@ -247,11 +366,15 @@ export default function RightPanel(props: Props) {
         <Show when={activePath().startsWith('/my-blog')}>
           <BlogInspector posts={props.blogPosts ?? []} />
         </Show>
+        <Show when={activePath() === '/contact-me'}>
+          <ContactInspector />
+        </Show>
         <Show when={
           activePath() !== '/console-log' &&
           activePath() !== '/welcome' &&
           activePath() !== '/' &&
           activePath() !== '/about-me' &&
+          activePath() !== '/contact-me' &&
           !activePath().startsWith('/my-blog')
         }>
           <div class="px-3 py-3 text-[11px] text-[var(--panel-text)] font-mono">

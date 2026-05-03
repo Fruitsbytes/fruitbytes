@@ -25,7 +25,7 @@ const dateFmt = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric
 
     <div class="grid grid-cols-1 @2xl:grid-cols-2 gap-4 sm:gap-6">
       {posts.map((post) => (
-        <article class="bg-[var(--panel-bg)] border border-[var(--panel-border)] rounded-lg overflow-hidden hover:border-[#5a5d61] transition-colors flex flex-col">
+        <article class="bg-[var(--panel-bg)] border border-[var(--panel-border)] rounded-lg overflow-hidden hover:border-[var(--panel-text)] transition-colors flex flex-col">
 
           <a href={`/my-blog/${post.id}`} class="block">
             <img
@@ -39,7 +39,7 @@ const dateFmt = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric
 
           <div class="p-4 sm:p-5 flex flex-col gap-3 flex-1">
             <div class="flex items-center justify-between gap-2 flex-wrap text-xs">
-              <span class="inline-flex items-center px-2 py-0.5 rounded bg-blue-500/15 border border-blue-500/30 text-blue-300 font-medium">
+              <span class="inline-flex items-center px-2 py-0.5 rounded bg-[var(--console-file-link)]/15 border border-[var(--console-file-link)]/40 text-[var(--console-file-link)] font-medium">
                 {post.data.category}
               </span>
               <span class="text-[var(--panel-text)]">
@@ -48,7 +48,7 @@ const dateFmt = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric
             </div>
 
             <h2 class="text-lg sm:text-xl font-bold m-0 text-[var(--panel-text-strong)] leading-tight">
-              <a href={`/my-blog/${post.id}`} class="hover:text-blue-300 transition-colors">
+              <a href={`/my-blog/${post.id}`} class="hover:text-[var(--console-file-link)] transition-colors">
                 {post.data.title}
               </a>
             </h2>
@@ -67,7 +67,7 @@ const dateFmt = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric
 
             <a
               href={`/my-blog/${post.id}`}
-              class="inline-flex items-center gap-1.5 text-sm text-blue-400 hover:text-blue-300 hover:underline mt-auto"
+              class="inline-flex items-center gap-1.5 text-sm text-[var(--console-file-link)] hover:underline mt-auto"
             >
               {/* TODO: i18n blog.readArticle */}
               <span>Read article</span>

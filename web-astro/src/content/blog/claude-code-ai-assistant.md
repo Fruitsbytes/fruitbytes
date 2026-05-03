@@ -1,71 +1,86 @@
 ---
-title: "Claude Code: The AI-Powered Development Assistant"
-description: "Discover how Claude Code is revolutionizing the development workflow with AI-powered coding assistance, intelligent refactoring, and natural language commands."
+title: "Migrating This Site with Claude Code: An Honest Review"
+description: "I'm using Claude Code right now to migrate this portfolio from StencilJS to Astro. Here's what works, what doesn't, and what I learned from putting an AI agent in the driver's seat."
 author: "Jeffrey Nicholson Carré"
 date: 2024-11-18
 category: "AI & ML"
 tags: ["AI", "Claude Code", "Developer Tools", "Productivity"]
 image: "/assets/images/blog/default.jpg"
 readTime: 8
-excerpt: "An introduction to Claude Code and how to supercharge your development workflow with AI-powered coding assistance."
+excerpt: "I'm using Claude Code to migrate this very portfolio from StencilJS to Astro. Here's what's surprising me, what isn't, and what I think about putting an AI agent in the driver's seat."
 language: "en"
 ---
 
-# Claude Code: The AI-Powered Development Assistant That's Changing the Game
+# Migrating This Site with Claude Code: An Honest Review
 
-An introduction to Claude Code and how to supercharge your development workflow with AI-powered coding assistance.
+This blog post — and most of the site you're reading it on — was written with Claude Code in the loop. I'm in the middle of migrating FruitsBytes from StencilJS 4 to Astro 6, and instead of doing it alone in 6 weekends, I'm doing it with an agent across 2 long sessions.
 
-## What is Claude Code?
+This is not a "AI replaces developers" piece. It's not an "AI is a hype cycle" piece either. It's what I've actually noticed.
 
-Claude Code is Anthropic's official command-line interface that brings the power of Claude AI directly into your development environment. Unlike traditional code completion tools, Claude Code understands context, can read and analyze your entire codebase, and provides intelligent suggestions that go far beyond simple autocomplete.
+## What Claude Code is
 
-What makes Claude Code truly exceptional is its ability to:
+Anthropic's official CLI. You install it, point it at a directory, and have a long-running conversation in your terminal. It reads files, runs shell commands, edits code, asks questions when ambiguous.
 
-- Understand complex codebases and architectural patterns
-- Refactor code while maintaining functionality and best practices
-- Debug issues by analyzing stack traces and code flow
-- Generate comprehensive tests for your functions
-- Explain code in natural language
-- Suggest optimizations and performance improvements
-
-## Why Claude Code is Amazing
-
-### 1. Context-Aware Intelligence
-
-Claude Code doesn't just look at individual lines - it understands your entire project structure. It can navigate through your files, understand relationships between components, and provide suggestions that make sense in the context of your architecture.
-
-### 2. Natural Language Interface
-
-You can communicate with Claude Code in plain English. Instead of memorizing commands, simply describe what you want to accomplish, and Claude will understand and execute accordingly.
-
-### 3. Multi-File Operations
-
-Need to refactor across multiple files? Claude Code can handle it. It understands import relationships, type dependencies, and can safely modify code across your entire project.
-
-## Getting Started
-
-First, you'll need to install Claude Code:
+Install:
 
 ```bash
-npm install -g @anthropics/claude-code
+npm install -g @anthropic-ai/claude-code
 ```
 
-Or if you prefer Homebrew (macOS):
+(Not `@anthropics/claude-code` — that's the wrong scope and was in an earlier draft of this post. Caught it on review. Read your AI's output.)
 
-```bash
-brew install claude-code
-```
+Once installed, you run `claude` in any directory and it picks up the codebase context. You can give it a goal — "migrate this Stencil app to Astro" — or a tactical instruction — "fix the hydration mismatch in RightPanel.tsx."
 
-## Real-World Example
+## What's been working
 
-Let's say you're working on a React component and want to add error boundaries. Instead of manually writing the boilerplate, you can simply ask:
+**Big mechanical refactors.** "Move all source files into a `web-stencil/` subdirectory and create a parallel `web-astro/` scaffold." That's a four-hour task done in fifteen minutes, including verifying the Stencil build still passes from the new location.
 
-```bash
-claude "Wrap this component with an error boundary and add error logging"
-```
+**Reading the codebase.** Claude understands my project's structure better than a new hire would after a week. It traced the right-panel component's adaptive menu crunching algorithm and proposed a Solid port that preserved the behavior — without me explaining what the algorithm did.
 
-Claude Code will analyze your component, create an appropriate error boundary, add proper error handling, and even integrate with your existing logging system.
+**Boring infrastructure work.** Setting up Astro Content Collections, wiring blog markdown frontmatter, configuring Vite plugins, debugging hydration mismatches in SSR'd Solid components. The kind of work that's necessary but not interesting.
 
-## Conclusion
+**Course-correcting.** I rejected its first plan twice — once for putting page content inside the right panel (architectural confusion that came from me, not it), once for tab names that were too literal a copy of Chrome DevTools labels. Both times it incorporated the correction into a saved memory file so the next session won't repeat the mistake. That memory system is the difference between an "AI tool" and an "AI collaborator."
 
-Claude Code represents a paradigm shift in how we write and maintain code. By combining the power of AI with deep code understanding, it enables developers to focus on architecture and problem-solving rather than boilerplate and syntax.
+## What hasn't been working
+
+**Visual judgment.** Claude can write CSS, but it can't *see* the page. It will produce a layout that's "correct" by spec and visually wrong. The fix is fast — describe what's off, it adjusts — but I'm doing the visual review.
+
+**Knowing when to stop.** Default behavior is thorough. If I ask for "fix the icons" it will sometimes also reorganize the icon system, refactor the component, and write a doc. Sometimes that's good. Often it's scope creep. The fix is to be more specific in the ask.
+
+**Domain-specific creative voice.** When it drafted blog post content for me, the result was readable but generic — bullets and headings and "X is amazing because Y" patterns. Personal voice has to come from me. Claude is good at *editing* my prose; it's mediocre at *replacing* it. (You're reading my voice in this post; the bones came from a draft I wrote before asking Claude to tighten it.)
+
+**Cost discipline.** A long context window is expensive. Two-hour migration sessions add up. Worth it for me; would not be worth it for everyone.
+
+## The agent loop, observed
+
+The thing that surprised me most is how much of the work Claude does is *reading* and *verifying*, not writing.
+
+A typical exchange:
+
+1. I describe what I want.
+2. Claude reads the relevant files. Sometimes spawns a sub-agent to read in parallel.
+3. It proposes a plan. Sometimes asks me a clarifying question.
+4. It edits the files.
+5. It runs the build to verify.
+6. If the build fails, it reads the error, hypothesizes a cause, fixes it, re-runs.
+7. It reports back.
+
+Step 6 is the magic. The agent is debugging itself. I'm not in the loop until the work is either done or stuck.
+
+The corollary: my role shifts from typing to reviewing. Most of my time is spent on architecture decisions, on saying *no* to suggestions that would over-engineer the solution, and on visually checking that the right thing happened.
+
+## Should you use it?
+
+If you're a developer who already produces high-quality code: yes, this will make you faster. The amplification factor is real but not infinite. Don't expect 10x. Expect 2-3x on routine work, and 5x on the kind of cross-cutting refactor that you'd otherwise procrastinate on.
+
+If you're new to coding: be careful. Claude will produce code that looks right and isn't. You need enough taste to push back. The learning advantage is real if you treat it as a senior pair-programmer; it's a trap if you treat it as an oracle.
+
+If you're a tech lead worried about your team: the work product is good. The skill that becomes valuable is reviewing AI-generated code with rigor, not writing code from scratch. Hire and train for that.
+
+## What I've learned about myself
+
+I'm faster *and* I'm thinking less. That's not unambiguously good. Some of my best architectural decisions in the past came from the friction of writing code by hand and noticing it felt wrong. With an agent, the friction is in the prompt — and I'm still figuring out which kinds of friction were valuable.
+
+For now: I keep a memory file in the project that captures the design decisions I want preserved. I review every commit before it lands on `main`. I write the blog posts in my own voice. The agent writes the boilerplate.
+
+That feels like the right division of labor. Ask me again in six months.
