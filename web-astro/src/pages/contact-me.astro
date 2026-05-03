@@ -1,12 +1,62 @@
 ---
-// PORT TARGET: web-stencil/src/components/gui-contact/gui-contact.tsx
-// Parity goal: web3forms POST endpoint and form fields identical
+// PORT: web-stencil/src/components/gui-contact/gui-contact.tsx
 import Layout from '../layouts/Layout.astro';
+import ContactForm from '../components/contact/ContactForm.tsx';
 ---
 
 <Layout title="Contact — FruitsBytes">
-  <main class="min-h-screen p-8">
-    <h1 class="text-3xl">Contact</h1>
-    <p class="text-gray-400 mt-2">[stub — pending port from gui-contact]</p>
-  </main>
+  <div class="max-w-[1200px] mx-auto px-6 py-12 animate-fade-in-up">
+
+    <header class="flex items-center gap-4 mb-8 pb-4 border-b border-[#494c50]">
+      <span class="material-symbols-sharp text-[40px] text-[#0078d7]">mail</span>
+      <h1 class="text-3xl font-normal m-0 text-[#e8eaed]">Contact</h1>
+    </header>
+
+    <div class="grid gap-12 lg:grid-cols-[1fr_1.5fr]">
+
+      <section class="contact-info">
+        <h2 class="text-xl font-medium mb-3 text-[#ccd6ef]">Get in touch</h2>
+        <p class="leading-relaxed text-[#9aa0a6] mb-6">
+          Have a project in mind, a question, or just want to say hi? Drop a note and I'll reply.
+        </p>
+
+        <div class="flex flex-col gap-5">
+          <div class="flex items-start gap-4 p-4 bg-[#202124] border border-[#494c50] rounded transition-all hover:bg-[#292a2d] hover:border-[#5a5d61]">
+            <span class="material-symbols-sharp text-[24px] text-[#0078d7] mt-0.5">email</span>
+            <div class="flex-1">
+              <strong class="block text-sm font-medium mb-1 text-[#ccd6ef]">Email</strong>
+              <a href="mailto:jeffrey.carre@anbapyezanman.com" class="text-sm text-[#0078d7] hover:text-[#1e90ff] hover:underline transition-colors">
+                jeffrey.carre@anbapyezanman.com
+              </a>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 p-4 bg-[#202124] border border-[#494c50] rounded transition-all hover:bg-[#292a2d] hover:border-[#5a5d61]">
+            <span class="material-symbols-sharp text-[24px] text-[#0078d7] mt-0.5">location_on</span>
+            <div class="flex-1">
+              <strong class="block text-sm font-medium mb-1 text-[#ccd6ef]">Location</strong>
+              <span class="text-sm text-[#9aa0a6]">Montréal, QC, Canada</span>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 p-4 bg-[#202124] border border-[#494c50] rounded transition-all hover:bg-[#292a2d] hover:border-[#5a5d61]">
+            <span class="material-symbols-sharp text-[24px] text-[#0078d7] mt-0.5">link</span>
+            <div class="flex-1">
+              <strong class="block text-sm font-medium mb-1 text-[#ccd6ef]">Social</strong>
+              <div class="flex items-center gap-2">
+                <a href="https://github.com/fruitsbytes" target="_blank" rel="noopener noreferrer" class="text-sm text-[#0078d7] hover:text-[#1e90ff] hover:underline">GitHub</a>
+                <span class="text-[#494c50]">•</span>
+                <a href="https://linkedin.com/in/jeffrey-carre" target="_blank" rel="noopener noreferrer" class="text-sm text-[#0078d7] hover:text-[#1e90ff] hover:underline">LinkedIn</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-[#202124] border border-[#494c50] rounded p-8">
+        <ContactForm client:load />
+      </section>
+
+    </div>
+  </div>
 </Layout>
