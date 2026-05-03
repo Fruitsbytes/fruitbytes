@@ -1,6 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from '@tailwindcss/vite';
 import solidJs from '@astrojs/solid-js';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
@@ -8,12 +8,10 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://fruitsbytes.com',
-  integrations: [
-    tailwind({ applyBaseStyles: false }),
-    solidJs(),
-    mdx(),
-    sitemap(),
-  ],
+  integrations: [solidJs(), mdx(), sitemap()],
+  vite: {
+    plugins: [tailwindcss()],
+  },
   build: {
     format: 'directory',
   },
