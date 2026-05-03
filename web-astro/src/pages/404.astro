@@ -1,12 +1,51 @@
 ---
 // PORT TARGET: web-stencil/src/components/gui-404/gui-404.tsx
 import Layout from '../layouts/Layout.astro';
+import NotFoundLogger from '../components/notfound/NotFoundLogger.tsx';
 ---
 
-<Layout title="Not found — FruitsBytes">
-  <main class="min-h-screen flex flex-col items-center justify-center p-8">
-    <h1 class="text-6xl font-mono">404</h1>
-    <p class="text-gray-400 mt-2">Page not found</p>
-    <a href="/" class="mt-6 text-blue-400 hover:underline">Back home</a>
-  </main>
+<Layout title="404 — FruitsBytes">
+  <NotFoundLogger client:load />
+  <div class="@container relative min-h-[60vh] flex flex-col justify-center items-start gap-3 px-6 py-12 sm:px-12">
+    <img
+      src="/assets/images/crack2.png"
+      alt=""
+      class="absolute left-0 bottom-8 w-1/2 max-w-[800px] opacity-90 pointer-events-none -z-10"
+      style="filter: drop-shadow(5px 8px 16px rgba(255, 0, 0, 0.5));"
+    />
+
+    <h1 class="text-7xl @lg:text-9xl font-black m-0 text-[var(--panel-text-strong)]">404</h1>
+
+    <h2 class="text-3xl @lg:text-6xl font-mono text-[var(--panel-text)] m-0">
+      Lost in cyberspace
+    </h2>
+
+    <p class="text-xl @lg:text-3xl text-[var(--panel-text-strong)] m-0">
+      {/* TODO: i18n notFound.message */}
+      The page you're looking for couldn't be found.
+    </p>
+
+    <p class="italic text-[var(--panel-text)] m-0">
+      {/* TODO: i18n notFound.hint */}
+      Did you mistype the URL? Check the navigation tabs above.
+    </p>
+
+    <div class="flex flex-wrap items-center gap-2 mt-2">
+      <button
+        type="button"
+        onclick="history.back()"
+        class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
+      >
+        {/* TODO: i18n notFound.backButton */}
+        Go Back
+      </button>
+      <a
+        href="/welcome"
+        class="text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 font-medium rounded-lg text-sm px-5 py-2.5"
+      >
+        {/* TODO: i18n notFound.homeButton */}
+        Home
+      </a>
+    </div>
+  </div>
 </Layout>

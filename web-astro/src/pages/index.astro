@@ -1,18 +1,4 @@
 ---
-import Layout from '../layouts/Layout.astro';
+// Root path redirects to /welcome to match the Stencil app's default route.
+return Astro.redirect('/welcome');
 ---
-
-<Layout title="FruitsBytes — Home">
-  <main class="min-h-screen flex flex-col items-center justify-center p-8">
-    <h1 class="text-4xl font-mono">FruitsBytes</h1>
-    <p class="text-gray-400 mt-2">Astro migration in progress</p>
-    <nav class="mt-8 grid grid-cols-2 gap-2 text-sm">
-      <a class="hover:text-blue-400" href="/welcome">Welcome</a>
-      <a class="hover:text-blue-400" href="/about-me">About</a>
-      <a class="hover:text-blue-400" href="/my-blog">Blog</a>
-      <a class="hover:text-blue-400" href="/my-projects">Projects</a>
-      <a class="hover:text-blue-400" href="/contact-me">Contact</a>
-      <a class="hover:text-blue-400" href="/console-log">Console</a>
-    </nav>
-  </main>
-</Layout>

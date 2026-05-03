@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import { getCollection } from 'astro:content';
 import '../styles/global.css';
 import MainHeader from '../components/shell/MainHeader';
 import MainFooter from '../components/shell/MainFooter';
@@ -14,9 +15,21 @@ interface Props {
 const { title, description = 'FruitsBytes — developer portfolio of Jeffrey N. Carre' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 
+// Build-time metadata for the BlogInspector pane in the right panel.
+// Date is serialized as ISO string so it survives the Astro→Solid prop boundary.
+const blogPostsRaw = await getCollection('blog', ({ data }) => !data.draft && data.language === 'en');
+const blogPosts = blogPostsRaw.map((p) => ({
+  slug: p.id,
+  title: p.data.title,
+  date: p.data.date.toISOString(),
+  category: p.data.category,
+  tags: p.data.tags,
+  readTime: p.data.readTime,
+}));
+
 // Material Symbols icon names used across the app — keep in sync with web-stencil/src/index.html
-const ICON_NAMES_ROUNDED = 'block,check,chevron_right,close,content_copy,devices,home,logout,menu,more_vert,ramen_dining,settings,volume_off,volume_up';
-const ICON_NAMES_SHARP = 'account_balance,arrow_back,arrow_forward,article,book,business_center,category,chat,check_circle,close,code,description,design_services,developer_board,download,email,error,info,install_mobile,ios_share,label,language,link,location_on,mail,music_note,nature,offline_bolt,person,phone_iphone,schedule,school,send,smartphone,space_dashboard,speed,sports_esports,subject,theaters,view_in_ar,wifi,workspace_premium';
+const ICON_NAMES_ROUNDED = 'arrow_selector_tool,block,check,chevron_right,close,content_copy,dark_mode,devices,home,keyboard_double_arrow_right,light_mode,logout,menu,more_vert,ramen_dining,settings,volume_off,volume_up';
+const ICON_NAMES_SHARP = 'account_balance,arrow_back,arrow_forward,article,block,book,business_center,category,chat,check_circle,close,code,description,design_services,developer_board,download,email,error,info,install_mobile,ios_share,label,language,link,location_on,mail,music_note,nature,offline_bolt,person,phone_iphone,schedule,school,send,smartphone,space_dashboard,speed,sports_esports,subject,theaters,view_in_ar,wifi,workspace_premium';
 ---
 
 <!doctype html>
@@ -47,13 +60,41 @@ const ICON_NAMES_SHARP = 'account_balance,arrow_back,arrow_forward,article,book,
       href={`https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=${ICON_NAMES_SHARP}`}
     />
 
+    {/*
+      Set theme before hydration to avoid flash, AND re-apply on every
+      view-transition swap. Astro's ClientRouter resets <html> attributes
+      to the new page's SSR values (which don't include data-theme),
+      which is why the theme would revert without the after-swap listener.
+    */}
+    <script is:inline>
+      (function () {
+        function applyTheme() {
+          try {
+            var stored = localStorage.getItem('theme');
+            var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+            var theme = stored === 'light' || stored === 'dark' ? stored : prefersLight ? 'light' : 'dark';
+            document.documentElement.dataset.theme = theme;
+          } catch (_e) {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        }
+        applyTheme();
+        document.addEventListener('astro:after-swap', applyTheme);
+      })();
+    </script>
+
     <ClientRouter />
   </head>
-  <body class="bg-[#16161d] text-[#e8eaed] font-[Roboto_Flex]">
+  <body class="h-screen overflow-hidden bg-[var(--body-bg)] text-[var(--body-text)] font-[Roboto_Flex] transition-colors">
     {/*
-      Persistent islands keep state across navigations: sounds keep playing,
-      3D scene keeps rendering, mouse-tracking eyes keep tracking, right-
-      panel resize state preserved.
+      Architecture (corrected 2026-05-03 — see memory project_design_intent):
+        - LEFT main area holds page content (the "browser content" in the
+          DevTools metaphor). It's fixed-positioned and has its OWN scroll
+          so the wheel only moves left content.
+        - RIGHT panel is the DevTools-style chrome with its own content.
+          Fixed-positioned, scrolls independently.
+        - body has overflow:hidden — no document-level scroll. Each side
+          scrolls only when its mouse is over it.
     */}
     <BackgroundActivity client:visible transition:persist />
     <MainHeader client:load transition:persist />
@@ -62,13 +103,13 @@ const ICON_NAMES_SHARP = 'account_balance,arrow_back,arrow_forward,article,book,
       id="main-content"
       role="main"
       aria-label="Main content"
-      class="min-h-screen pt-14 pb-10"
-      style="padding-right: var(--effective-menu-width, 600px); transition: padding-right 0.2s;"
+      class="fixed top-0 left-0 bottom-0 overflow-y-auto pt-14 pb-10"
+      style="right: var(--effective-menu-width, 600px); transition: right 0.2s;"
     >
       <slot />
     </main>
 
-    <RightPanel client:load transition:persist />
+    <RightPanel client:load transition:persist initialPath={Astro.url.pathname} blogPosts={blogPosts} />
     <MainFooter client:load transition:persist />
   </body>
 </html>

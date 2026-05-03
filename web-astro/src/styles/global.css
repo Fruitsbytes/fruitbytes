@@ -8,6 +8,210 @@
   --font-mono: 'Roboto Mono', ui-monospace, monospace;
 }
 
+/*
+  Theme variables — Chrome DevTools dark + light.
+  Default: dark theme.
+  System preference (prefers-color-scheme: light) flips to light unless
+  the user explicitly forces dark via data-theme="dark".
+  Forced override: <html data-theme="light"> or <html data-theme="dark">.
+*/
+:root {
+  /* DevTools dark theme */
+  --panel-bg: #202124;
+  --panel-toolbar: #292a2d;
+  --panel-border: #494c50;
+  --panel-text: #9aa0a6;
+  --panel-text-strong: #e8eaed;
+  --panel-icon: #919191;
+  --panel-tab-hover-bg: #35363a;
+  --panel-tab-selected-bg: #000000;
+  --panel-tab-selected-text: #eaeaea;
+  --panel-divider: #494c50;
+  --panel-input-bg: #292a2d;
+
+  --console-payload-text: #9aa0a6;
+  --console-file-link: #5a8dee;
+  --console-prompt: #919191;
+  --console-divider: #2a2b2e;
+  --console-error-bg: #3a1c1c;
+  --console-error-text: #ff8080;
+  --console-warning-bg: #3a311a;
+  --console-warning-text: #ffd866;
+  --console-success-text: #5aff5f;
+
+  --body-bg: #16161d;
+  --body-text: #e8eaed;
+
+  /* Resume / "paper" cards on /about-me — dark variant */
+  --paper-bg: #25262a;
+  --paper-text: #e8eaed;
+  --paper-muted: #9aa0a6;
+  --paper-border: #3c3d40;
+  --paper-divider: #3c3d40;
+  --paper-link: #8db4ff;
+  --paper-section-rule: #5aff5f;
+  --paper-job-title: #5aff5f;
+  --paper-date: #ff9f5a;
+  --paper-tag-bg: #1f2024;
+  --paper-tag-text: #d3d6db;
+
+  /* Custom scrollbar */
+  --scroll-thumb: #494c50;
+  --scroll-thumb-hover: #6b6f77;
+
+  /* Inverts dark monochrome SVGs (social icons) to white on dark themes */
+  --icon-invert: invert(1) brightness(1.5);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    /* DevTools light theme */
+    --panel-bg: #ffffff;
+    --panel-toolbar: #f3f3f4;
+    --panel-border: #d4d4d4;
+    --panel-text: #5a6068;
+    --panel-text-strong: #202124;
+    --panel-icon: #6b6f77;
+    --panel-tab-hover-bg: #e8e8e8;
+    --panel-tab-selected-bg: #ffffff;
+    --panel-tab-selected-text: #202124;
+    --panel-divider: #d4d4d4;
+    --panel-input-bg: #f3f3f4;
+
+    --console-payload-text: #5a6068;
+    --console-file-link: #1a73e8;
+    --console-prompt: #6b6f77;
+    --console-divider: #ebebeb;
+    --console-error-bg: #fce8e8;
+    --console-error-text: #c5221f;
+    --console-warning-bg: #fef7e0;
+    --console-warning-text: #b06000;
+    --console-success-text: #137333;
+
+    --body-bg: #ffffff;
+    --body-text: #202124;
+
+    --paper-bg: #fafafa;
+    --paper-text: #1f2937;
+    --paper-muted: #6b7280;
+    --paper-border: #e5e7eb;
+    --paper-divider: #e5e7eb;
+    --paper-link: #1a73e8;
+    --paper-section-rule: #16a34a;
+    --paper-job-title: #15803d;
+    --paper-date: #c2410c;
+    --paper-tag-bg: #f3f4f6;
+    --paper-tag-text: #1f2937;
+
+    --scroll-thumb: #d4d4d4;
+    --scroll-thumb-hover: #9ca3af;
+
+    --icon-invert: none;
+  }
+}
+
+:root[data-theme="light"] {
+  --panel-bg: #ffffff;
+  --panel-toolbar: #f3f3f4;
+  --panel-border: #d4d4d4;
+  --panel-text: #5a6068;
+  --panel-text-strong: #202124;
+  --panel-icon: #6b6f77;
+  --panel-tab-hover-bg: #e8e8e8;
+  --panel-tab-selected-bg: #ffffff;
+  --panel-tab-selected-text: #202124;
+  --panel-divider: #d4d4d4;
+  --panel-input-bg: #f3f3f4;
+
+  --console-payload-text: #5a6068;
+  --console-file-link: #1a73e8;
+  --console-prompt: #6b6f77;
+  --console-divider: #ebebeb;
+  --console-error-bg: #fce8e8;
+  --console-error-text: #c5221f;
+  --console-warning-bg: #fef7e0;
+  --console-warning-text: #b06000;
+  --console-success-text: #137333;
+
+  --body-bg: #ffffff;
+  --body-text: #202124;
+
+  --paper-bg: #fafafa;
+  --paper-text: #1f2937;
+  --paper-muted: #6b7280;
+  --paper-border: #e5e7eb;
+  --paper-divider: #e5e7eb;
+  --paper-link: #1a73e8;
+  --paper-section-rule: #16a34a;
+  --paper-job-title: #15803d;
+  --paper-date: #c2410c;
+  --paper-tag-bg: #f3f4f6;
+  --paper-tag-text: #1f2937;
+
+  --scroll-thumb: #d4d4d4;
+  --scroll-thumb-hover: #9ca3af;
+
+  --icon-invert: none;
+}
+
+/* Apply the theme-aware invert filter to monochrome social icons */
+.social-icon {
+  filter: var(--icon-invert, none);
+  transition: filter 0.2s;
+}
+
+/*
+  Modern, theme-aware scrollbar.
+  WebKit (Chrome/Safari/Edge) + Firefox. Thin, transparent track, color
+  follows the active theme via --scroll-thumb. Auto-hides on idle thanks
+  to overlay-style sizing.
+*/
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-thumb);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scroll-thumb-hover);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb) transparent;
+}
+
+/*
+  Material Symbols icon weights — match Stencil right-panel.scss exactly
+  to get DevTools' light-weight outline aesthetic (vs. Material Symbols
+  default which is heavier and filled-by-default in some contexts).
+*/
+.material-symbols-rounded,
+.material-symbols-sharp {
+  font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' -25, 'opsz' 40;
+}
+
+.material-symbols-rounded.filled,
+.material-symbols-sharp.filled {
+  font-variation-settings: 'FILL' 1, 'wght' 200, 'GRAD' -25, 'opsz' 40;
+}
+
+.material-symbols-rounded.thick,
+.material-symbols-sharp.thick {
+  font-variation-settings: 'FILL' 0, 'wght' 700, 'GRAD' -25, 'opsz' 40;
+}
+
 @keyframes slide-down {
   from {
     opacity: 0;

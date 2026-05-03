@@ -1,12 +1,143 @@
 ---
 // PORT TARGET: web-stencil/src/components/gui-welcome/gui-welcome.tsx
-// Parity goal: identical hero layout, ASCII logo, social links, language selector
+// Hero/landing page. Layout adapted for the right-panel container width
+// (vs Stencil's full-width left-side rendering). Uses container queries.
 import Layout from '../layouts/Layout.astro';
+import ToolsWave from '../components/welcome/ToolsWave.tsx';
+import SoundButton from '../components/welcome/SoundButton.tsx';
+import { DEFAULT_PLAYER } from '../data/welcome-player';
 ---
 
 <Layout title="Welcome — FruitsBytes">
-  <main class="min-h-screen p-8">
-    <h1 class="text-3xl">Welcome</h1>
-    <p class="text-gray-400 mt-2">[stub — pending port from gui-welcome]</p>
-  </main>
+  <div class="@container max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8 animate-fade-in-up">
+
+    <div class="bg-gray-800/70 text-gray-200 rounded-lg border-2 border-[#c5c5c5] p-4 sm:p-6 relative overflow-hidden">
+
+      {/* Avatar + intro side-by-side on wider, stacked on narrow */}
+      <div class="flex flex-col @2xl:flex-row gap-6">
+
+        <div class="flex-shrink-0 @2xl:w-[200px] flex justify-center">
+          <img
+            src="/assets/images/me_game.png"
+            alt="Jeffrey Nicholson Carré"
+            class="w-32 h-32 @2xl:w-[180px] @2xl:h-[180px] object-cover [image-rendering:pixelated]"
+          />
+        </div>
+
+        <div id="text" class="flex-1 font-mono text-sm leading-relaxed max-h-[60vh] overflow-y-auto pr-2 [scroll-behavior:smooth]">
+
+          <div class="flex justify-center items-center gap-1 mb-3">
+            <img src="/assets/images/samus.gif" alt="super-metroid" title="Samus - Super Metroid - SNES" class="w-16 h-16 object-contain [image-rendering:pixelated]" />
+            <img src="/assets/images/sims.gif" alt="sims-gem" title="The Sims - PC" class="w-16 h-16 object-contain [image-rendering:pixelated]" />
+            <img src="/assets/images/megaman.gif" alt="megaman" title="Megaman" class="w-16 h-16 object-contain [image-rendering:pixelated]" />
+          </div>
+
+          <p>
+            {/* TODO: i18n welcome.greeting (with player.name, flavor, type) */}
+            Hello, world! I'm{' '}
+            <code><b class="text-yellow-100">{DEFAULT_PLAYER.name}</b></code>.
+            Today I'm a <b class="text-blue-200">{DEFAULT_PLAYER.characterType.flavor}</b>{' '}
+            <b class="text-red-200">{DEFAULT_PLAYER.characterType.type}</b>.
+          </p>
+
+          <p class="mt-3">
+            {/* TODO: i18n welcome.intro1 */}
+            I am a developer. I solve problems with code, and the most fun ones involve building things people use every day.
+          </p>
+
+          <p class="mt-3">
+            {/* TODO: i18n welcome.intro2 */}
+            I love crafting interfaces that feel right, designing systems that scale, and the small joys of making a stubborn bug finally surrender.
+          </p>
+
+          <div class="flex justify-center items-center gap-1 my-4">
+            <img src="/assets/images/chokobo.png" alt="chokobo-final-fantasy" title="Chokobo - Final Fantasy - PS2" class="w-16 h-16 object-contain [image-rendering:pixelated]" />
+            <img src="/assets/images/whololo-monk.gif" alt="ages-of-empire" title="Whololo Monk - Age of Empire - PC" class="w-16 h-16 object-contain [image-rendering:pixelated]" />
+          </div>
+
+          <p>
+            {/* TODO: i18n welcome.coding1 */}
+            I write a lot of TypeScript and PHP. I've spent years in Angular, React, Laravel, and the broader JavaScript ecosystem.
+          </p>
+          <p class="mt-3">
+            {/* TODO: i18n welcome.coding2 */}
+            I also dabble in 3D graphics, wireless networking, and anything else that catches my interest.
+          </p>
+
+          <div class="flex justify-center items-center gap-1 my-4">
+            <img src="/assets/images/scyther.gif" alt="scyther-pokemon" title="Pokemon" class="w-16 h-16 object-contain [image-rendering:pixelated]" />
+            <img src="/assets/images/starcraft.png" alt="star-craft-protoss" title="StarCraft Protoss" class="w-16 h-16 object-contain [image-rendering:pixelated]" />
+          </div>
+
+          <p>
+            {/* TODO: i18n welcome.current */}
+            Right now I'm at CGI building enterprise Angular applications, and exploring AI tooling on the side.
+          </p>
+
+          <div class="flex justify-center items-center gap-1 my-4">
+            <img src="/assets/images/luidgi.svg" alt="super-mario" title="Super Mario Bros NES" class="w-16 h-16 object-contain [image-rendering:pixelated]" />
+          </div>
+
+          <p>
+            {/* TODO: i18n welcome.cta */}
+            Have a look around — the panel tabs above let you explore my work, blog posts, and contact info.
+          </p>
+
+          <p class="text-center mt-4">
+            {/* TODO: i18n welcome.thanks + treat */}
+            Thanks for visiting!<br />
+            Click below for a tasty treat.
+          </p>
+
+          <div class="my-3">
+            <SoundButton client:load label="Get a treat" />
+          </div>
+
+          <div class="flex justify-center items-center gap-1 mt-4">
+            <img src="/assets/images/civilization.png" alt="civilization" title="Sid Meier's Civilization - PC" class="w-16 h-16 object-contain [image-rendering:pixelated]" />
+          </div>
+        </div>
+      </div>
+
+      {/* Tools wave — full-width strip below the bio */}
+      <div class="mt-6 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6 border-t-2 border-[#c5c5c5] bg-[#000c66] h-[100px] overflow-hidden">
+        <ToolsWave client:visible initialCount={3} />
+      </div>
+
+    </div>
+
+    {/* Quick links to other sections */}
+    <nav class="grid grid-cols-2 @lg:grid-cols-4 gap-2 mt-4 text-center text-sm">
+      {/* TODO: i18n welcome.links.* */}
+      <a href="/about-me" class="block px-4 py-3 bg-gradient-to-b from-[#0052d6] to-[#000c66] hover:from-[#162abe] hover:to-[#162abe] text-gray-200 border-2 border-[#c5c5c5] rounded transition-colors">More about me</a>
+      <a href="/my-projects" class="block px-4 py-3 bg-gradient-to-b from-[#0052d6] to-[#000c66] hover:from-[#162abe] hover:to-[#162abe] text-gray-200 border-2 border-[#c5c5c5] rounded transition-colors">My projects</a>
+      <a href="/contact-me" class="block px-4 py-3 bg-gradient-to-b from-[#0052d6] to-[#000c66] hover:from-[#162abe] hover:to-[#162abe] text-gray-200 border-2 border-[#c5c5c5] rounded transition-colors">Contact me</a>
+      <a href="/my-blog" class="block px-4 py-3 bg-gradient-to-b from-[#0052d6] to-[#000c66] hover:from-[#162abe] hover:to-[#162abe] text-gray-200 border-2 border-[#c5c5c5] rounded transition-colors">Check the blog</a>
+    </nav>
+
+  </div>
+
+  {/* Scroll-sync between text panel and tools grid (matches Stencil componentDidLoad) */}
+  <script is:inline>
+    (function () {
+      function setup() {
+        var text = document.getElementById('text');
+        var grid = document.getElementById('accolades-grid');
+        if (!text || !grid) return;
+        text.addEventListener('scroll', function () {
+          if (!text || !grid) return;
+          var max = text.scrollHeight - text.clientHeight;
+          if (max <= 0) return;
+          grid.scrollTop = Math.round(grid.scrollHeight * (text.scrollTop / max));
+        });
+      }
+      // Run after Astro view transition + island hydration
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setup);
+      } else {
+        setup();
+      }
+      document.addEventListener('astro:after-swap', setup);
+    })();
+  </script>
 </Layout>

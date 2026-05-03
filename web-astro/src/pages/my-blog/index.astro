@@ -1,0 +1,82 @@
+---
+// PORT TARGET: web-stencil/src/components/gui-blog/gui-blog.tsx (list view)
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+const posts = await getCollection('blog', ({ data }) => !data.draft && data.language === 'en');
+posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const dateFmt = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+---
+
+<Layout title="Blog — FruitsBytes">
+  <div class="@container max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 animate-fade-in-up">
+
+    <header class="text-center mb-8 sm:mb-12">
+      <h1 class="text-3xl @lg:text-5xl font-bold mb-3 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+        {/* TODO: i18n blog.title */}
+        Blog
+      </h1>
+      <p class="text-base @lg:text-xl text-[var(--panel-text)]">
+        {/* TODO: i18n blog.subtitle */}
+        Articles on web development, AI tools, and modern frontend.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 @2xl:grid-cols-2 gap-4 sm:gap-6">
+      {posts.map((post) => (
+        <article class="bg-[var(--panel-bg)] border border-[var(--panel-border)] rounded-lg overflow-hidden hover:border-[var(--panel-text)] transition-colors flex flex-col">
+
+          <a href={`/my-blog/${post.id}`} class="block">
+            <img
+              src={post.data.image}
+              alt={post.data.title}
+              loading="lazy"
+              class="w-full h-40 sm:h-48 object-cover bg-[var(--panel-toolbar)]"
+              onerror="this.src='/assets/images/blog/default.jpg'"
+            />
+          </a>
+
+          <div class="p-4 sm:p-5 flex flex-col gap-3 flex-1">
+            <div class="flex items-center justify-between gap-2 flex-wrap text-xs">
+              <span class="inline-flex items-center px-2 py-0.5 rounded bg-[var(--console-file-link)]/15 border border-[var(--console-file-link)]/40 text-[var(--console-file-link)] font-medium">
+                {post.data.category}
+              </span>
+              <span class="text-[var(--panel-text)]">
+                {dateFmt.format(post.data.date)} · {post.data.readTime} min read
+              </span>
+            </div>
+
+            <h2 class="text-lg sm:text-xl font-bold m-0 text-[var(--panel-text-strong)] leading-tight">
+              <a href={`/my-blog/${post.id}`} class="hover:text-[var(--console-file-link)] transition-colors">
+                {post.data.title}
+              </a>
+            </h2>
+
+            <p class="text-sm text-[var(--panel-text-strong)] leading-relaxed m-0 flex-1">
+              {post.data.excerpt || post.data.description}
+            </p>
+
+            <div class="flex flex-wrap gap-1.5">
+              {post.data.tags.slice(0, 3).map((tag) => (
+                <span class="px-2 py-0.5 text-[11px] bg-[var(--panel-toolbar)] border border-[var(--panel-border)] rounded text-[var(--panel-text)]">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+
+            <a
+              href={`/my-blog/${post.id}`}
+              class="inline-flex items-center gap-1.5 text-sm text-[var(--console-file-link)] hover:underline mt-auto"
+            >
+              {/* TODO: i18n blog.readArticle */}
+              <span>Read article</span>
+              <span class="material-symbols-sharp text-[16px]">arrow_forward</span>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+  </div>
+</Layout>
