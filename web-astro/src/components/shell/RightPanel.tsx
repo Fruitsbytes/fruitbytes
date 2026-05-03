@@ -1,23 +1,23 @@
 // PORT TARGET: web-stencil/src/components/right-panel/right-panel.tsx (625 lines)
 //
-// Faithful port of the Chrome DevTools dark-theme clone, now with full
-// dark + light theme support driven by CSS variables in global.css.
-// Theme is set on <html data-theme="light|dark"> by an inline boot script
-// in Layout.astro, then mirrored into the `theme` signal on hydration.
+// Architectural note (2026-05-03 user direction):
+//   The right panel is the MAIN content area. Pages render inside it via
+//   the `children` prop (passed from Astro <slot /> in Layout.astro).
+//   The left side of the screen is reserved for ambient/secondary content
+//   (3D scene, additional info shown when screen is wide).
 //
-// Active tab uses the same CSS variables, so the visual matches DevTools
-// in both modes:
-//   dark  → tab black-ish (#000) over toolbar #292a2d
-//   light → tab white over toolbar #f3f3f4
+// Faithful Chrome DevTools dark + light theme clone driven by CSS
+// variables in global.css. Theme is set on <html data-theme="light|dark">
+// by an inline boot script in Layout.astro before hydration (no flash).
 //
 // Future polish:
 // - Adaptive menu crunching with overflow chevron + dropdown
 // - Mobile drawer (3 states + touch gestures)
 // - Custom cursor.webp
 // - Language selector inside the toolbar
-// - Settings dropdown can host more options (font size, dock position, etc.)
+// - Settings dropdown — more options (font size, dock position)
 
-import { For, Show, createSignal, createEffect, onMount, onCleanup } from 'solid-js';
+import { For, Show, createSignal, createEffect, onMount, onCleanup, type JSX } from 'solid-js';
 import {
   menuOpened,
   setMenuOpened,
@@ -27,10 +27,11 @@ import {
   theme,
   toggleTheme,
 } from '../../stores/shell';
-import ConsoleViewer from './ConsoleViewer';
 
 const MIN_WIDTH = 234;
-const MAX_WIDTH = 800;
+// Increased from 800 (DevTools-docked default) since the panel now hosts
+// the main page content. Capped at 100vw for full-screen on small displays.
+const MAX_WIDTH = 1600;
 
 const MENU_ITEMS = [
   { key: 'welcome', title: 'Home', path: '/welcome' },
@@ -41,7 +42,11 @@ const MENU_ITEMS = [
   { key: 'projects', title: 'Projects', path: '/my-projects' },
 ];
 
-export default function RightPanel() {
+interface Props {
+  children?: JSX.Element;
+}
+
+export default function RightPanel(props: Props) {
   const [dragging, setDragging] = createSignal(false);
   const [activePath, setActivePath] = createSignal('/welcome');
   const [settingsOpen, setSettingsOpen] = createSignal(false);
@@ -88,8 +93,6 @@ export default function RightPanel() {
     window.addEventListener('pointermove', onMove);
     window.addEventListener('pointerup', onUp);
   };
-
-  const showConsole = () => activePath() === '/console-log';
 
   return (
     <aside
@@ -222,25 +225,8 @@ export default function RightPanel() {
         </div>
       </div>
 
-      {/* Per-route content area */}
-      <div class="flex-1 overflow-hidden">
-        <Show when={showConsole()} fallback={<RoutePlaceholder path={activePath()} />}>
-          <ConsoleViewer />
-        </Show>
-      </div>
+      {/* Main content area — Astro slot renders here */}
+      <div class="flex-1 overflow-y-auto">{props.children}</div>
     </aside>
-  );
-}
-
-function RoutePlaceholder(props: { path: string }) {
-  return (
-    <div class="px-3 py-2 text-[11px] text-[var(--panel-text)] font-mono">
-      <p class="opacity-70">
-        Inspector content for <code>{props.path}</code> not yet ported.
-      </p>
-      <p class="opacity-40 mt-1">
-        Console pane (<code>/console-log</code>) is the only fully-ported section so far.
-      </p>
-    </div>
   );
 }

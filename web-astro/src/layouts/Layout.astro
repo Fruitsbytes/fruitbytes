@@ -65,24 +65,21 @@ const ICON_NAMES_SHARP = 'account_balance,arrow_back,arrow_forward,article,book,
   </head>
   <body class="bg-[var(--body-bg)] text-[var(--body-text)] font-[Roboto_Flex] transition-colors">
     {/*
-      Persistent islands keep state across navigations: sounds keep playing,
-      3D scene keeps rendering, mouse-tracking eyes keep tracking, right-
-      panel resize state preserved.
+      Architecture (per user direction 2026-05-03):
+        - RIGHT PANEL hosts the main content (slotted Astro page content).
+        - LEFT SIDE is reserved for ambient/secondary content shown when
+          screen is wide (3D scene, decorative widgets — added later).
+      Persistent islands keep state across navigations.
     */}
     <BackgroundActivity client:visible transition:persist />
     <MainHeader client:load transition:persist />
 
-    <main
-      id="main-content"
-      role="main"
-      aria-label="Main content"
-      class="min-h-screen pt-14 pb-10"
-      style="padding-right: var(--effective-menu-width, 600px); transition: padding-right 0.2s;"
-    >
-      <slot />
-    </main>
+    <RightPanel client:load transition:persist>
+      <main id="main-content" role="main" aria-label="Main content">
+        <slot />
+      </main>
+    </RightPanel>
 
-    <RightPanel client:load transition:persist />
     <MainFooter client:load transition:persist />
   </body>
 </html>
