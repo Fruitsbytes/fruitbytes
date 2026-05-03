@@ -1,13 +1,26 @@
 ---
 // PORT TARGET: web-stencil/src/components/right-panel console viewer +
 //              web-stencil/src/components/console-welcome
-// The /console-log route renders the live console viewer as the page's
-// main content. Logs are dispatched into the shared signal store from
-// anywhere in the app (e.g. event listeners, navigation, errors).
+//
+// Note: the actual console viewer renders inside the right panel for ALL
+// routes (the panel is persistent across navigations). Visiting /console-log
+// just makes the right panel show the console as its inspector content.
+// The left main area on this route is intentionally minimal — the right
+// panel is where the action is.
 import Layout from '../layouts/Layout.astro';
-import ConsoleViewer from '../components/shell/ConsoleViewer.tsx';
 ---
 
 <Layout title="Console — FruitsBytes">
-  <ConsoleViewer client:load />
+  <div class="@container max-w-3xl mx-auto px-4 sm:px-6 py-12 animate-fade-in-up">
+    <div class="text-center text-[var(--panel-text)]">
+      <span class="material-symbols-sharp text-[64px] text-[#0078d7] opacity-50">code</span>
+      <h1 class="text-2xl @lg:text-3xl font-light mt-4 m-0 text-[var(--panel-text-strong)]">Console</h1>
+      <p class="mt-2 max-w-md mx-auto text-sm leading-relaxed">
+        Live application logs are in the DevTools panel on the right.
+        Navigate any route — events get logged.
+        Use the <span class="material-symbols-rounded thick text-[14px] align-text-bottom mx-0.5">block</span>
+        button in the panel to clear.
+      </p>
+    </div>
+  </div>
 </Layout>

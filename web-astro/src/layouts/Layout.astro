@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import { getCollection } from 'astro:content';
 import '../styles/global.css';
 import MainHeader from '../components/shell/MainHeader';
 import MainFooter from '../components/shell/MainFooter';
@@ -13,6 +14,18 @@ interface Props {
 
 const { title, description = 'FruitsBytes — developer portfolio of Jeffrey N. Carre' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+
+// Build-time metadata for the BlogInspector pane in the right panel.
+// Date is serialized as ISO string so it survives the Astro→Solid prop boundary.
+const blogPostsRaw = await getCollection('blog', ({ data }) => !data.draft && data.language === 'en');
+const blogPosts = blogPostsRaw.map((p) => ({
+  slug: p.id,
+  title: p.data.title,
+  date: p.data.date.toISOString(),
+  category: p.data.category,
+  tags: p.data.tags,
+  readTime: p.data.readTime,
+}));
 
 // Material Symbols icon names used across the app — keep in sync with web-stencil/src/index.html
 const ICON_NAMES_ROUNDED = 'arrow_selector_tool,block,check,chevron_right,close,content_copy,dark_mode,devices,home,light_mode,logout,menu,more_vert,ramen_dining,settings,volume_off,volume_up';
@@ -65,28 +78,28 @@ const ICON_NAMES_SHARP = 'account_balance,arrow_back,arrow_forward,article,book,
   </head>
   <body class="bg-[var(--body-bg)] text-[var(--body-text)] font-[Roboto_Flex] transition-colors">
     {/*
-      Architecture (per user direction 2026-05-03):
-        - RIGHT PANEL hosts the main content (slotted Astro page content).
-        - LEFT SIDE is reserved for ambient/secondary content shown when
-          screen is wide (3D scene, decorative widgets — added later).
-      Persistent islands keep state across navigations.
+      Architecture (corrected 2026-05-03 — see memory project_design_intent):
+        - LEFT main area holds page content (the "browser content" in the
+          DevTools metaphor — what's being inspected).
+        - RIGHT panel is the DevTools-style chrome with its own content
+          (tabs + per-route inspector pane + console viewer). Does NOT
+          contain the slot.
+      Persistent islands keep their state across navigations.
     */}
     <BackgroundActivity client:visible transition:persist />
     <MainHeader client:load transition:persist />
 
-    {/*
-      RightPanel is intentionally NOT transition:persist — the slot content
-      (page-specific) needs to swap on navigation, and persist would
-      preserve the entire subtree including the old slot. Module-scoped
-      Solid signals (logs, menuWidth, theme) survive remounts because the
-      JS module stays loaded across View Transitions.
-    */}
-    <RightPanel client:load>
-      <main id="main-content" role="main" aria-label="Main content">
-        <slot />
-      </main>
-    </RightPanel>
+    <main
+      id="main-content"
+      role="main"
+      aria-label="Main content"
+      class="min-h-screen pt-14 pb-10"
+      style="padding-right: var(--effective-menu-width, 600px); transition: padding-right 0.2s;"
+    >
+      <slot />
+    </main>
 
+    <RightPanel client:load transition:persist blogPosts={blogPosts} />
     <MainFooter client:load transition:persist />
   </body>
 </html>

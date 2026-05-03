@@ -1,23 +1,29 @@
 // PORT TARGET: web-stencil/src/components/right-panel/right-panel.tsx (625 lines)
 //
-// Architectural note (2026-05-03 user direction):
-//   The right panel is the MAIN content area. Pages render inside it via
-//   the `children` prop (passed from Astro <slot /> in Layout.astro).
-//   The left side of the screen is reserved for ambient/secondary content
-//   (3D scene, additional info shown when screen is wide).
+// Architecture (corrected 2026-05-03):
+//   Right panel is the DevTools-style chrome — toolbar + tabs + per-route
+//   inspector pane + console viewer. The page content (welcome bio, about
+//   resume, blog list, contact form, etc.) renders in the LEFT main area,
+//   not inside this panel.
+//
+// Per-route inspector content shown below the toolbar:
+//   /welcome      → ConsoleWelcome stub (decorative code blocks)
+//   /about-me     → AboutInspector stub (about menu)
+//   /my-blog/...  → BlogInspector stub (categories, tags, recent posts)
+//   /console-log  → ConsoleViewer (live logs)
+//   other         → empty (just the tab bar)
 //
 // Faithful Chrome DevTools dark + light theme clone driven by CSS
-// variables in global.css. Theme is set on <html data-theme="light|dark">
-// by an inline boot script in Layout.astro before hydration (no flash).
+// variables in global.css.
 //
 // Future polish:
 // - Adaptive menu crunching with overflow chevron + dropdown
 // - Mobile drawer (3 states + touch gestures)
 // - Custom cursor.webp
 // - Language selector inside the toolbar
-// - Settings dropdown — more options (font size, dock position)
+// - Real implementations of ConsoleWelcome / AboutInspector / BlogInspector
 
-import { For, Show, createSignal, createEffect, onMount, onCleanup, type JSX } from 'solid-js';
+import { For, Show, createSignal, createEffect, onMount, onCleanup } from 'solid-js';
 import {
   menuOpened,
   setMenuOpened,
@@ -27,11 +33,17 @@ import {
   theme,
   toggleTheme,
 } from '../../stores/shell';
+import ConsoleViewer from './ConsoleViewer';
+import ConsoleWelcome from './ConsoleWelcome';
+import AboutInspector from './AboutInspector';
+import BlogInspector, { type BlogPostMeta } from './BlogInspector';
+
+interface Props {
+  blogPosts?: BlogPostMeta[];
+}
 
 const MIN_WIDTH = 234;
-// Increased from 800 (DevTools-docked default) since the panel now hosts
-// the main page content. Capped at 100vw for full-screen on small displays.
-const MAX_WIDTH = 1600;
+const MAX_WIDTH = 800;
 
 const MENU_ITEMS = [
   { key: 'welcome', title: 'Home', path: '/welcome' },
@@ -41,10 +53,6 @@ const MENU_ITEMS = [
   { key: 'blog', title: 'Blog', path: '/my-blog' },
   { key: 'projects', title: 'Projects', path: '/my-projects' },
 ];
-
-interface Props {
-  children?: JSX.Element;
-}
 
 export default function RightPanel(props: Props) {
   const [dragging, setDragging] = createSignal(false);
@@ -225,8 +233,34 @@ export default function RightPanel(props: Props) {
         </div>
       </div>
 
-      {/* Main content area — Astro slot renders here */}
-      <div class="flex-1 overflow-y-auto">{props.children}</div>
+      {/* Per-route inspector content area */}
+      <div class="flex-1 overflow-hidden">
+        <Show when={activePath() === '/console-log'}>
+          <ConsoleViewer />
+        </Show>
+        <Show when={activePath() === '/welcome' || activePath() === '/'}>
+          <ConsoleWelcome />
+        </Show>
+        <Show when={activePath() === '/about-me'}>
+          <AboutInspector />
+        </Show>
+        <Show when={activePath().startsWith('/my-blog')}>
+          <BlogInspector posts={props.blogPosts ?? []} />
+        </Show>
+        <Show when={
+          activePath() !== '/console-log' &&
+          activePath() !== '/welcome' &&
+          activePath() !== '/' &&
+          activePath() !== '/about-me' &&
+          !activePath().startsWith('/my-blog')
+        }>
+          <div class="px-3 py-3 text-[11px] text-[var(--panel-text)] font-mono">
+            <p class="opacity-60 m-0 leading-relaxed">
+              No specific inspector content for <code>{activePath()}</code>.
+            </p>
+          </div>
+        </Show>
+      </div>
     </aside>
   );
 }
