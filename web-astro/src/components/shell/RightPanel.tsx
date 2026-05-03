@@ -19,7 +19,7 @@
 // 3. Conditional rendering of console viewer when location.pathname matches /console-log
 // 4. Mobile bottom-drawer variant
 
-import { For, createSignal } from 'solid-js';
+import { For, createSignal, createEffect } from 'solid-js';
 import { menuOpened, setMenuOpened, menuWidth, persistMenuWidth, isMobile } from '../../stores/shell';
 
 const MIN_WIDTH = 234;
@@ -36,6 +36,15 @@ const MENU_ITEMS = [
 
 export default function RightPanel() {
   const [dragging, setDragging] = createSignal(false);
+
+  // Sync the panel's effective width to a CSS custom property on <html>
+  // so server-rendered pages can offset their content with
+  // `padding-right: var(--effective-menu-width, 600px)`.
+  createEffect(() => {
+    if (typeof document === 'undefined') return;
+    const effective = !isMobile() && menuOpened() ? menuWidth() : 0;
+    document.documentElement.style.setProperty('--effective-menu-width', `${effective}px`);
+  });
 
   const onPointerDown = (e: PointerEvent) => {
     e.preventDefault();
