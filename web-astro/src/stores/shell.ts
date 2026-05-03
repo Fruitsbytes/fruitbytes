@@ -1,4 +1,9 @@
 import { createSignal } from 'solid-js';
+// Logo ASCII art rendered with colored spans (port of web-stencil
+// /components/logo-text/logo.txt). Imported as raw via Vite — the
+// content is embedded at build time, no runtime fetch.
+// @ts-ignore — vite ?raw import
+import logoArtHtml from '../data/logo-art.txt?raw';
 
 // Shared shell state — the equivalent of app-root's @State() in Stencil.
 // Persisted across navigations because the islands consuming these signals
@@ -34,5 +39,67 @@ export const persistMute = (muted: boolean) => {
   setVolumeMuted(muted);
   if (typeof window !== 'undefined') {
     localStorage.setItem('muted', muted ? '1' : '0');
+    addLog({
+      message: `${muted ? '🔈' : '🔊'} <b>Volume</b> ${muted ? 'muted' : 'unmuted'}`,
+      file: 'shell.ts',
+      time: new Date(),
+      line: 26,
+    });
   }
 };
+
+// Console log shape — mirrors web-stencil/src/interfaces/log.ts
+export interface Log {
+  line: number;
+  message: string; // HTML allowed, rendered via innerHTML
+  file: string;
+  time: Date;
+  level?: 'info' | 'warning' | 'error' | 'default';
+  payload?: string; // HTML, rendered via innerHTML
+}
+
+const initialLog: Log = {
+  payload: `<pre class="logo-art" style="font-family:Consolas,'BitstreamVeraSansMono','Courier New',Courier,monospace;font-size:10px;line-height:1;letter-spacing:0;white-space:pre;margin:0;color:#fff;background:transparent;">${logoArtHtml}</pre>`,
+  line: 1,
+  time: new Date(),
+  file: 'logo.txt',
+  message: '<b style="color:#5aff5f;margin-right:8px">FruitsBytes</b><span>Welcome!</span>',
+};
+
+export const [logs, setLogs] = createSignal<Log[]>([initialLog]);
+
+export const addLog = (entry: Log) => {
+  setLogs((prev) => [...prev, entry]);
+};
+
+export const clearLogs = () => {
+  setLogs([]);
+};
+
+// Theme — DevTools light / dark
+export type Theme = 'light' | 'dark';
+
+const readTheme = (): Theme => {
+  if (typeof document === 'undefined') return 'dark';
+  const fromAttr = document.documentElement.dataset.theme;
+  if (fromAttr === 'light' || fromAttr === 'dark') return fromAttr;
+  return 'dark';
+};
+
+export const [theme, _setTheme] = createSignal<Theme>(readTheme());
+
+export const setTheme = (next: Theme) => {
+  _setTheme(next);
+  if (typeof document !== 'undefined') {
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem('theme', next);
+    addLog({
+      message: `🎨 <b>Theme</b> switched to <b style="color:${next === 'dark' ? '#5a8dee' : '#ff9f5a'}">${next}</b>`,
+      file: 'shell.ts',
+      time: new Date(),
+      line: 50,
+    });
+  }
+};
+
+export const toggleTheme = () => setTheme(theme() === 'dark' ? 'light' : 'dark');
