@@ -1,0 +1,18 @@
+{
+  "name": "parity",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Visual regression harness for Stencil → Astro migration. Captures screenshots from both apps and pixel-diffs them.",
+  "scripts": {
+    "capture:stencil": "playwright test --project=stencil",
+    "capture:astro": "playwright test --project=astro",
+    "capture:all": "playwright test",
+    "diff": "node scripts/diff.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "pixelmatch": "^7.1.0",
+    "pngjs": "^7.0.0"
+  }
+}
