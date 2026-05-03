@@ -36,3 +36,31 @@ export const persistMute = (muted: boolean) => {
     localStorage.setItem('muted', muted ? '1' : '0');
   }
 };
+
+// Console log shape — mirrors web-stencil/src/interfaces/log.ts
+export interface Log {
+  line: number;
+  message: string; // HTML allowed, rendered via innerHTML
+  file: string;
+  time: Date;
+  level?: 'info' | 'warning' | 'error' | 'default';
+  payload?: string; // HTML, rendered via innerHTML
+}
+
+const initialLog: Log = {
+  payload: '<pre style="font-family:Roboto Mono,monospace;font-size:10px;line-height:1;color:#5aff5f;margin:0;">FruitsBytes</pre>',
+  line: 1,
+  time: new Date(),
+  file: 'logo.txt',
+  message: '<b style="color:#5aff5f;margin-right:8px">FruitsBytes</b><span>Welcome!</span>',
+};
+
+export const [logs, setLogs] = createSignal<Log[]>([initialLog]);
+
+export const addLog = (entry: Log) => {
+  setLogs((prev) => [...prev, entry]);
+};
+
+export const clearLogs = () => {
+  setLogs([]);
+};
