@@ -100,6 +100,26 @@
   --body-text: #202124;
 }
 
+/*
+  Material Symbols icon weights — match Stencil right-panel.scss exactly
+  to get DevTools' light-weight outline aesthetic (vs. Material Symbols
+  default which is heavier and filled-by-default in some contexts).
+*/
+.material-symbols-rounded,
+.material-symbols-sharp {
+  font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' -25, 'opsz' 40;
+}
+
+.material-symbols-rounded.filled,
+.material-symbols-sharp.filled {
+  font-variation-settings: 'FILL' 1, 'wght' 200, 'GRAD' -25, 'opsz' 40;
+}
+
+.material-symbols-rounded.thick,
+.material-symbols-sharp.thick {
+  font-variation-settings: 'FILL' 0, 'wght' 700, 'GRAD' -25, 'opsz' 40;
+}
+
 @keyframes slide-down {
   from {
     opacity: 0;

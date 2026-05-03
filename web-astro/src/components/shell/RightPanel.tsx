@@ -118,24 +118,27 @@ export default function RightPanel() {
       </Show>
 
       {/* Top toolbar — DevTools tab bar */}
-      <div class="flex items-center min-h-[26px] bg-[var(--panel-toolbar)] border-b border-[var(--panel-border)] pl-2 select-none">
-        {/* Home + Devices icons */}
+      <div class="flex items-center min-h-[26px] bg-[var(--panel-toolbar)] border-b border-[var(--panel-border)] pl-1.5 select-none">
+        {/* DevTools-style left icons: element-picker (decorative, like
+            DevTools' Inspect Element) + responsive devices toggle */}
         <a
           href="/welcome"
-          class="w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-[var(--panel-text-strong)]"
+          class="w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-[var(--panel-text-strong)] transition-colors"
           aria-label="Home"
+          title="Home"
         >
-          <span class="material-symbols-rounded text-[20px]">home</span>
+          <span class="material-symbols-rounded text-[18px]">arrow_selector_tool</span>
         </a>
         <span
-          class="w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-[var(--panel-text-strong)]"
+          class="w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-[var(--panel-text-strong)] transition-colors"
           aria-hidden="true"
+          title="Toggle device toolbar"
         >
-          <span class="material-symbols-rounded text-[20px] [font-variation-settings:'FILL'_1]">devices</span>
+          <span class="material-symbols-rounded text-[18px]">devices</span>
         </span>
 
         {/* Vertical divider */}
-        <div class="mx-1.5 my-1 w-px h-4 bg-[var(--panel-divider)] opacity-50" />
+        <div class="mx-1.5 w-px h-4 bg-[var(--panel-divider)] opacity-60" />
 
         {/* Tab buttons */}
         <div class="flex flex-1 overflow-hidden" id="crunching-menu">
@@ -163,7 +166,7 @@ export default function RightPanel() {
         <div class="flex ml-auto relative" data-settings-popup>
           <button
             type="button"
-            class="w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-[var(--panel-text-strong)]"
+            class="w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-[var(--panel-text-strong)] transition-colors"
             aria-label="Settings"
             aria-expanded={settingsOpen()}
             onClick={(e) => {
@@ -171,22 +174,22 @@ export default function RightPanel() {
               setSettingsOpen(!settingsOpen());
             }}
           >
-            <span class="material-symbols-rounded text-[18px] [font-variation-settings:'FILL'_1]">settings</span>
+            <span class="material-symbols-rounded text-[18px]">settings</span>
           </button>
           <button
             type="button"
-            class="w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-[var(--panel-text-strong)]"
+            class="w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-[var(--panel-text-strong)] transition-colors"
             aria-label="More options"
           >
-            <span class="material-symbols-rounded text-[18px] [font-variation-settings:'wght'_700]">more_vert</span>
+            <span class="material-symbols-rounded thick text-[16px]">more_vert</span>
           </button>
           <button
             type="button"
-            class="w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-[var(--panel-text-strong)]"
+            class="w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-[var(--panel-text-strong)] transition-colors"
             aria-label="Close panel"
             onClick={() => setMenuOpened(false)}
           >
-            <span class="material-symbols-rounded text-[16px] [font-variation-settings:'wght'_700] mt-1">close</span>
+            <span class="material-symbols-rounded thick text-[14px]">close</span>
           </button>
 
           {/* Settings dropdown */}

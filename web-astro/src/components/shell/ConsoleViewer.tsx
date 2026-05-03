@@ -28,9 +28,9 @@ export default function ConsoleViewer() {
           type="button"
           onClick={clearLogs}
           title="Clear console."
-          class="ml-1.5 w-7 h-6 flex items-center justify-center hover:text-[var(--panel-text-strong)]"
+          class="ml-1.5 w-7 h-6 flex items-center justify-center text-[var(--panel-icon)] hover:text-[var(--panel-text-strong)] transition-colors"
         >
-          <span class="material-symbols-rounded text-[15px] [font-variation-settings:'wght'_700]">block</span>
+          <span class="material-symbols-rounded thick text-[14px]">block</span>
         </button>
       </div>
 
