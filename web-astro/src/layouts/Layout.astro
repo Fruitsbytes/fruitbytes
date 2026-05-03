@@ -1,5 +1,10 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
+import MainHeader from '../components/shell/MainHeader';
+import MainFooter from '../components/shell/MainFooter';
+import RightPanel from '../components/shell/RightPanel';
+import BackgroundActivity from '../components/shell/BackgroundActivity';
 
 interface Props {
   title: string;
@@ -21,8 +26,24 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <ClientRouter />
   </head>
   <body class="bg-[#16161d] text-white">
-    <slot />
+    {/*
+      Persistent islands: these components keep their state across page
+      navigations (sounds keep playing, 3D scene keeps rendering, mouse-
+      tracking eyes keep tracking). This mirrors the Stencil app where
+      app-root holds shell state and only swaps the page-specific gui-*
+      component.
+    */}
+    <BackgroundActivity client:visible transition:persist />
+    <MainHeader client:load transition:persist />
+
+    <main id="main-content" role="main" aria-label="Main content">
+      <slot />
+    </main>
+
+    <RightPanel client:load transition:persist />
+    <MainFooter client:load transition:persist />
   </body>
 </html>
