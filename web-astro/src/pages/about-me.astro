@@ -1,13 +1,420 @@
 ---
 // PORT TARGET: web-stencil/src/components/gui-about/gui-about.tsx
-// Parity goal: bio, employment history, education, certifications, skills, hobbies sections
-// Hash anchors must match (see ABOUT_SECTION in web-stencil/src/config.ts)
 import Layout from '../layouts/Layout.astro';
+import HashScroll from '../components/about/HashScroll.tsx';
+
+const SOCIAL_LINKS = [
+  { url: 'https://github.com/Fruitsbytes', name: 'Github', icon: 'github' },
+  { url: 'https://www.linkedin.com/in/jeffrey-nicholson-carre/', name: 'LinkedIn', icon: 'linkedin' },
+  { url: 'https://stackoverflow.com/users/1427338', name: 'Stack Overflow', icon: 'stackoverflow' },
+  { url: 'https://app.pluralsight.com/profile/jeffrey-carr-32', name: 'PluralSight', icon: 'pluralSight' },
+  { url: 'https://x.com/jeffrey_n_carre', name: 'Twitter', icon: 'twitter' },
+];
+
+const BADGES = [
+  'Senior Software Developer', 'FullStack', 'Frontend', 'Video Games',
+  'Montréal', 'Wireless Network', 'Graphic Design', 'Freelance', 'Web',
+];
 ---
 
-<Layout title="About — FruitsBytes">
-  <main class="min-h-screen p-8">
-    <h1 class="text-3xl">About me</h1>
-    <p class="text-gray-400 mt-2">[stub — pending port from gui-about]</p>
-  </main>
+<Layout
+  title="About — FruitsBytes"
+  description="Senior Software Developer with 10+ years of experience in Angular, React, Three.js, and enterprise applications."
+>
+  <HashScroll client:load />
+
+  <div class="@container max-w-4xl mx-auto px-3 sm:px-6 py-6 sm:py-10 space-y-6">
+
+    {/* PAGE 1 — About + Info + Bio */}
+    <article class="bg-gray-50 text-gray-900 shadow-lg rounded-lg p-6 sm:p-8 relative">
+      <section id="about">
+        <h1 class="text-gray-300 font-extralight text-3xl sm:text-5xl m-0">About me</h1>
+
+        <div class="flex justify-center my-4">
+          <div class="w-32 h-32 rounded-full bg-cover bg-center border-4 border-gray-200" style="background-image: url('/assets/images/me_game.png');"></div>
+        </div>
+        <div class="text-center text-lg text-blue-900 font-medium">Jeffrey Nicholson Carré</div>
+
+        <div class="mx-auto text-center mt-3 max-w-md">
+          {BADGES.map((b) => (
+            <span class="bg-gray-100 text-gray-800 text-xs font-semibold inline-block mr-1 mb-1 px-2.5 py-0.5 rounded">{b}</span>
+          ))}
+        </div>
+
+        <div id="links" class="text-center mt-4">
+          <div class="flex justify-center items-center gap-3 sm:gap-4">
+            {SOCIAL_LINKS.map((link) => (
+              <a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={link.name} class="opacity-70 hover:opacity-100 transition-opacity">
+                <img src={`/assets/images/socialicon/${link.icon}.svg`} alt={link.name} class="w-6 h-6" />
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div id="info" class="mt-6">
+          <h3 class="mb-3 text-base font-semibold">
+            <span class="border-b-4 border-green-500 pb-1">Info</span>
+          </h3>
+          <div class="grid grid-cols-1 @lg:grid-cols-3 divide-y @lg:divide-y-0 @lg:divide-x divide-gray-200 rounded-md p-3 border border-gray-200 text-sm">
+            <div class="pb-2 @lg:pb-0">
+              <label class="text-xs text-gray-500 uppercase tracking-wide" for="info-location">Location</label>
+              <p id="info-location" class="m-0">Montréal, QC</p>
+            </div>
+            <div class="pt-2 @lg:pt-0 @lg:col-span-2 @lg:pl-3">
+              <label class="text-xs text-gray-500 uppercase tracking-wide" for="info-email">Email</label>
+              <p id="info-email" class="m-0">
+                <a href="mailto:jeffrey.carre@anbapyezanman.com" class="text-blue-700 hover:underline break-all">jeffrey.carre@anbapyezanman.com</a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div id="bio" class="mt-6">
+          <h3 class="mb-3 text-base font-semibold">
+            <span class="border-b-4 border-green-500 pb-1">Bio</span>
+          </h3>
+          <div class="text-sm leading-relaxed space-y-2">
+            <p>I am a graphic designer that fell in love with coding when I was 12 (1997). After the 2010 earthquake, I halted my civil engineering studies (last year - last month) to fully embrace my passion and I never looked back. So far it has been an amazing adventure where I got to solve real-life challenges for people in the most precarious situations.</p>
+            <p>I have since then finished my studies and got my degree (finally). Right now, I am focusing on frontend development, mostly 3D animation/graphics, video game creation and augmented reality HUD (heads-up display).</p>
+          </div>
+        </div>
+      </section>
+      <div class="absolute bottom-2 right-3 text-xs text-gray-400">1</div>
+    </article>
+
+    {/* PAGE 2 — Employment */}
+    <article class="bg-gray-50 text-gray-900 shadow-lg rounded-lg p-6 sm:p-8 relative">
+      <section id="employment-history">
+        <h2 class="text-2xl font-bold m-0 mb-4">Employment history</h2>
+
+        <div class="grid grid-cols-1 divide-y divide-gray-200 rounded-md p-2 border border-gray-200 gap-y-4">
+
+          <div class="grid grid-cols-1 @md:grid-cols-12 pb-4 gap-3" id="cgi">
+            <div class="@md:col-span-2 @md:text-center pt-2">
+              <div class="font-mono text-orange-600 text-sm">2023<br />—<br />Present</div>
+              <div class="text-gray-500 text-sm">Montréal</div>
+            </div>
+            <div class="@md:col-span-10">
+              <h3 class="my-0 text-lg">Senior Consultant <span class="text-green-800"><span class="text-gray-300 text-2xl">@</span>CGI Inc.</span></h3>
+              <small><a href="https://www.cgi.com" class="text-blue-700 hover:underline">https://www.cgi.com</a></small>
+              <p class="mt-2 text-sm">Senior consultant working on enterprise-level software solutions for major clients.</p>
+              <ul class="list-disc list-inside mt-2 text-sm space-y-0.5">
+                <li>Frontend Development with Angular and modern frameworks</li>
+                <li>Enterprise application architecture and design</li>
+                <li>Client consultation and technical leadership</li>
+                <li>Agile development and team collaboration</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 @md:grid-cols-12 pb-4 pt-4 gap-3" id="transversal-consultant">
+            <div class="@md:col-span-2 @md:text-center pt-2">
+              <div class="font-mono text-orange-600 text-sm">Sept 2021<br />—<br />2023</div>
+              <div class="text-gray-500 text-sm">Port-au-Prince</div>
+            </div>
+            <div class="@md:col-span-10">
+              <h3 class="my-0 text-lg">Consultant <span class="text-green-800"><span class="text-gray-300 text-2xl">@</span>Transversal</span></h3>
+              <small><a href="https://www.transversal.ht" class="text-blue-700 hover:underline">https://www.transversal.ht</a></small>
+              <p class="mt-2 text-sm">Oversee new projects and maintain/upgrade old company projects.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 @md:grid-cols-12 pb-4 pt-4 gap-3" id="transversal-cto">
+            <div class="@md:col-span-2 @md:text-center pt-2">
+              <div class="font-mono text-orange-600 text-sm">Apr 2013<br />—<br />Sept 2021</div>
+              <div class="text-gray-500 text-sm">Port-au-Prince</div>
+            </div>
+            <div class="@md:col-span-10">
+              <h3 class="mt-0 text-lg">CTO <span class="text-green-800"><span class="text-gray-300 text-2xl">@</span>Transversal</span></h3>
+              <small><a href="https://www.transversal.ht" class="text-blue-700 hover:underline">https://www.transversal.ht</a></small>
+              <h4 class="mt-2 text-base font-semibold">Software developer</h4>
+              <p class="text-sm">Actively participated in the development and managed multiple fintech products mostly involving mobile money and financial inclusion.</p>
+              <p class="text-sm mt-1">I worked on multiple timezones with international clients/partners.</p>
+              <p class="text-sm mt-1">I developed mobile apps, front-end, and back-end interfaces, APIs… always making sure it was adapted to the low electronic literacy of the end-users and the precarious conditions where we were going to deploy our systems. We also had to manage multiple languages to send SMS/USSD in addition to regular push notifications.</p>
+              <p class="text-sm mt-1">Our main platform processed 200 million USD in voucher transactions. We mostly worked with banks, the Haitian government, and NGOs.</p>
+              <ul class="list-disc list-inside text-sm mt-2 space-y-0.5">
+                <li class="list-none italic">The stacks were not always the same but I got to work with:</li>
+                <li>PHP - Doctrine - MySQL - Laravel - Lumen</li>
+                <li>AngularJS - Angular</li>
+                <li>ReactJS</li>
+                <li>IonicFramework - ReactNative</li>
+                <li>Linux dedicated server - AWS</li>
+              </ul>
+              <h4 class="mt-3 text-base font-semibold">Wireless Network Tech/Trainer</h4>
+              <p class="text-sm">For a long time I was the only French trainer for the Caribbean and America for Ubiquiti Inc (NSE: UI). Supervised and worked on multiple installations in remote areas all over the country.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 @md:grid-cols-12 pb-4 pt-4 gap-3" id="global-hawk">
+            <div class="@md:col-span-2 @md:text-center pt-2">
+              <div class="font-mono text-orange-600 text-sm">Jan 2020<br />—<br />Feb 2021</div>
+              <div class="text-gray-500 text-sm">New York</div>
+            </div>
+            <div class="@md:col-span-10">
+              <h3 class="my-0 text-lg">Software Dev <span class="text-green-800"><span class="text-gray-300 text-2xl">@</span>Global Hawk</span></h3>
+              <small>
+                <a class="line-through text-blue-700" href="https://gbhawk.net">https://gbhawk.net</a>
+                {' -> '}
+                <a class="text-blue-700 hover:underline" href="https://zeno.fm/zeno-plus/">https://zeno.fm/zeno-plus/</a>
+              </small>
+              <h4 class="mt-2 text-base font-semibold">Senior Software Developer (Freelancer)</h4>
+              <p class="text-sm">I developed the Global Recharge App (web, iOS, Android).</p>
+              <ul class="list-disc list-inside text-sm mt-2 space-y-0.5">
+                <li class="list-none italic">For that project I decided to work with:</li>
+                <li>Firebase - Google Cloud Platform</li>
+                <li>NodeJS - ExpressJS</li>
+                <li>Angular - IonicFramework</li>
+              </ul>
+              <p class="text-sm mt-2">I managed the team migrating the app to the new owning company.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="absolute bottom-2 right-3 text-xs text-gray-400">2</div>
+    </article>
+
+    {/* PAGE 3 — Education + Certifications */}
+    <article class="bg-gray-50 text-gray-900 shadow-lg rounded-lg p-6 sm:p-8 relative">
+      <section id="education">
+        <h2 class="text-2xl font-bold m-0 mb-4">Education</h2>
+
+        <div class="grid grid-cols-1 divide-y divide-gray-200 rounded-md p-2 border border-gray-200 gap-y-4">
+          <div class="grid grid-cols-1 @md:grid-cols-12 pb-4 gap-3" id="FDS">
+            <div class="@md:col-span-2 @md:text-center pt-2">
+              <div class="font-mono text-orange-600 text-sm">2005<br />—<br />2014</div>
+              <div class="text-gray-500 text-sm">Port-au-Prince</div>
+            </div>
+            <div class="@md:col-span-10">
+              <h3 class="my-0 text-lg">Bachelor's degree, Civil Engineering</h3>
+              <small>Faculté des Sciences de l'Université d'État d'Haïti</small>
+              <p class="mt-2 text-sm">Specialized in structural engineering and infrastructure development.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 @md:grid-cols-12 pb-4 pt-4 gap-3" id="SLG-2">
+            <div class="@md:col-span-2 @md:text-center pt-2">
+              <div class="font-mono text-orange-600 text-sm">2002<br />—<br />2005</div>
+              <div class="text-gray-500 text-sm">Port-au-Prince</div>
+            </div>
+            <div class="@md:col-span-10">
+              <h3 class="my-0 text-lg">High School Diploma (Philo)</h3>
+              <small>Institution Saint Louis de Gonzague</small>
+              <p class="mt-2 text-sm">Philosophy program — Haitian Secondary Education.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 @md:grid-cols-12 pb-4 pt-4 gap-3" id="SLG-1">
+            <div class="@md:col-span-2 @md:text-center pt-2">
+              <div class="font-mono text-orange-600 text-sm">1999<br />—<br />2002</div>
+              <div class="text-gray-500 text-sm">Port-au-Prince</div>
+            </div>
+            <div class="@md:col-span-10">
+              <h3 class="my-0 text-lg">Middle School</h3>
+              <small>Institution Saint Louis de Gonzague</small>
+              <p class="mt-2 text-sm">Secondary education foundation.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="certifications" class="mt-6">
+        <h2 class="text-2xl font-bold m-0 mb-4">Certifications</h2>
+
+        <div class="grid grid-cols-1 divide-y divide-gray-200 rounded-md p-2 border border-gray-200 gap-y-4">
+          <div class="grid grid-cols-1 @md:grid-cols-12 pb-4 gap-3" id="GC">
+            <div class="@md:col-span-2 @md:text-center pt-2">
+              <div class="font-mono text-orange-600 text-sm">2014</div>
+            </div>
+            <div class="@md:col-span-10">
+              <h3 class="my-0 text-lg">Civil Engineer</h3>
+              <p class="mt-2 text-sm">Licensed Civil Engineer — Haiti.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 @md:grid-cols-12 pb-4 pt-4 gap-3" id="ubnt">
+            <div class="@md:col-span-2 @md:text-center pt-2">
+              <div class="font-mono text-orange-600 text-sm">2015</div>
+            </div>
+            <div class="@md:col-span-10">
+              <h3 class="my-0 text-lg">Ubiquiti Network Trainer</h3>
+              <p class="mt-2 text-sm">Certified trainer for Ubiquiti wireless networking solutions. Only French-speaking trainer in Caribbean and Americas region.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 @md:grid-cols-12 pb-4 pt-4 gap-3" id="tower">
+            <div class="@md:col-span-2 @md:text-center pt-2">
+              <div class="font-mono text-orange-600 text-sm">2014</div>
+            </div>
+            <div class="@md:col-span-10">
+              <h3 class="my-0 text-lg">Tower Climbing Professional</h3>
+              <p class="mt-2 text-sm">Certified for telecommunications tower climbing and installation work.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="absolute bottom-2 right-3 text-xs text-gray-400">3</div>
+    </article>
+
+    {/* PAGE 4 — Skills (frontend, backend, design) */}
+    <article class="bg-gray-50 text-gray-900 shadow-lg rounded-lg p-6 sm:p-8 relative">
+      <section id="skills">
+        <h2 class="text-2xl font-bold m-0 mb-4">Skills</h2>
+
+        <div class="grid grid-cols-1 divide-y divide-gray-200 rounded-md p-2 border border-gray-200 gap-y-4">
+          <div class="pb-4" id="frontend-dev">
+            <h3 class="mt-2 mb-3 text-lg flex items-center gap-2">
+              <span class="material-symbols-sharp text-green-600">code</span>
+              <span class="border-b-2 border-green-500 pb-0.5">Frontend Software Development</span>
+            </h3>
+            <p class="text-sm">Expert in modern frontend frameworks and technologies:</p>
+            <ul class="list-disc list-inside mt-2 text-sm space-y-0.5">
+              <li>Angular, AngularJS, React, ReactNative</li>
+              <li>TypeScript, JavaScript (ES6+)</li>
+              <li>StencilJS, Web Components, Astro</li>
+              <li>Three.js, WebGL, 3D Graphics</li>
+              <li>Ionic Framework, Mobile Development</li>
+              <li>Tailwind CSS, SCSS, CSS-in-JS</li>
+              <li>State Management (RxJS, NgRx, Elf, SolidJS Signals)</li>
+            </ul>
+          </div>
+
+          <div class="pb-4 pt-4" id="backend-dev">
+            <h3 class="mt-2 mb-3 text-lg flex items-center gap-2">
+              <span class="material-symbols-sharp text-green-600">code</span>
+              <span class="border-b-2 border-green-500 pb-0.5">Backend Software Development</span>
+            </h3>
+            <p class="text-sm">Full-stack capabilities with backend technologies:</p>
+            <ul class="list-disc list-inside mt-2 text-sm space-y-0.5">
+              <li>Node.js, Express.js</li>
+              <li>PHP, Laravel, Lumen, Doctrine</li>
+              <li>MySQL, PostgreSQL, IndexedDB</li>
+              <li>REST APIs, GraphQL</li>
+              <li>Firebase, Google Cloud Platform</li>
+              <li>AWS, Linux Server Administration</li>
+              <li>SMS/USSD Integration, Mobile Money APIs</li>
+            </ul>
+          </div>
+
+          <div class="pb-4 pt-4" id="graphic-design">
+            <h3 class="mt-2 mb-3 text-lg flex items-center gap-2">
+              <span class="material-symbols-sharp text-green-600">design_services</span>
+              <span class="border-b-2 border-green-500 pb-0.5">Graphic Design</span>
+            </h3>
+            <p class="text-sm">Visual design and creative skills:</p>
+            <ul class="list-disc list-inside mt-2 text-sm space-y-0.5">
+              <li>UI/UX Design</li>
+              <li>Adobe Creative Suite</li>
+              <li>3D Modeling &amp; Animation</li>
+              <li>Motion Graphics</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <div class="absolute bottom-2 right-3 text-xs text-gray-400">4</div>
+    </article>
+
+    {/* PAGE 5 — Skills continued */}
+    <article class="bg-gray-50 text-gray-900 shadow-lg rounded-lg p-6 sm:p-8 relative">
+      <section id="skills-continued">
+        <h2 class="text-2xl font-bold m-0 mb-4">Skills (continued)</h2>
+
+        <div class="grid grid-cols-1 divide-y divide-gray-200 rounded-md p-2 border border-gray-200 gap-y-4">
+          <div class="pb-4" id="wireless">
+            <h3 class="mt-2 mb-3 text-lg flex items-center gap-2">
+              <span class="material-symbols-sharp text-green-600">wifi</span>
+              <span class="border-b-2 border-green-500 pb-0.5">Wireless Technology &amp; Instruction</span>
+            </h3>
+            <p class="text-sm">Wireless networking expertise:</p>
+            <ul class="list-disc list-inside mt-2 text-sm space-y-0.5">
+              <li>Ubiquiti Networks (UniFi, airMAX, EdgeMAX)</li>
+              <li>Wireless Network Design &amp; Deployment</li>
+              <li>Technical Training &amp; Instruction</li>
+              <li>Tower Installation &amp; Climbing</li>
+              <li>Remote Area Network Solutions</li>
+            </ul>
+          </div>
+
+          <div class="pb-4 pt-4" id="management">
+            <h3 class="mt-2 mb-3 text-lg flex items-center gap-2">
+              <span class="material-symbols-sharp text-green-600">developer_board</span>
+              <span class="border-b-2 border-green-500 pb-0.5">Leadership &amp; Management</span>
+            </h3>
+            <p class="text-sm">Team leadership and project management:</p>
+            <ul class="list-disc list-inside mt-2 text-sm space-y-0.5">
+              <li>CTO Experience (8+ years)</li>
+              <li>Team Management &amp; Mentoring</li>
+              <li>Project Planning &amp; Execution</li>
+              <li>International Client Relations</li>
+              <li>Fintech Product Development</li>
+              <li>Multi-timezone Collaboration</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <div class="absolute bottom-2 right-3 text-xs text-gray-400">5</div>
+    </article>
+
+    {/* PAGE 6 — Hobbies */}
+    <article class="bg-gray-50 text-gray-900 shadow-lg rounded-lg p-6 sm:p-8 relative">
+      <section id="hobbies">
+        <h2 class="text-2xl font-bold m-0 mb-4">Hobbies &amp; preferences</h2>
+
+        <div class="grid grid-cols-1 @md:grid-cols-2 gap-4">
+          <div class="pb-2" id="hobby-1">
+            <h3 class="mt-2 mb-2 text-base flex items-center gap-2">
+              <span class="material-symbols-sharp text-green-600">sports_esports</span>
+              <span class="border-b-2 border-green-500 pb-0.5">Games</span>
+            </h3>
+            <p class="text-sm">Passionate about video games, game development, and interactive experiences. Focus on 3D game creation and mechanics.</p>
+          </div>
+
+          <div class="pb-2" id="hobby-2">
+            <h3 class="mt-2 mb-2 text-base flex items-center gap-2">
+              <span class="material-symbols-sharp text-green-600">theaters</span>
+              <span class="border-b-2 border-green-500 pb-0.5">Movies &amp; TV Shows</span>
+            </h3>
+            <p class="text-sm">Enjoy cinema and television series, especially sci-fi, fantasy, and thriller genres.</p>
+          </div>
+
+          <div class="pb-2" id="hobby-3">
+            <h3 class="mt-2 mb-2 text-base flex items-center gap-2">
+              <span class="material-symbols-sharp text-green-600">space_dashboard</span>
+              <span class="border-b-2 border-green-500 pb-0.5">Manga &amp; Anime</span>
+            </h3>
+            <p class="text-sm">Avid follower of manga and anime, appreciating Japanese storytelling and art styles.</p>
+          </div>
+
+          <div class="pb-2" id="hobby-4">
+            <h3 class="mt-2 mb-2 text-base flex items-center gap-2">
+              <span class="material-symbols-sharp text-green-600">book</span>
+              <span class="border-b-2 border-green-500 pb-0.5">Reading</span>
+            </h3>
+            <p class="text-sm">Regular reader with interests in science fiction, technology, and self-improvement.</p>
+          </div>
+
+          <div class="pb-2" id="hobby-5">
+            <h3 class="mt-2 mb-2 text-base flex items-center gap-2">
+              <span class="material-symbols-sharp text-green-600">nature</span>
+              <span class="border-b-2 border-green-500 pb-0.5">Outdoors</span>
+            </h3>
+            <p class="text-sm">Appreciate outdoor activities, nature exploration, and physical challenges.</p>
+          </div>
+
+          <div class="pb-2" id="hobby-6">
+            <h3 class="mt-2 mb-2 text-base flex items-center gap-2">
+              <span class="material-symbols-sharp text-green-600">music_note</span>
+              <span class="border-b-2 border-green-500 pb-0.5">Music</span>
+            </h3>
+            <p class="text-sm">Music enthusiast with diverse taste across multiple genres and cultures.</p>
+          </div>
+        </div>
+
+        <div class="mt-6 text-center text-gray-500 text-xs">
+          <p>Updated 2026-05 — Montréal, QC</p>
+        </div>
+      </section>
+      <div class="absolute bottom-2 right-3 text-xs text-gray-400">6</div>
+    </article>
+
+  </div>
 </Layout>

@@ -62,8 +62,8 @@ export default function ContactForm() {
       <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
 
       <div class="flex flex-col gap-2">
-        <label for="name" class="flex items-center gap-2 text-sm font-medium text-[#ccd6ef]">
-          <span class="material-symbols-sharp text-[18px] text-[#9aa0a6]">person</span>
+        <label for="name" class="flex items-center gap-2 text-sm font-medium text-[var(--panel-text-strong)]">
+          <span class="material-symbols-sharp text-[18px] text-[var(--panel-text)]">person</span>
           Name
         </label>
         <input
@@ -75,13 +75,13 @@ export default function ContactForm() {
           value={name()}
           onInput={(e) => setName(e.currentTarget.value)}
           placeholder="Your name"
-          class="w-full px-4 py-3 text-sm text-[#e8eaed] bg-[#292a2d] border border-[#494c50] rounded outline-none transition-all placeholder:text-[#787b7f] focus:border-[#0078d7] focus:bg-[#202124] focus:ring-2 focus:ring-[#0078d7]/10 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm text-[var(--panel-text-strong)] bg-[var(--panel-input-bg)] border border-[var(--panel-border)] rounded outline-none transition-all placeholder:text-[var(--panel-icon)] focus:border-[#0078d7] focus:ring-2 focus:ring-[#0078d7]/10 disabled:opacity-50 disabled:cursor-not-allowed"
         />
       </div>
 
       <div class="flex flex-col gap-2">
-        <label for="email" class="flex items-center gap-2 text-sm font-medium text-[#ccd6ef]">
-          <span class="material-symbols-sharp text-[18px] text-[#9aa0a6]">email</span>
+        <label for="email" class="flex items-center gap-2 text-sm font-medium text-[var(--panel-text-strong)]">
+          <span class="material-symbols-sharp text-[18px] text-[var(--panel-text)]">email</span>
           Email
         </label>
         <input
@@ -93,13 +93,13 @@ export default function ContactForm() {
           value={email()}
           onInput={(e) => setEmail(e.currentTarget.value)}
           placeholder="you@example.com"
-          class="w-full px-4 py-3 text-sm text-[#e8eaed] bg-[#292a2d] border border-[#494c50] rounded outline-none transition-all placeholder:text-[#787b7f] focus:border-[#0078d7] focus:bg-[#202124] focus:ring-2 focus:ring-[#0078d7]/10 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm text-[var(--panel-text-strong)] bg-[var(--panel-input-bg)] border border-[var(--panel-border)] rounded outline-none transition-all placeholder:text-[var(--panel-icon)] focus:border-[#0078d7] focus:ring-2 focus:ring-[#0078d7]/10 disabled:opacity-50 disabled:cursor-not-allowed"
         />
       </div>
 
       <div class="flex flex-col gap-2">
-        <label for="subject" class="flex items-center gap-2 text-sm font-medium text-[#ccd6ef]">
-          <span class="material-symbols-sharp text-[18px] text-[#9aa0a6]">subject</span>
+        <label for="subject" class="flex items-center gap-2 text-sm font-medium text-[var(--panel-text-strong)]">
+          <span class="material-symbols-sharp text-[18px] text-[var(--panel-text)]">subject</span>
           Subject
         </label>
         <input
@@ -110,13 +110,13 @@ export default function ContactForm() {
           value={subject()}
           onInput={(e) => setSubject(e.currentTarget.value)}
           placeholder="What's this about?"
-          class="w-full px-4 py-3 text-sm text-[#e8eaed] bg-[#292a2d] border border-[#494c50] rounded outline-none transition-all placeholder:text-[#787b7f] focus:border-[#0078d7] focus:bg-[#202124] focus:ring-2 focus:ring-[#0078d7]/10 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm text-[var(--panel-text-strong)] bg-[var(--panel-input-bg)] border border-[var(--panel-border)] rounded outline-none transition-all placeholder:text-[var(--panel-icon)] focus:border-[#0078d7] focus:ring-2 focus:ring-[#0078d7]/10 disabled:opacity-50 disabled:cursor-not-allowed"
         />
       </div>
 
       <div class="flex flex-col gap-2">
-        <label for="message" class="flex items-center gap-2 text-sm font-medium text-[#ccd6ef]">
-          <span class="material-symbols-sharp text-[18px] text-[#9aa0a6]">chat</span>
+        <label for="message" class="flex items-center gap-2 text-sm font-medium text-[var(--panel-text-strong)]">
+          <span class="material-symbols-sharp text-[18px] text-[var(--panel-text)]">chat</span>
           Message
         </label>
         <textarea
@@ -149,7 +149,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={submitting()}
-        class="flex items-center justify-center gap-2 px-8 py-3.5 text-sm font-medium text-white bg-[#0078d7] rounded outline-none transition-all hover:bg-[#1e90ff] hover:shadow-[0_4px_12px_rgba(0,120,215,0.3)] hover:-translate-y-px active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
+        class="flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 text-sm font-medium text-white bg-[#0078d7] rounded outline-none transition-all hover:bg-[#1e90ff] hover:shadow-[0_4px_12px_rgba(0,120,215,0.3)] hover:-translate-y-px active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none w-full @sm:w-auto @sm:self-start"
       >
         <Show
           when={submitting()}

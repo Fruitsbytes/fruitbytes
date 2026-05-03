@@ -1,0 +1,20 @@
+// PORT TARGET: web-stencil/src/components/gui-welcome/tools.json
+// Each entry maps to /assets/logos/{name}.png
+
+export const TOOLS: string[] = [
+  'TypeScript', 'JS', 'PHP', 'Angular', 'ReactJS',
+  'Ionic Framework', 'Laravel', 'Capacitor', 'CSS3', 'Firebase',
+  'Photoshop', 'Redux', 'rxJS', 'TailwindCss', 'Bootstrap',
+  'WebComponent', 'Enable3D', 'MySQL', 'NodeJS', 'NPM',
+  'ThreeJS', 'jQuery', 'C-Sharp', 'C++', 'GIT',
+  'Github', 'Vite', 'Stencil', 'Wordpress', 'Android',
+  'AppStore', 'AWS', 'Bitbucket', 'Blender', 'Canva',
+  'CentOS', 'Composer', 'Cordova', 'cPanel', 'D3',
+  'Docker', 'Doctrine', 'Fedora', 'Figma', 'GCP',
+  'GO', 'Google Meet', 'Google Play', 'IntelliJ IDEA', 'Jenkins',
+  'Jira', 'PhpStorm', 'Postman', 'Sass', 'Scala',
+  'Slack_', 'SourceTree', 'Swagger', 'Symfony', 'Ubuntu',
+  'VirtualBox', 'Webpack', 'WebStorm', 'Yarn', 'Zoom',
+];
+
+export const TOOLS_COLUMNS = 10;

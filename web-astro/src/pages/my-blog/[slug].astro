@@ -1,0 +1,148 @@
+---
+// PORT TARGET: web-stencil/src/components/gui-blog/gui-blog.tsx (single-post view)
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const dateFmt = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+---
+
+<Layout title={`${post.data.title} — FruitsBytes`} description={post.data.description}>
+  <article class="@container max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12 animate-fade-in-up">
+
+    <a href="/my-blog" class="inline-flex items-center gap-1.5 text-sm text-blue-400 hover:text-blue-300 mb-6">
+      <span class="material-symbols-sharp text-[16px]">arrow_back</span>
+      <span>Back to blog</span>
+    </a>
+
+    <span class="inline-flex items-center px-2 py-0.5 rounded bg-blue-500/15 border border-blue-500/30 text-blue-300 text-xs font-medium mb-3">
+      {post.data.category}
+    </span>
+
+    <h1 class="text-3xl @lg:text-5xl font-bold m-0 text-[var(--panel-text-strong)] leading-tight">
+      {post.data.title}
+    </h1>
+
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 mb-6 text-sm text-[var(--panel-text)]">
+      <span>{post.data.author}</span>
+      <span class="text-[var(--panel-divider)]">·</span>
+      <time datetime={post.data.date.toISOString()}>{dateFmt.format(post.data.date)}</time>
+      <span class="text-[var(--panel-divider)]">·</span>
+      <span>{post.data.readTime} min read</span>
+    </div>
+
+    <div class="flex flex-wrap gap-1.5 mb-8">
+      {post.data.tags.map((tag) => (
+        <span class="px-2 py-0.5 text-[11px] bg-[var(--panel-toolbar)] border border-[var(--panel-border)] rounded text-[var(--panel-text)]">
+          #{tag}
+        </span>
+      ))}
+    </div>
+
+    <img
+      src={post.data.image}
+      alt={post.data.title}
+      class="w-full max-h-96 object-cover rounded-lg bg-[var(--panel-toolbar)] mb-8"
+      onerror="this.src='/assets/images/blog/default.jpg'"
+    />
+
+    <div class="prose-fb">
+      <Content />
+    </div>
+
+  </article>
+</Layout>
+
+<style is:global>
+  /* Prose typography for the rendered markdown body */
+  .prose-fb {
+    color: var(--panel-text-strong);
+    line-height: 1.7;
+    font-size: 0.95rem;
+  }
+  .prose-fb h1,
+  .prose-fb h2,
+  .prose-fb h3,
+  .prose-fb h4 {
+    color: var(--panel-text-strong);
+    font-weight: 700;
+    margin-top: 2em;
+    margin-bottom: 0.6em;
+    line-height: 1.25;
+  }
+  .prose-fb h1 { font-size: 1.875rem; }
+  .prose-fb h2 { font-size: 1.5rem; border-bottom: 1px solid var(--panel-border); padding-bottom: 0.3em; }
+  .prose-fb h3 { font-size: 1.2rem; }
+  .prose-fb p { margin: 1em 0; }
+  .prose-fb ul,
+  .prose-fb ol { margin: 1em 0; padding-left: 1.5em; }
+  .prose-fb li { margin: 0.4em 0; }
+  .prose-fb a { color: #5a8dee; text-decoration: underline; }
+  .prose-fb a:hover { color: #8db4ff; }
+  .prose-fb code {
+    font-family: 'Roboto Mono', ui-monospace, monospace;
+    background: var(--panel-toolbar);
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+    font-size: 0.85em;
+    border: 1px solid var(--panel-border);
+  }
+  .prose-fb pre {
+    background: var(--panel-toolbar);
+    border: 1px solid var(--panel-border);
+    border-radius: 6px;
+    padding: 1em;
+    overflow-x: auto;
+    margin: 1.5em 0;
+  }
+  .prose-fb pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.85em;
+    line-height: 1.5;
+  }
+  .prose-fb blockquote {
+    border-left: 3px solid var(--panel-border);
+    padding-left: 1em;
+    color: var(--panel-text);
+    font-style: italic;
+    margin: 1.5em 0;
+  }
+  .prose-fb table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5em 0;
+    font-size: 0.9em;
+  }
+  .prose-fb th,
+  .prose-fb td {
+    border: 1px solid var(--panel-border);
+    padding: 0.5em 0.75em;
+    text-align: left;
+  }
+  .prose-fb th {
+    background: var(--panel-toolbar);
+    font-weight: 600;
+  }
+  .prose-fb hr {
+    border: 0;
+    border-top: 1px solid var(--panel-border);
+    margin: 2em 0;
+  }
+  .prose-fb img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    margin: 1em 0;
+  }
+</style>

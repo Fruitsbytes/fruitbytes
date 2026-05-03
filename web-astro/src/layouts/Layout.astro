@@ -74,7 +74,14 @@ const ICON_NAMES_SHARP = 'account_balance,arrow_back,arrow_forward,article,book,
     <BackgroundActivity client:visible transition:persist />
     <MainHeader client:load transition:persist />
 
-    <RightPanel client:load transition:persist>
+    {/*
+      RightPanel is intentionally NOT transition:persist — the slot content
+      (page-specific) needs to swap on navigation, and persist would
+      preserve the entire subtree including the old slot. Module-scoped
+      Solid signals (logs, menuWidth, theme) survive remounts because the
+      JS module stays loaded across View Transitions.
+    */}
+    <RightPanel client:load>
       <main id="main-content" role="main" aria-label="Main content">
         <slot />
       </main>
